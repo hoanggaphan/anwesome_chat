@@ -1,0 +1,22 @@
+{
+  "name": "anwesome_chat",
+  "version": "1.0.0",
+  "description": "anwesome chat build by nodejs and express",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoanggaphan/anwesome_chat.git"
+  },
+  "author": "si hoang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoanggaphan/anwesome_chat/issues"
+  },
+  "homepage": "https://github.com/hoanggaphan/anwesome_chat#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
