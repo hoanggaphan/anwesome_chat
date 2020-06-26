@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -10,5 +10,11 @@ const ContactSchema = new Schema({
   updatedAt: { type: Number, default: null },
   deletedAt: { type: Number, default: null },
 })
+
+ContactSchema.statics = {
+  createNew(item) {
+    return this.create(item);
+  }
+}
 
 module.exports = mongoose.model("contact", ContactSchema);
