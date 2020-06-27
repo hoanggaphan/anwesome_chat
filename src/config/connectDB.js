@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import bluebird from "bluebird";
+import mongoose from "mongoose";
 
 /**
  * Connect to MongoDB
