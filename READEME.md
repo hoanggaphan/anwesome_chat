@@ -1,6 +1,6 @@
 # Awesome-Chat-Template-Frontend
 
-Trong Template giao diện này có sử dụng những thư viện phía client với chính xác các phiên bản như sau:
+Trong app này có sử dụng những thư viện phía client với chính xác các phiên bản như sau:
 
 - bootstrap: **^3.3.7**
 - font-awesome **^4.7.0**
