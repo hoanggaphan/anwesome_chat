@@ -18,13 +18,17 @@
   },
   "homepage": "https://github.com/hoanggaphan/anwesome_chat#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
-    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
     "ejs": "^2.5.7",
     "express": "^4.17.1",
     "express-ejs-extend": "0.0.1",
+    "express-session": "^1.17.1",
     "express-validator": "^6.6.0",
-    "mongoose": "^5.9.20"
+    "mongoose": "^5.9.20",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
