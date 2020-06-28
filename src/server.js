@@ -1,9 +1,9 @@
 import express from "express";
-import bodyParser from 'body-parser'
-
 import connectDB from "./config/connectDB";
 import configViewEngine from "./config/viewEngine";
-import initRoutes from './routes/web';
+import configSession from './config/session'
+import initRoutes from "./routes/web";
+import connectFlash from 'connect-flash';
 
 // Init app
 const app = express();
@@ -11,10 +11,17 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+// Config session
+configSession(app);
+
 // Config view engine
 configViewEngine(app);
 
-app.use(bodyParser.urlencoded({ extended: false }))
+// Enable post data for request
+app.use(express.urlencoded({ extended: true }));
+
+// Enable flash messages
+app.use(connectFlash());
 
 // Init all routes
 initRoutes(app);

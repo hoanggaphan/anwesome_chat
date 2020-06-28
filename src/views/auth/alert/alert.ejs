@@ -1,2 +1,13 @@
-<div class="alert alert-danger">Error example.</div>
-<div class="alert alert-success">Success example.</div>
+<% if(errors.length) { %>
+    <% errors.map(item => { %>
+        <script>openRegisterModal()</script>
+        <div class="alert alert-danger"><%- item %></div>
+    <% }); %>
+<% } %>
+
+<% if(success.length) { %>
+    <% success.map(item => { %>
+        <script>openLoginModal()</script>
+        <div class="alert alert-success"><%- item %></div>
+    <% }); %>
+<% } %>
