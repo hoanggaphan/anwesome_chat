@@ -1,1 +1,5 @@
-<div class="master-success-message alert alert-success">Success example</div>
+<% if(success.length) { %>
+  	<% success.map(item => { %>
+      	<div class="master-success-message alert alert-success"><%- item %></div>
+  	<% }); %>
+<% } %>

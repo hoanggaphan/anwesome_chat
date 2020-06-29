@@ -1,4 +1,4 @@
-import userModel from "../models/user.model";
+import UserModel from "../models/userModel";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { transError, transSuccess, transMail } from "../../lang/vi";
@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 const register = (email, gender, password, protocol, host) => {
   return new Promise(async (resolve, reject) => {
-    const userByEmail = await userModel.findByEmail(email);
+    const userByEmail = await UserModel.findByEmail(email);
     if (userByEmail) {
       if (userByEmail.deletedAt) {
         return reject(transError.account_removed);
@@ -30,7 +30,7 @@ const register = (email, gender, password, protocol, host) => {
       },
     };
 
-    const user = await userModel.createNew(userItem);
+    const user = await UserModel.createNew(userItem);
     // send email
     const linkVerify = `${protocol}://${host}/verify/${user.local.verifyToken}`;
     sendMail(email, transMail.subject, transMail.template(linkVerify))
@@ -40,7 +40,7 @@ const register = (email, gender, password, protocol, host) => {
       .catch(async (error) => {
         console.log(error);
         //remove user when send email fail
-        await userModel.deleteById(user._id);
+        await UserModel.deleteById(user._id);
         reject(transMail.send_failed);
       });
   });
@@ -48,12 +48,12 @@ const register = (email, gender, password, protocol, host) => {
 
 const verifyAccount = (token) => {
   return new Promise(async (resolve, reject) => {
-    const userByToken = await userModel.findByToken(token);
+    const userByToken = await UserModel.findByToken(token);
     if(!userByToken) {
       return reject(transError.token_undefined);
     }
 
-    await userModel.verify(token);
+    await UserModel.verify(token);
     resolve(transSuccess.account_actived);
   });
 };

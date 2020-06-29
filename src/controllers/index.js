@@ -1,5 +1,5 @@
-import authController from './auth.controller';
-import homeController from './home.controller';
+import authController from './authController';
+import homeController from './homeController';
 
 export const auth = authController;
 export const home = homeController;
