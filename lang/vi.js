@@ -9,14 +9,19 @@ export const transError = {
   account_in_use: "Email này đã được sử dụng",
   account_removed: "Tài khoản này đã bị gỡ khỏi hệ thống, nếu thông tin không chính xác, vui lòng liên hệ với bộ phận hỗ trợ",
   account_not_active: "Tài khoản này chưa được kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản",
-  token_undefined: "Token không tồn tại"
+  token_undefined: "Token không tồn tại",
+  login_failed: "Sai tài khoản hoặc mật khẩu",
+  server_error: "Lỗi ở máy chủ, vui lòng liên hệ đến bộ phận hỗ trợ để thông báo lỗi này, xin cảm ơn!"
 }
 
 export const transSuccess = {
   userCreated(userEmail) {
     return `Tài khoản <strong>${userEmail}</strong> đã được tạo, vui lòng kiểm tra email để kích hoạt tài khoản, xin cảm ơn!`
   },
-  account_actived: "Kích hoạt tài khoản thành công, bạn có thể đăng nhập"
+  account_actived: "Kích hoạt tài khoản thành công, bạn có thể đăng nhập",
+  loginSuccess(username) {
+    return `Xin chào ${username}!`
+  }
 }
 
 export const transMail = {
