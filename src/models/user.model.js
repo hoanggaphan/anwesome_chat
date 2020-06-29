@@ -12,23 +12,23 @@ const UserSchema = new Schema({
   local: {
     email: { type: String, trim: true },
     password: String,
-    isActived: { type: Boolean, default: false},
-    verifyToken: String
+    isActived: { type: Boolean, default: false },
+    verifyToken: String,
   },
   facebook: {
     uid: String,
     token: String,
-    email: { type: String, trim: true }
+    email: { type: String, trim: true },
   },
   google: {
     uid: String,
     token: String,
-    email: { type: String, trim: true }
+    email: { type: String, trim: true },
   },
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: null },
   deletedAt: { type: Number, default: null },
-})
+});
 
 UserSchema.statics = {
   createNew(item) {
@@ -36,8 +36,23 @@ UserSchema.statics = {
   },
 
   findByEmail(email) {
-    return this.findOne({"local.email": email}).exec()
-  }
-}
+    return this.findOne({ "local.email": email }).exec();
+  },
+
+  deleteById(id) {
+    return this.findByIdAndDelete({ _id: id }).exec();
+  },
+
+  findByToken(token) {
+    return this.findOne({ "local.verifyToken": token }).exec();
+  },
+
+  verify(token) {
+    return this.findOneAndUpdate(
+      { "local.verifyToken": token },
+      { "local.isActived": true, "local.verifyToken": null }
+    ).exec();
+  },
+};
 
 module.exports = mongoose.model("user", UserSchema);

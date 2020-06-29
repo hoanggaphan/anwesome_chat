@@ -9,3 +9,9 @@ export DB_PASSWORD=""
 # Config app enviroment variables
 export APP_HOSTNAME=localhost
 export APP_PORT=8017
+
+# Config admin email account
+export MAIL_USER=anwesomechat@gmail.com
+export MAIL_PASSWORD=Javascript98!
+export MAIL_HOST=smtp.gmail.com
+export MAIL_PORT=587
