@@ -31,27 +31,23 @@ const initPassportLocal = () => {
             return done(null, false, req.flash("errors", transError.login_failed));
           }
 
-          return done(null, user, req.flash("success", transSuccess.loginSuccess(user.username)));
+          done(null, user, req.flash("success", transSuccess.loginSuccess(user.username)));
         } catch (error) {
           console.error(error);
-          return done(null, false, req.flash("errors", transError.server_error));
+          done(null, false, req.flash("errors", transError.server_error));
         }
       }
     )
   );
 
   // Save userId to session
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
+  passport.serializeUser((user, done) => done(null, user._id));
 
   passport.deserializeUser((id, done) => {
-      UserModel.findUserById(id)
-        .then(user => done(null, user))
-        .catch (error => done(error, null)) 
+    UserModel.findUserById(id)
+      .then(user => done(null, user))
+      .catch (error => done(error, null)) 
   });
 };
 
-module.exports = {
-  initPassportLocal,
-};
+module.exports = initPassportLocal;

@@ -40,24 +40,28 @@ UserSchema.statics = {
     return this.findOne({ "local.email": email }).exec();
   },
 
-  deleteById(id) {
-    return this.findByIdAndDelete({ _id: id }).exec();
-  },
-
   findByToken(token) {
     return this.findOne({ "local.verifyToken": token }).exec();
   },
 
+  findUserById(id) {
+    return this.findById(id).exec();
+  },
+
+  findByFacebookId(uid) {
+    return this.findOne({ "facebook.uid": uid }).exec();
+  },
+
+  deleteById(id) {
+    return this.findByIdAndDelete({ _id: id }).exec();
+  },
+  
   verify(token) {
     return this.findOneAndUpdate(
       { "local.verifyToken": token },
       { "local.isActived": true, "local.verifyToken": null }
     ).exec();
   },
-
-  findUserById(id) {
-    return this.findById(id).exec();
-  }
 };
 
 UserSchema.methods = {
