@@ -20,3 +20,8 @@ export MAIL_PORT=***
 export FB_ID=***
 export FB_SECRECT=***
 export FB_CALLBACK_URL=***
+
+# Config google login account
+export GG_ID=***
+export GG_SECRECT=***
+export GG_CALLBACK_URL=***
