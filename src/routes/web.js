@@ -14,12 +14,13 @@ const router = express.Router();
  * @params app from exactly express
  */
 const initRoutes = (app) => {
-  router.get("/", home.getHome);
-  router.get("/login-register", auth.getLoginRegister);
-  router.get("/verify/:token", auth.getVerifyAccount);
-
-  router.post("/register", authValid.register , auth.postRegister)
-  router.post("/login", passport.authenticate("local", {
+  router.get("/", auth.checkLoggedIn,  home.getHome);
+  router.get("/logout", auth.checkLoggedIn, auth.getLogout);
+  
+  router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
+  router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);
+  router.post("/register",auth.checkLoggedOut, authValid.register , auth.postRegister)
+  router.post("/login", auth.checkLoggedOut, passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login-register",
     failureFlash: true,
