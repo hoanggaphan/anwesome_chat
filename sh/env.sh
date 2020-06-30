@@ -15,3 +15,8 @@ export MAIL_USER=anwesomechat@gmail.com
 export MAIL_PASSWORD=Javascript98!
 export MAIL_HOST=smtp.gmail.com
 export MAIL_PORT=587
+
+# Config facebook login account
+export FB_ID=556893284993801
+export FB_SECRECT=f50b12c7894beb79efb5ac3d03bd7ac7
+export FB_CALLBACK_URL=https://localhost:8017/auth/facebook/callback

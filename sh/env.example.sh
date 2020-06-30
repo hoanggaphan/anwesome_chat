@@ -15,3 +15,8 @@ export MAIL_USER=***
 export MAIL_PASSWORD=***
 export MAIL_HOST=***
 export MAIL_PORT=***
+
+# Config facebook login account
+export FB_ID=***
+export FB_SECRECT=***
+export FB_CALLBACK_URL=***
