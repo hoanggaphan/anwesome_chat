@@ -4,10 +4,12 @@ import { authValid } from '../validation/index';
 import passport from 'passport';
 import initPassportLocal from '../controllers/passportController/local';
 import initPassportFacebook from '../controllers/passportController/facebook';
+import initPassportGoogle from '../controllers/passportController/google';
 
 // Init all passport
 initPassportLocal();
 initPassportFacebook();
+initPassportGoogle();
 
 const router = express.Router();
 
@@ -24,6 +26,14 @@ const initRoutes = (app) => {
 
   router.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
   router.get("/auth/facebook/callback", passport.authenticate("facebook", {
+    successRedirect: "/",
+    failureRedirect: "/login-register",
+    successFlash: true,
+    failureFlash: true
+  }))
+
+  router.get("/auth/google", passport.authenticate("google", { scope: ["email", "profile"] }));
+  router.get("/auth/google/callback", passport.authenticate("google", {
     successRedirect: "/",
     failureRedirect: "/login-register",
     successFlash: true,
