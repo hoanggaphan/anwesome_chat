@@ -66,6 +66,10 @@ UserSchema.statics = {
       { "local.isActived": true, "local.verifyToken": null }
     ).exec();
   },
+
+  updateUser(id, item) {
+    return this.findByIdAndUpdate(id, item).exec(); // return old data after update
+  }
 };
 
 UserSchema.methods = {

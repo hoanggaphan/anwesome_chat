@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, home } from '../controllers/index';
+import { auth, home, user } from '../controllers/index';
 import { authValid } from '../validation/index';
 import passport from 'passport';
 import initPassportLocal from '../controllers/passportController/local';
@@ -20,7 +20,8 @@ const router = express.Router();
 const initRoutes = (app) => {
   router.get("/", auth.checkLoggedIn,  home.getHome);
   router.get("/logout", auth.checkLoggedIn, auth.getLogout);
-  
+  router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar)
+
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);
 
