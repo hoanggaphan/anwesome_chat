@@ -24,16 +24,16 @@ const initRoutes = (app) => {
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);
 
-  router.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
-  router.get("/auth/facebook/callback", passport.authenticate("facebook", {
+  router.get("/auth/facebook", auth.checkLoggedOut, passport.authenticate("facebook", { scope: ["email"] }));
+  router.get("/auth/facebook/callback", auth.checkLoggedOut, passport.authenticate("facebook", {
     successRedirect: "/",
     failureRedirect: "/login-register",
     successFlash: true,
     failureFlash: true
   }))
 
-  router.get("/auth/google", passport.authenticate("google", { scope: ["email", "profile"] }));
-  router.get("/auth/google/callback", passport.authenticate("google", {
+  router.get("/auth/google", auth.checkLoggedOut, passport.authenticate("google", { scope: ["email", "profile"] }));
+  router.get("/auth/google/callback", auth.checkLoggedOut, passport.authenticate("google", {
     successRedirect: "/",
     failureRedirect: "/login-register",
     successFlash: true,
