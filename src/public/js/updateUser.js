@@ -8,21 +8,21 @@ function updateUserInfo() {
     const math = ["image/png", "image/jpg", "image/jpeg"];
     const limit = 1048576; // byte = 1MB
 
-    if ($.inArray(fileData.type, math) === -1) {
-      alertify.notify(
-        "Kiểu file Không hợp lệ, chỉ chấp nhận file png, jpg hoặc jpeg",
-        "error",
-        5
-      );
-      $(this).val(null);
-      return;
-    }
+    // if ($.inArray(fileData.type, math) === -1) {
+    //   alertify.notify(
+    //     "Kiểu file Không hợp lệ, chỉ chấp nhận file png, jpg hoặc jpeg",
+    //     "error",
+    //     5
+    //   );
+    //   $(this).val(null);
+    //   return;
+    // }
 
-    if (fileData.size > limit) {
-      alertify.notify("Ảnh có kích thước tối đa 1MB", "error", 5);
-      $(this).val(null);
-      return;
-    }
+    // if (fileData.size > limit) {
+    //   alertify.notify("Ảnh có kích thước tối đa 1MB", "error", 5);
+    //   $(this).val(null);
+    //   return;
+    // }
 
     if (typeof FileReader !== "undefined") {
       const imagePreview = $("#image-edit-profile");
@@ -87,6 +87,7 @@ $(document).ready(function () {
       );
     }
 
+    // Call ajax update avatar
     $.ajax({
       url: "/user/update-avatar",
       type: "put",
@@ -95,20 +96,39 @@ $(document).ready(function () {
       processData: false,
       data: userAvatar,
       success: function (response) {
+        console.log(response);
+        // Display success
+        $(".user-modal-alert-success")
+          .css("display", "block")
+          .find("span")
+          .text(response.message);
+
+        // Update avatar at navbar
+        $("#navbar-avatar").attr("src", response.imgSrc);
+
+        // Update origin avatar src
+        originAvatarSrc = response.imgSrc;
         
+        // Reset all
+        $("#input-btn-cancel-user").click();
       },
       error: function (error) {
+        // Display error
+        $(".user-modal-alert-error")
+          .css("display", "block")
+          .find("span")
+          .text(error.responseText);
         
-      }
-    })
-
-    // console.log(userAvatar);
-    // console.log(userInfo);
+        // Reset all
+        $("#input-btn-cancel-user").click();
+      },
+    });
   });
 
   $("#input-btn-cancel-user").bind("click", function () {
     userAvatar = null;
     userInfo = {};
+    $("#input-change-avatar").val(null);
     $("#user-modal-avatar").attr("src", originAvatarSrc);
   });
 });
