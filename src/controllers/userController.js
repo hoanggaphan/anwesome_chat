@@ -4,6 +4,7 @@ import { transError, transSuccess } from "../../lang/vi";
 import { v4 as uuidv4 } from "uuid";
 import { user } from '../services/index';
 import fsExtra from 'fs-extra';
+import { validationResult } from "express-validator";
 
 const storageAvatar = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -38,7 +39,7 @@ const updateAvatar = (req, res) => {
     try {
       const updateUserItem = {
         avatar: req.file.filename,
-        updateAt: Date.now()
+        updatedAt: Date.now()
       };
       // Update user in db
       const userUpdate = await user.updateUser(req.user._id, updateUserItem);
@@ -47,7 +48,7 @@ const updateAvatar = (req, res) => {
       await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
 
       const response = {
-        message: transSuccess.avatar_updated,
+        message: transSuccess.user_info_updated,
         imgSrc: `/images/users/${req.file.filename}`
       }
       return res.status(200).send(response);
@@ -58,6 +59,35 @@ const updateAvatar = (req, res) => {
   });
 };
 
+const updateInfo = async (req, res) => {
+  let errorArr = [];
+
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    const errors = Object.values(validationErrors.mapped()).map(
+      (item) => item.msg
+    );
+    errorArr = [...errorArr, ...errors];
+    return res.status(500).send(errorArr);
+  }
+
+  try {
+    const updateUserItem = req.body;
+    updateUserItem.updatedAt = Date.now();
+    await user.updateUser(req.user._id, updateUserItem);
+
+    const response = {
+      message: transSuccess.user_info_updated
+    }
+    res.status(200).send(response);
+  } catch (error) {
+    // Occur at server
+    console.error(error);
+    res.status(500).send(error);
+  }
+}
+
 module.exports = {
   updateAvatar,
+  updateInfo
 };

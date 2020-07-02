@@ -1,9 +1,11 @@
 let userAvatar = null;
-let userInfo = {};
 let originAvatarSrc = null;
+let userInfo = {};
+let originUserInfo = {};
 
 function updateUserInfo() {
   $("#input-change-avatar").bind("change", function () {
+    // Validation update user avatar in frontend
     const fileData = $(this).prop("files")[0];
     const math = ["image/png", "image/jpg", "image/jpeg"];
     const limit = 1048576; // byte = 1MB
@@ -52,31 +54,173 @@ function updateUserInfo() {
     }
   });
 
+  // Validation update user info in frontend
   $("#input-change-username").bind("change", function () {
-    userInfo.username = $(this).val();
+    const username = $(this).val();
+    const regUsername = new RegExp(
+      "^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$"
+    );
+    if (
+      username.length < 3 ||
+      username.length > 16 ||
+      !regUsername.test(username)
+    ) {
+      alertify.notify(
+        "Username gới hạn từ 3-16 kí tự và không chứa kí tự đặc biệt.",
+        "error",
+        5
+      );
+      $(this).val(originUserInfo.username);
+      delete userInfo.username;
+      return;
+    }
+
+    userInfo.username = username;
   });
 
   $("#input-change-gender-male").bind("click", function () {
-    userInfo.gender = $(this).val();
+    const gender = $(this).val();
+
+    if (gender !== "male") {
+      alertify.notify("Oops! dữ liệu trường không hợp lệ,", "error", 5);
+      $(this).val(originUserInfo.gender);
+      delete userInfo.gender;
+      return;
+    }
+
+    userInfo.gender = gender;
   });
 
   $("#input-change-gender-female").bind("click", function () {
-    userInfo.gender = $(this).val();
+    const gender = $(this).val();
+
+    if (gender !== "female") {
+      alertify.notify("Oops! dữ liệu trường không hợp lệ.", "error", 5);
+      $(this).val(originUserInfo.gender);
+      delete userInfo.gender;
+      return;
+    }
+
+    userInfo.gender = gender;
   });
 
   $("#input-change-address").bind("change", function () {
-    userInfo.address = $(this).val();
+    const address = $(this).val();
+
+    if (address.length < 3 || address.length > 30) {
+      alertify.notify("Địa chỉ từ 3-30 kí tự.", "error", 5);
+      $(this).val(originUserInfo.address);
+      delete userInfo.address;
+      return;
+    }
+
+    userInfo.address = address;
   });
 
   $("#input-change-phone").bind("change", function () {
-    userInfo.phone = $(this).val();
+    const phone = $(this).val();
+    const regPhone = new RegExp("^(0)[0-9]{9,10}$");
+    if (!regPhone.test(phone)) {
+      alertify.notify(
+        "Số điện thoại bắt đầu từ 0, gồm 9-10 số.",
+        "error",
+        5
+      );
+      $(this).val(originUserInfo.phone);
+      delete userInfo.phone;
+      return;
+    }
+
+    userInfo.phone = phone;
+  });
+}
+
+function callUpdateUserAvatar() {
+  $.ajax({
+    url: "/user/update-avatar",
+    type: "put",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: userAvatar,
+    success: function (response) {
+      console.log(response);
+      // Display success
+      $(".user-modal-alert-success")
+        .css("display", "block")
+        .find("span")
+        .text(response.message);
+
+      // Update avatar at navbar
+      $("#navbar-avatar").attr("src", response.imgSrc);
+
+      // Update origin avatar src
+      originAvatarSrc = response.imgSrc;
+
+      // Reset all
+      $("#input-btn-cancel-user").click();
+    },
+    error: function (error) {
+      // Display error
+      $(".user-modal-alert-error")
+        .css("display", "block")
+        .find("span")
+        .text(error.responseText);
+
+      // Reset all
+      $("#input-btn-cancel-user").click();
+    },
+  });
+}
+
+function callUpdateUserInfo() {
+  $.ajax({
+    url: "/user/update-info",
+    type: "put",
+    data: userInfo,
+    success: function (response) {
+      console.log(response);
+      // Display success
+      $(".user-modal-alert-success")
+        .css("display", "block")
+        .find("span")
+        .text(response.message);
+
+      // Update origin user info
+      originUserInfo = Object.assign(originUserInfo, userInfo);
+
+      // Update username at navbar
+      $("#navbar-username").text(originUserInfo.username);
+
+      // Reset all
+      $("#input-btn-cancel-user").click();
+    },
+    error: function (error) {
+      // Display error
+      $(".user-modal-alert-error")
+        .css("display", "block")
+        .find("span")
+        .text(error.responseText);
+
+      // Reset all
+      $("#input-btn-cancel-user").click();
+    },
   });
 }
 
 $(document).ready(function () {
-  updateUserInfo();
-
   originAvatarSrc = $("#user-modal-avatar").attr("src");
+  originUserInfo = {
+    username: $("#input-change-username").val(),
+    gender: $("#input-change-gender-male").is(":checked")
+      ? $("#input-change-gender-male").val()
+      : $("#input-change-gender-female").val(),
+    address: $("#input-change-address").val(),
+    phone: $("#input-change-phone").val(),
+  };
+
+  // Update user info after change value to update
+  updateUserInfo();
 
   $("#input-btn-update-user").bind("click", function () {
     if ($.isEmptyObject(userInfo) && !userAvatar) {
@@ -87,48 +231,29 @@ $(document).ready(function () {
       );
     }
 
-    // Call ajax update avatar
-    $.ajax({
-      url: "/user/update-avatar",
-      type: "put",
-      cache: false,
-      contentType: false,
-      processData: false,
-      data: userAvatar,
-      success: function (response) {
-        console.log(response);
-        // Display success
-        $(".user-modal-alert-success")
-          .css("display", "block")
-          .find("span")
-          .text(response.message);
+    // Call ajax update user avatar
+    if (userAvatar) {
+      callUpdateUserAvatar();
+    }
 
-        // Update avatar at navbar
-        $("#navbar-avatar").attr("src", response.imgSrc);
-
-        // Update origin avatar src
-        originAvatarSrc = response.imgSrc;
-        
-        // Reset all
-        $("#input-btn-cancel-user").click();
-      },
-      error: function (error) {
-        // Display error
-        $(".user-modal-alert-error")
-          .css("display", "block")
-          .find("span")
-          .text(error.responseText);
-        
-        // Reset all
-        $("#input-btn-cancel-user").click();
-      },
-    });
+    // Call ajx update user info
+    if (!$.isEmptyObject(userInfo)) {
+      callUpdateUserInfo();
+    }
   });
 
   $("#input-btn-cancel-user").bind("click", function () {
     userAvatar = null;
     userInfo = {};
+
     $("#input-change-avatar").val(null);
     $("#user-modal-avatar").attr("src", originAvatarSrc);
+
+    $("#input-change-username").val(originUserInfo.username);
+    originUserInfo.gender === "male"
+      ? $("#input-change-gender-male").click()
+      : $("#input-change-gender-female").click();
+    $("#input-change-address").val(originUserInfo.address);
+    $("#input-change-phone").val(originUserInfo.phone);
   });
 });
