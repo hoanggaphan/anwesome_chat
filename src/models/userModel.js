@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 
@@ -56,10 +56,35 @@ UserSchema.statics = {
     return this.findOne({ "google.uid": uid }).exec();
   },
 
+  /**
+   * Find all users for add contact.
+   * @param {array: deperated userIds} deprecatedUserIds
+   * @param {string: keyword search} keyword
+   */
+  findAllForAddContact(deprecatedUserIds, keyword) {
+    return this.find(
+      {
+        $and: [
+          { "_id": { $nin: deprecatedUserIds } }, // tìm data không nằm trong mảng deprecatedUserIds
+          { "local.isActived": true },
+          {
+            $or: [
+              { "username": { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
+              { "local.email": { $regex: keyword, $options: "i" } },
+              { "facebook.email": { $regex: keyword, $options: "i" } },
+              { "google.email": { $regex: keyword, $options: "i" } },
+            ],
+          },
+        ],
+      },
+      { _id: 1, username: 1, address: 1, avatar: 1 } // lấy ra các trường tương ứng
+    ).exec();
+  },
+
   deleteById(id) {
     return this.findByIdAndDelete({ _id: id }).exec();
   },
-  
+
   verify(token) {
     return this.findOneAndUpdate(
       { "local.verifyToken": token },
@@ -72,14 +97,16 @@ UserSchema.statics = {
   },
 
   updatePassword(id, hashedPasswod) {
-    return this.findByIdAndUpdate(id, { "local.password": hashedPasswod }).exec();
-  }
+    return this.findByIdAndUpdate(id, {
+      "local.password": hashedPasswod,
+    }).exec();
+  },
 };
 
 UserSchema.methods = {
   comparePassword(password) {
-    return bcrypt.compare(password, this.local.password) // return a promise has result is true or false
-  }
-}
+    return bcrypt.compare(password, this.local.password); // return a promise has result is true or false
+  },
+};
 
 module.exports = mongoose.model("user", UserSchema);

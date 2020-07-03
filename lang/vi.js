@@ -7,6 +7,7 @@ export const transValidation = {
   update_gender: "Oops! dữ liệu trường không hợp lệ.",
   update_address: "Địa chỉ từ 3-30 kí tự.",
   update_phone: "Số điện thoại bắt đầu từ 0, gồm 9-10 số.",
+  keyword_find_user: "Nội dung tìm kiếm gồm 1-16 kí tự, không được chứa kí tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trống"
 }
 
 export const transError = {
