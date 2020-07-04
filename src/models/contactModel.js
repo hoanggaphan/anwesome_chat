@@ -9,7 +9,7 @@ const ContactSchema = new Schema({
   createdAt: { type: Number, default: Date.now },
   updatedAt: { type: Number, default: null },
   deletedAt: { type: Number, default: null },
-})
+});
 
 ContactSchema.statics = {
   createNew(item) {
@@ -18,16 +18,38 @@ ContactSchema.statics = {
 
   /**
    * Find all items that related with user.
-   * @param {string} userId 
+   * @param {string} userId
    */
   findAllByUser(userId) {
     return this.find({
-      $or: [
-        {"userId": userId},
-        {"contactId": userId},
-      ]
+      $or: [{ "userId": userId }, { "contactId": userId }],
     }).exec();
+  },
+
+  /**
+   * Check exist contact of 2 user
+   * @param {string} userId
+   * @param {string} contactId
+   */
+  checkExist(userId, contactId) {
+    return this.findOne({
+      $or: [
+        { $and: [{ "userId": userId }, { "contactId": contactId }] },
+        { $and: [{ "userId": contactId }, { "contactId": userId }] },
+      ],
+    }).exec();
+  },
+
+  /**
+   * Remove request contact
+   * @param {string} userId 
+   * @param {string} contactId 
+   */
+  removeRequestContact(userId, contactId) {
+    return this.deleteOne({
+      $and: [{ "userId": userId }, { "contactId": contactId }]
+    });
   }
-}
+};
 
 module.exports = mongoose.model("contact", ContactSchema);

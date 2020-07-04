@@ -1,4 +1,4 @@
-import { param } from "express-validator/check";
+import { param } from "express-validator";
 import { transValidation } from "../../lang/vi";
 
 const findUsersContact = [
