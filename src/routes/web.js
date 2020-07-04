@@ -22,6 +22,8 @@ const initRoutes = (app) => {
   router.get("/logout", auth.checkLoggedIn, auth.getLogout);
 
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
+  router.post("/contact/add-new", auth.checkLoggedIn, contact.addNew);
+  router.delete("/contact/remove-request-contact", auth.checkLoggedIn, contact.removeRequestContact);
 
   router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar);
   router.put("/user/update-info", auth.checkLoggedIn, userValid.updateInfo, user.updateInfo);
