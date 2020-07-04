@@ -10,6 +10,10 @@ export DB_PASSWORD=""
 export APP_HOSTNAME=localhost
 export APP_PORT=8017
 
+# Config session key & secret
+export SESSION_KEY="express.sid"
+export SESSION_SECRET="mySecret"
+
 # Config admin email account
 export MAIL_USER=anwesomechat@gmail.com
 export MAIL_PASSWORD=Javascript98!
