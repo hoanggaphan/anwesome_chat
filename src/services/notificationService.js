@@ -30,4 +30,19 @@ const getNotification = (currentUserId, limit = 10) => {
   });
 };
 
-module.exports = { getNotification };
+/**
+ * Count all notification unread
+ * @param {string} currentUserId
+ */
+const countNotifUnread = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let notificationUnread = await NotificationModel.model.countNotifUnread(currentUserId);
+      resolve(notificationUnread);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+module.exports = { getNotification, countNotifUnread };
