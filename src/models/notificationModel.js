@@ -40,16 +40,27 @@ NotificationSchema.statics = {
 
   /**
    * Count all nofitication unread
-   * @param {string} userId 
+   * @param {string} userId
    */
   countNotifUnread(userId) {
     return this.countDocuments({
-      $and: [
-        { receiverId: userId },
-        { isRead: false},
-      ]
+      $and: [{ receiverId: userId }, { isRead: false }],
     }).exec();
-  }
+  },
+
+  /**
+   * Read more notification
+   * @param {string} userId
+   * @param {number} skip
+   * @param {number} limit
+   */
+  readMore(userId, skip, limit) {
+    return this.find({ receiverId: userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  },
 };
 
 const NOTIFICATION_TYPE = {
@@ -59,7 +70,7 @@ const NOTIFICATION_TYPE = {
 const NOTIFICATION_CONTENT = {
   getContent(notificationType, isRead, userId, username, userAvatar) {
     if (notificationType === NOTIFICATION_TYPE.ADD_CONTACT) {
-      if(!isRead) {
+      if (!isRead) {
         return `<div class="notif-readed-false" data-uid="${userId}">
                   <img class="avatar-small" src="images/users/${userAvatar}" alt=${username} />
                   <strong>${username}</strong> đã gửi cho bạn một lời mời kết bạn! 
@@ -79,5 +90,5 @@ const NOTIFICATION_CONTENT = {
 module.exports = {
   model: mongoose.model("notification", NotificationSchema),
   types: NOTIFICATION_TYPE,
-  contents: NOTIFICATION_CONTENT
+  contents: NOTIFICATION_CONTENT,
 };
