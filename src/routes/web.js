@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, home, user, contact } from '../controllers/index';
+import { auth, home, user, contact, notification } from '../controllers/index';
 import { authValid, userValid, contactValid } from '../validation/index';
 import passport from 'passport';
 import initPassportLocal from '../controllers/passportController/local';
@@ -24,6 +24,8 @@ const initRoutes = (app) => {
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
   router.post("/contact/add-new", auth.checkLoggedIn, contact.addNew);
   router.delete("/contact/remove-request-contact", auth.checkLoggedIn, contact.removeRequestContact);
+
+  router.get("/notification/read-more", auth.checkLoggedIn, notification.readMore);
 
   router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar);
   router.put("/user/update-info", auth.checkLoggedIn, userValid.updateInfo, user.updateInfo);
