@@ -22,9 +22,12 @@ const initRoutes = (app) => {
   router.get("/logout", auth.checkLoggedIn, auth.getLogout);
 
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
+  router.get("/contact/read-more-contacts", auth.checkLoggedIn, contact.readMoreContacts);
+  router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn, contact.readMoreContactsSent);
+  router.get("/contact/read-more-contacts-received", auth.checkLoggedIn, contact.readMoreContactsReceived);
   router.post("/contact/add-new", auth.checkLoggedIn, contact.addNew);
-  router.delete("/contact/remove-request-contact", auth.checkLoggedIn, contact.removeRequestContact);
-
+  router.delete("/contact/remove-request-contacts", auth.checkLoggedIn, contact.removeRequestContact);
+  
   router.get("/notification/read-more", auth.checkLoggedIn, notification.readMore);
   router.put("/notification/mark-all-as-read", auth.checkLoggedIn, notification.markAllAsRead);
 
