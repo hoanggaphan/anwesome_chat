@@ -1,16 +1,28 @@
-import { notification } from '../services/index';
+import { notification } from "../services/index";
 
 const readMore = async (req, res) => {
   try {
     // get skip number from query param
-    const skipNumberNotification = +(req.query.skipNumber);
+    const skipNumberNotification = +req.query.skipNumber;
     // get more item
-    const newNotification = await notification.readMore(req.user._id, skipNumberNotification);
+    const newNotification = await notification.readMore(
+      req.user._id,
+      skipNumberNotification
+    );
 
     return res.status(200).send(newNotification);
   } catch (error) {
-    return res.status(500).send(error)
+    return res.status(500).send(error);
   }
 };
 
-module.exports = { readMore };
+const markAllAsRead = async (req, res) => {
+  try {
+    let mark = await notification.markAllAsRead(req.user._id, req.body.targetUser);
+    return res.status(200).send(mark);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+module.exports = { readMore, markAllAsRead };
