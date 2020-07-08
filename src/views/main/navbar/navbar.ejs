@@ -51,14 +51,20 @@
             id="show-modal-contacts"
           >
             <i class="fa fa-user-plus"></i>
-            <div class="noti_contact_counter"></div>
+
+            <% if((countAllContactsSent + countAllContactsReceived)) { %>
+              <div class="noti_contact_counter" >
+                <%= (countAllContactsSent + countAllContactsReceived) %>
+              </div>
+            <% } %>
+
           </a>
         </li>
         <li>
           <a href="javascript:void(0)" id="noti_Button" data-toggle="modal" title="Thông báo">
             <i class="fa fa-globe"></i>
             
-            <% if(countNotifUnread > 0) { %>
+            <% if(countNotifUnread) { %>
               <div class="noti_counter" >
                 <%= countNotifUnread %>
               </div>
