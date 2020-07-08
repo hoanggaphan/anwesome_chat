@@ -61,6 +61,20 @@ NotificationSchema.statics = {
       .limit(limit)
       .exec();
   },
+
+  /**
+   * Mark all notification as read
+   * @param {string} userId
+   * @param {array} targetUser
+   */
+  markAllAsRead(userId, targetUser) {
+    return this.updateMany(
+      {
+        $and: [{ receiverId: userId }, { senderId: { $in: targetUser } }],
+      },
+      { isRead: true }
+    ).exec();
+  },
 };
 
 const NOTIFICATION_TYPE = {

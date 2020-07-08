@@ -26,6 +26,7 @@ const initRoutes = (app) => {
   router.delete("/contact/remove-request-contact", auth.checkLoggedIn, contact.removeRequestContact);
 
   router.get("/notification/read-more", auth.checkLoggedIn, notification.readMore);
+  router.put("/notification/mark-all-as-read", auth.checkLoggedIn, notification.markAllAsRead);
 
   router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar);
   router.put("/user/update-info", auth.checkLoggedIn, userValid.updateInfo, user.updateInfo);
