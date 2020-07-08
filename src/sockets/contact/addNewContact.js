@@ -13,6 +13,7 @@ const addNewContact = (io) => {
         id: socket.request.user._id,
         username: socket.request.user.username,
         avatar: socket.request.user.avatar,
+        address: socket.request.user.address || "",
       };
 
       // emit notification
