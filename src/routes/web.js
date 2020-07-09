@@ -26,7 +26,8 @@ const initRoutes = (app) => {
   router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn, contact.readMoreContactsSent);
   router.get("/contact/read-more-contacts-received", auth.checkLoggedIn, contact.readMoreContactsReceived);
   router.post("/contact/add-new", auth.checkLoggedIn, contact.addNew);
-  router.delete("/contact/remove-request-contacts-sent", auth.checkLoggedIn, contact.removeRequestContactSent);
+  router.delete("/contact/remove-request-contact-sent", auth.checkLoggedIn, contact.removeRequestContactSent);
+  router.delete("/contact/remove-request-contact-received", auth.checkLoggedIn, contact.removeRequestContactReceived);
   
   router.get("/notification/read-more", auth.checkLoggedIn, notification.readMore);
   router.put("/notification/mark-all-as-read", auth.checkLoggedIn, notification.markAllAsRead);
