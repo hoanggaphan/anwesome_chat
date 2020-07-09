@@ -47,7 +47,7 @@ ContactSchema.statics = {
    */
   removeRequestContactSent(userId, contactId) {
     return this.deleteOne({
-      $and: [{ userId: userId }, { contactId: contactId }],
+      $and: [{ userId: userId }, { contactId: contactId }, { status: false }],
     }).exec();
   },
 
@@ -58,8 +58,22 @@ ContactSchema.statics = {
    */
   removeRequestContactReceived(userId, contactId) {
     return this.deleteOne({
-      $and: [{ userId: contactId }, { contactId: userId }],
+      $and: [{ userId: contactId }, { contactId: userId }, { status: false }],
     }).exec();
+  },
+
+  /**
+   * Approve contact
+   * @param {string: of currentUserid} userId
+   * @param {string} contactId
+   */
+  approveRequestContactReceived(userId, contactId) {
+    return this.updateOne(
+      {
+        $and: [{ userId: contactId }, { contactId: userId }, { status: false }],
+      },
+      { status: true }
+    ).exec();
   },
 
   /**
@@ -142,9 +156,9 @@ ContactSchema.statics = {
 
   /**
    * Read more contacts by userId, skip, limit
-   * @param {string} userId 
-   * @param {number} skip 
-   * @param {number} limit 
+   * @param {string} userId
+   * @param {number} skip
+   * @param {number} limit
    */
   readMoreContacts(userId, skip, limit) {
     return this.find({
@@ -161,9 +175,9 @@ ContactSchema.statics = {
 
   /**
    * Read more contacts sent by userId, skip, limit
-   * @param {string} userId 
-   * @param {number} skip 
-   * @param {number} limit 
+   * @param {string} userId
+   * @param {number} skip
+   * @param {number} limit
    */
   readMoreContactsSent(userId, skip, limit) {
     return this.find({
@@ -177,9 +191,9 @@ ContactSchema.statics = {
 
   /**
    * Read more contacts received by userId, skip, limit
-   * @param {string} userId 
-   * @param {number} skip 
-   * @param {number} limit 
+   * @param {string} userId
+   * @param {number} skip
+   * @param {number} limit
    */
   readMoreContactsReceived(userId, skip, limit) {
     return this.find({
@@ -189,7 +203,7 @@ ContactSchema.statics = {
       .skip(skip)
       .limit(limit)
       .exec();
-  }
+  },
 };
 
 module.exports = mongoose.model("contact", ContactSchema);
