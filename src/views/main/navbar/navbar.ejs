@@ -56,6 +56,8 @@
               <div class="noti_contact_counter" >
                 <%= (countAllContactsSent + countAllContactsReceived) %>
               </div>
+            <% } else { %> 
+              <div class="noti_contact_counter display-none" ></div>
             <% } %>
 
           </a>
@@ -68,6 +70,8 @@
               <div class="noti_counter" >
                 <%= countNotifUnread %>
               </div>
+            <% } else { %> 
+              <div class="noti_counter display-none" ></div>
             <% } %>
 
             <div id="noti_Container">
