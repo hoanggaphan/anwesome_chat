@@ -3,7 +3,7 @@ import UserModel from "../models/userModel";
 import NotificationModel from "../models/notificationModel";
 import _ from "lodash";
 
-const LIMIT_NUMBER_TAKEN = 1;
+const LIMIT_NUMBER_TAKEN = 10;
 
 const findUsersContact = (currentUserId, keyword) => {
   return new Promise(async (resolve, reject) => {
@@ -62,6 +62,24 @@ const removeRequestContactSent = (currentUserId, contactId) => {
     // Remove notification
     const notifType = NotificationModel.types.ADD_CONTACT;
     await NotificationModel.model.removeRequestContactSentNotification(currentUserId, contactId, notifType);
+
+    resolve(true);
+  });
+};
+
+const removeRequestContactReceived = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    const removeReq = await ContactModel.removeRequestContactReceived(
+      currentUserId,
+      contactId
+    );
+    if (removeReq.n === 0) {
+      return reject(false);
+    }
+
+    // Remove notification (chức năng này chưa làm)
+    // const notifType = NotificationModel.types.ADD_CONTACT;
+    // await NotificationModel.model.removeRequestContactReceivedNotification(currentUserId, contactId, notifType);
 
     resolve(true);
   });
@@ -233,5 +251,6 @@ module.exports = {
   countAllContactsReceived,
   readMoreContacts,
   readMoreContactsSent,
-  readMoreContactsReceived
+  readMoreContactsReceived,
+  removeRequestContactReceived
 };
