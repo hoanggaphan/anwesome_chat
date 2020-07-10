@@ -679,7 +679,7 @@ label:focus,
 }
 
 .left a.create-group-chat {
-  display: none;
+  display: block;
   float: left;
   width: 40px;
   height: 40px;
@@ -697,6 +697,7 @@ label:focus,
   border-right: 1px solid #e6e6e6;
   border-left: 1px solid #e6e6e6;
   width: calc(100% + 2px);
+  margin-bottom: 0;
 }
 
 .left .people .person {
@@ -1508,4 +1509,13 @@ label:focus,
 
 .display-none {
   display: none;
+}
+
+.tab-content > .active {
+  background-color: transparent;
+}
+
+.read-more-all-chat, .read-more-user-chat, .read-more-group-chat {
+  text-align: center;
+  padding: 10px 0;
 }
