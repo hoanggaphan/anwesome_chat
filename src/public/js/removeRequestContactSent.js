@@ -25,8 +25,8 @@ function removeRequestContactSent() {
 }
 
 socket.on("response-remove-request-contact-sent", function (user) {
-  $(".noti_content").find(`div[data-uid = ${user.id}]`).remove(); // Xóa ở popup notification
-  $("ul.list-notifications").find(`li>div[data-uid = ${user.id}]`).parent().remove(); // Xóa ở modal notification
+  $(".noti_content").find(`div.notif-readed-false[data-uid = ${user.id}]`).remove(); // Xóa ở popup notification
+  $("ul.list-notifications").find(`li>div.notif-readed-false[data-uid = ${user.id}]`).parent().remove(); // Xóa ở modal notification
   
   decreaseNumberNotifContact("count-request-contact-received"); // js/caculateNotifContact.js
   

@@ -21,6 +21,7 @@ NotificationSchema.statics = {
         { senderId: senderId },
         { receiverId: receiverId },
         { type: type },
+        { isRead: false }
       ],
     }).exec();
   },
