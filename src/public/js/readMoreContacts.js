@@ -39,6 +39,8 @@ $(document).ready(function () {
             </li>`); // thểm ổ modal notification
       });
 
+      removeContact(); // js/removeContact.js
+
       $("#link-read-more-contacts").css("display", "inline-block");
       $(".read-more-contact-loader").css("display", "none");
     });

@@ -40,6 +40,27 @@ ContactSchema.statics = {
     }).exec();
   },
 
+  removeContact(userId, contactId) {
+    return this.deleteOne({
+      $or: [
+        {
+          $and: [
+            { userId: userId },
+            { contactId: contactId },
+            { status: true },
+          ],
+        },
+        {
+          $and: [
+            { userId: contactId },
+            { contactId: userId },
+            { status: true },
+          ],
+        },
+      ],
+    }).exec();
+  },
+
   /**
    * Remove request contact sent
    * @param {string} userId

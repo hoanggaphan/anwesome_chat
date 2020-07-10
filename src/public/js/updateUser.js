@@ -384,7 +384,7 @@ $(document).ready(function () {
     Swal.fire({
       title: "Bạn có chắc muốn đổi mật khẩu?",
       text: "Bạn không thể hoàn tác lại qui trình này!",
-      icon: "warning",
+      type: "info",
       showCancelButton: true,
       confirmButtonColor: "#2ECC71",
       cancelButtonColor: "#ff7675",
