@@ -1,10 +1,11 @@
+import _ from 'lodash';
+import ChatGroupModel from '../models/chatGroupModel';
 import ContactModel from '../models/contactModel';
 import UserModel from '../models/userModel';
-import ChatGroupModel from '../models/chatGroupModel';
-import _ from 'lodash';
-import { json } from 'express';
+import MessageModel from '../models/messageModel';
 
 const LIMIT_CONVERSATION_TAKEN = 15;
+const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
  * get all conversation
@@ -31,10 +32,24 @@ const getAllConversationItems = (currentUserId) => {
       let allConversations = [...userConversations, ...groupConversations];
       allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
 
+      // get message to apply in screen chat
+      let allConversationWithMessagesPromise = allConversations.map(async (conversation) => {
+        let messages = await MessageModel.model.getMessages(currentUserId, conversation._id, LIMIT_MESSAGES_TAKEN);
+
+        conversation = conversation.toObject()
+        conversation.messages = messages;
+
+        return conversation;
+      })
+      let allConversationWithMessages = await Promise.all(allConversationWithMessagesPromise);
+      // sort by updatedAt desending
+      allConversationWithMessages = _.sortBy(allConversationWithMessages, (item) => -item.updatedAt);
+
       resolve({
         allConversations,
         userConversations,
         groupConversations,
+        allConversationWithMessages
       });
     } catch (error) {
       reject(error);
