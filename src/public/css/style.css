@@ -1512,10 +1512,15 @@ label:focus,
 }
 
 .tab-content > .active {
-  background-color: transparent;
+  background-color: #fff;
 }
 
 .read-more-all-chat, .read-more-user-chat, .read-more-group-chat {
   text-align: center;
   padding: 10px 0;
+}
+
+#screen-chat {
+  width: 100%;
+  height: 100%;
 }

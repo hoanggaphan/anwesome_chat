@@ -45,7 +45,8 @@ const updateAvatar = (req, res) => {
       const userUpdate = await user.updateUser(req.user._id, updateUserItem);
 
       // Remove old avatar in directory
-      await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
+      // Không xóa avatar cũ của người dùng vì trong bảng message cần sử dụng
+      // await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
 
       const response = {
         message: transSuccess.user_info_updated,

@@ -155,6 +155,14 @@ function changeTypeChat() {
   })
 }
 
+function changeScreenChat() {
+  $(".room-chat").off("click").on("click", function () {
+    $(".person").removeClass("active");
+    $(this).find("li").addClass("active");
+    $(this).tab("show");
+  })
+}
+
 $(document).ready(function() {
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
@@ -187,4 +195,10 @@ $(document).ready(function() {
 
   // Thay đổi kiểu trò chuyện
   changeTypeChat();
+
+  // Thay đởi màn hình chat 
+  changeScreenChat();
+
+  // Click vào phần tử đầu tiên của cuộc trò truyện
+  $("ul.people").find("li")[0].click();
 });
