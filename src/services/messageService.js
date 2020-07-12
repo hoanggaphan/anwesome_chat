@@ -45,12 +45,7 @@ const getAllConversationItems = (currentUserId) => {
       // sort by updatedAt desending
       allConversationWithMessages = _.sortBy(allConversationWithMessages, (item) => -item.updatedAt);
 
-      resolve({
-        allConversations,
-        userConversations,
-        groupConversations,
-        allConversationWithMessages
-      });
+      resolve({ allConversationWithMessages });
     } catch (error) {
       reject(error);
     }
