@@ -1,5 +1,5 @@
 import { notification, contact, message } from '../services/index';
-import { bufferToBase64 } from '../helpers/clientHelper';
+import { bufferToBase64, lastItemFromArr, convertTimestampHumanTime } from '../helpers/clientHelper';
 
 const getHome = async (req, res) => {
   // only (10 items one time)
@@ -20,9 +20,6 @@ const getHome = async (req, res) => {
   let countAllContactsReceived = await contact.countAllContactsReceived(req.user._id);
 
   let getAllConversationItems = await message.getAllConversationItems(req.user._id);
-  let allConversations = getAllConversationItems.allConversations;
-  let userConversations = getAllConversationItems.userConversations;
-  let groupConversations = getAllConversationItems.groupConversations;
   // all messages with conversation, max 30 item
   let allConversationWithMessages = getAllConversationItems.allConversationWithMessages;
 
@@ -38,11 +35,10 @@ const getHome = async (req, res) => {
     countAllContacts,
     countAllContactsSent,
     countAllContactsReceived,
-    allConversations,
-    userConversations,
-    groupConversations,
     allConversationWithMessages,
-    bufferToBase64
+    bufferToBase64,
+    lastItemFromArr,
+    convertTimestampHumanTime 
   });
 };
 
