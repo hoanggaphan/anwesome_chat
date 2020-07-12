@@ -3,13 +3,15 @@ import ChatGroupModel from "../models/chatGroupModel";
 import ContactModel from "../models/contactModel";
 import UserModel from "../models/userModel";
 import MessageModel from "../models/messageModel";
+import { transError } from '../../lang/vi';
+import { app } from '../config/app';
 
 const LIMIT_CONVERSATION_TAKEN = 15;
 const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
- * get all conversation
- * @param {string} currentUserId
+ * Get all conversation
+ * @param { string } currentUserId
  */
 const getAllConversationItems = (currentUserId) => {
   return new Promise(async (resolve, reject) => {
@@ -74,4 +76,78 @@ const getAllConversationItems = (currentUserId) => {
   });
 };
 
-module.exports = { getAllConversationItems };
+/**
+ * Add new message text emoji
+ * @param { object } sender cuurent user
+ * @param { string } receiverId id of an user or a group
+ * @param { string } messageVal 
+ * @param { boolean } isChatGroup 
+ */
+const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (isChatGroup) {
+        let getChatGroupReceiver = await ChatGroupModel.getChatGroupById(receiverId);
+        if(!getChatGroupReceiver) {
+          return reject(transError.conversation_not_found);
+        }
+
+        let receiver = {
+          id: getChatGroupReceiver._id,
+          name: getChatGroupReceiver.name,
+          avatar: app.general_avatar_group_chat
+        }
+
+        let newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationTypes.GROUP,
+          messageType: MessageModel.messageTypes.TEXT,
+          sender: sender,
+          receiver: receiver,
+          text: messageVal,
+          createdAt: Date.now(),
+        }
+        
+        // Create new message
+        let newMessage = await MessageModel.model.createNew(newMessageItem);
+        // Update group chat
+        await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount++);
+        resolve(newMessage);
+      } else {
+        let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
+        if(!getUserReceiver) {
+          return reject(transError.conversation_not_found);
+        }
+
+        let receiver = {
+          id: getUserReceiver._id,
+          name: getUserReceiver.username,
+          avatar: getUserReceiver.avatar
+        }
+
+        let newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiver.id,
+          conversationType: MessageModel.conversationTypes.PERSONAL,
+          messageType: MessageModel.messageTypes.TEXT,
+          sender: sender,
+          receiver: receiver,
+          text: messageVal,
+          createdAt: Date.now(),
+        }
+
+        // Create new message
+        let newMessage = await MessageModel.model.createNew(newMessageItem);
+        // Update contact
+        await ContactModel.updateWhenHasNewMessage(sender.id, getUserReceiver._id);
+        resolve(newMessage);
+      }
+
+    } catch (error) {
+      reject(error);      
+    }
+  });
+};
+
+module.exports = { getAllConversationItems, addNewTextEmoji };

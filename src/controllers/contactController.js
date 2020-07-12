@@ -2,16 +2,12 @@ import { contact } from "../services/index";
 import { validationResult } from "express-validator";
 
 const findUsersContact = async (req, res) => {
-  let errorArr = [];
-
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors = Object.values(validationErrors.mapped()).map(
       (item) => item.msg
     );
-    errorArr = [...errorArr, ...errors];
-    // console.error(errorArr);
-    return res.status(500).send(errorArr);
+    return res.status(500).send(errors);
   }
 
   try {

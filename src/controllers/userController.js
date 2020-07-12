@@ -1,10 +1,9 @@
-import multer from "multer";
-import { app } from "../config/app";
-import { transError, transSuccess } from "../../lang/vi";
-import { v4 as uuidv4 } from "uuid";
-import { user } from '../services/index';
-import fsExtra from 'fs-extra';
 import { validationResult } from "express-validator";
+import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
+import { transError, transSuccess } from "../../lang/vi";
+import { app } from "../config/app";
+import { user } from '../services/index';
 
 const storageAvatar = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -61,15 +60,12 @@ const updateAvatar = (req, res) => {
 };
 
 const updateInfo = async (req, res) => {
-  let errorArr = [];
-
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors = Object.values(validationErrors.mapped()).map(
       (item) => item.msg
     );
-    errorArr = [...errorArr, ...errors];
-    return res.status(500).send(errorArr);
+    return res.status(500).send(errors);
   }
 
   try {
@@ -89,15 +85,12 @@ const updateInfo = async (req, res) => {
 }
 
 const updatePassword = async (req, res) => {
-  let errorArr = [];
-
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors = Object.values(validationErrors.mapped()).map(
       (item) => item.msg
     );
-    errorArr = [...errorArr, ...errors];
-    return res.status(500).send(errorArr);
+    return res.status(500).send(errors);
   }
 
   try {
