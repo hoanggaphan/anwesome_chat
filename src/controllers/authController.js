@@ -54,7 +54,7 @@ const postRegister = async (req, res) => {
     const errors = Object.values(validationErrors.mapped()).map(
       (item) => item.msg
     );
-    errorArr = [...errorArr, ...errors];
+    errorArr.push(...errors);
     req.flash("errors", errorArr);
     return res.redirect("/login-register");
   }

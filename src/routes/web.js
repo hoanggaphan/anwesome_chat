@@ -1,6 +1,6 @@
 import express from 'express';
-import { auth, home, user, contact, notification } from '../controllers/index';
-import { authValid, userValid, contactValid } from '../validation/index';
+import { auth, home, user, contact, notification, message } from '../controllers/index';
+import { authValid, userValid, contactValid, messageValid } from '../validation/index';
 import passport from 'passport';
 import initPassportLocal from '../controllers/passportController/local';
 import initPassportFacebook from '../controllers/passportController/facebook';
@@ -37,6 +37,8 @@ const initRoutes = (app) => {
   router.put("/user/update-avatar", auth.checkLoggedIn, user.updateAvatar);
   router.put("/user/update-info", auth.checkLoggedIn, userValid.updateInfo, user.updateInfo);
   router.put("/user/update-password", auth.checkLoggedIn, userValid.updatePassword , user.updatePassword);
+
+  router.post("/message/add-new-text-emoji", auth.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji)
 
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);
