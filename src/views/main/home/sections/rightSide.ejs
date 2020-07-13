@@ -10,19 +10,37 @@
                     <div class="top">
                         <span>To: <span class="name"><%= conversation.name %></span></span>
                         <span class="chat-menu-right">
-                        <a href="#attachsModal_<%= conversation._id %>" class="show-attachs" data-toggle="modal">
-                            Tệp đính kèm
-                            <i class="fa fa-paperclip"></i>
-                        </a>
+                            <a href="#attachsModal_<%= conversation._id %>" class="show-attachs" data-toggle="modal">
+                                Tệp đính kèm
+                                <i class="fa fa-paperclip"></i>
+                            </a>
                         </span>
                         <span class="chat-menu-right">
-                        <a href="javascript:void(0)">&nbsp;</a>
+                            <a href="javascript:void(0)">&nbsp;</a>
                         </span>
                         <span class="chat-menu-right">
-                        <a href="#imagesModal_<%= conversation._id %>" class="show-images" data-toggle="modal">
-                            Hình ảnh
-                            <i class="fa fa-photo"></i>
-                        </a>
+                            <a href="#imagesModal_<%= conversation._id %>" class="show-images" data-toggle="modal">
+                                Hình ảnh
+                                <i class="fa fa-photo"></i>
+                            </a>
+                        </span>
+                        <span class="chat-menu-right">
+                            <a href="javascript:void(0)">&nbsp;</a>
+                        </span>
+                        <span class="chat-menu-right">
+                            <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                                <span class="show-number-members" ><%= conversation.userAmount %></span>
+                                <i class="fa fa-users"></i>
+                            </a>
+                        </span>
+                        <span class="chat-menu-right">
+                            <a href="javascript:void(0)">&nbsp;</a>
+                        </span>
+                        <span class="chat-menu-right">
+                            <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
+                                <span class="show-number-messages" ><%= conversation.messageAmount %></span>
+                                <i class="fa fa-comment-o"></i>
+                            </a>
                         </span>
                     </div>
                     <div class="content-chat">
@@ -30,7 +48,7 @@
                             <% conversation.messages.map(message => { %>
                                 <% if (message.messageType === "text") { %>
                                     <div 
-                                        class="bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
+                                        class="convert-emoji bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
@@ -134,7 +152,7 @@
                             <% conversation.messages.map(message => { %>
                                 <% if (message.messageType === "text") { %>
                                     <div 
-                                        class="bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
+                                        class="convert-emoji bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <%= message.text %>   
