@@ -51,10 +51,10 @@ const getAllConversationItems = (currentUserId) => {
 
           if (conversation.members) {
             let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
-            conversation.messages = messages;
+            conversation.messages = _.reverse(messages);
           } else {
             let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, conversation._id, LIMIT_MESSAGES_TAKEN);
-            conversation.messages = messages;
+            conversation.messages = _.reverse(messages);
           }
 
           return conversation;
