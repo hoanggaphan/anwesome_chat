@@ -112,7 +112,7 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
         // Create new message
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update group chat
-        await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount++);
+        await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount + 1);
         resolve(newMessage);
       } else {
         let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
