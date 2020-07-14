@@ -25,8 +25,11 @@ function textAndEmojiChat(divId) {
         };
 
         // step 01: handle message data before show
-        let messageOfMe = $(`<div class="bubble me" data-mess-id="${data.message._id}"></div>`);
-        messageOfMe.text(data.message.text);
+        let messageOfMe = $(`<div class="bubble me" data-mess-id="${data.message._id}">
+                              <div class="bubble-content"></div>
+                            </div>`
+                          );
+        messageOfMe.find(".bubble-content").text(data.message.text);
         let convertEmojiMessage = emojione.toImage(messageOfMe.html());
 
         if (dataTextEmojiForSend.isChatGroup) {
@@ -63,6 +66,15 @@ function textAndEmojiChat(divId) {
         // step 06: emit realtime
         socket.emit("chat-text-emoji", dataToEmit);
 
+        // step 07: emit remove typing real-time
+        typingOff(divId);
+
+        // step 08: If this has typing, remove that immediate
+        let checkTyping = $(`.chat[data-chat = ${divId}]`).find("div.bubble-typing-gif");
+        if(checkTyping) {
+          checkTyping.remove();
+        }
+
       }).fail(function (response) {
         // error
         alertify.notify(response.responseText, "error", 5);
@@ -76,8 +88,11 @@ $(document).ready(function () {
     let divId = "";
 
     // step 01: handle message data before show
-    let messageOfYou = $(`<div class="bubble you" data-mess-id="${response.message._id}"></div>`);
-    messageOfYou.text(response.message.text);
+    let messageOfYou = $(`<div class="bubble me" data-mess-id="${response.message._id}">
+                              <div class="bubble-content"></div>
+                            </div>`
+                          );
+    messageOfYou.find(".bubble-content").text(response.message.text);
     let convertEmojiMessage = emojione.toImage(messageOfYou.html());
 
     if (response.currentGroupId) {

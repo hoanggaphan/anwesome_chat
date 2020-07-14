@@ -52,7 +52,9 @@
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
-                                        <%= message.text %>   
+                                        <div class="bubble-content">
+                                            <%= message.text %>   
+                                        </div>
                                     </div>
                                 <% } %>
 
@@ -61,10 +63,12 @@
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
-                                        <img
-                                            src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-                                            class="show-image-chat"
-                                        />
+                                        <div class="bubble-content">
+                                            <img
+                                                src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
+                                                class="show-image-chat"
+                                            />
+                                        </div>
                                     </div>
                                 <% } %>
 
@@ -73,12 +77,14 @@
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
-                                        <a
-                                            href="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-                                            download="<%= message.file.fileName %>"
-                                        >
-                                            <%= message.file.fileName %>
-                                        </a>
+                                        <div class="bubble-content">
+                                            <a
+                                                href="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
+                                                download="<%= message.file.fileName %>"
+                                            >
+                                                <%= message.file.fileName %>
+                                            </a>
+                                        </div>
                                     </div>
                                 <% } %>
                             <% }); %>
@@ -155,7 +161,9 @@
                                         class="convert-emoji bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
                                         data-mess-id="<%= message._id %>"
                                     >
-                                        <%= message.text %>   
+                                        <div class="bubble-content">
+                                            <%= message.text %>   
+                                        </div>   
                                     </div>
                                 <% } %>
 
@@ -163,10 +171,12 @@
                                     <div class="bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %> bubble-image-file" 
                                         data-mess-id="<%= message._id %>"
                                     >
-                                        <img
-                                            src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-                                            class="show-image-chat"
-                                        />
+                                        <div class="bubble-content">
+                                            <img
+                                                src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
+                                                class="show-image-chat"
+                                            />  
+                                        </div>   
                                     </div>
                                 <% } %>
 
@@ -174,12 +184,14 @@
                                     <div class="bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %> bubble-image-file" 
                                         data-mess-id="<%= message._id %>"
                                     >
-                                        <a
-                                            href="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-                                            download="<%= message.file.fileName %>"
-                                        >
-                                            <%= message.file.fileName %>
-                                        </a>
+                                        <div class="bubble-content">
+                                            <a
+                                                href="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
+                                                download="<%= message.file.fileName %>"
+                                            >
+                                                <%= message.file.fileName %>
+                                            </a> 
+                                        </div> 
                                     </div>
                                 <% } %>
                             <% }); %>
