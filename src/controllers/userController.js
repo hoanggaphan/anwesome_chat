@@ -23,7 +23,7 @@ const storageAvatar = multer.diskStorage({
 
 const avatarUploadFile = multer({
   storage: storageAvatar,
-  limits: { fileSize: app.avatar_limit_file },
+  limits: { fileSize: app.avatar_limit_size },
 }).single("avatar");
 
 const updateAvatar = (req, res) => {

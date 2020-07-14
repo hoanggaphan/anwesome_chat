@@ -39,6 +39,7 @@ const initRoutes = (app) => {
   router.put("/user/update-password", auth.checkLoggedIn, userValid.updatePassword , user.updatePassword);
 
   router.post("/message/add-new-text-emoji", auth.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji)
+  router.post("/message/add-new-image", auth.checkLoggedIn, message.addNewImage);
 
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);

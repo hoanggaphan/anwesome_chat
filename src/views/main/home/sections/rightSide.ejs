@@ -96,12 +96,12 @@
                         <a href="#" class="icon-chat" data-chat=""
                             ><i class="fa fa-smile-o"></i
                         ></a>
-                        <label for="image-chat">
+                        <label for="image-chat-<%= conversation._id %>">
                             <input
                                 type="file"
-                                id="image-chat"
+                                id="image-chat-<%= conversation._id %>"
                                 name="my-image-chat"
-                                class="image-chat"
+                                class="image-chat chat-in-group"
                                 data-chat="<%= conversation._id %>"
                             />
                             <i class="fa fa-photo"></i>
@@ -203,10 +203,10 @@
                         <a href="#" class="icon-chat" data-chat=""
                             ><i class="fa fa-smile-o"></i
                         ></a>
-                        <label for="image-chat">
+                        <label for="image-chat-<%= conversation._id %>">
                             <input
                                 type="file"
-                                id="image-chat"
+                                id="image-chat-<%= conversation._id %>"
                                 name="my-image-chat"
                                 class="image-chat"
                                 data-chat="<%= conversation._id %>"
