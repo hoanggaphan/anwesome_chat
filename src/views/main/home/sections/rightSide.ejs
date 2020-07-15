@@ -63,12 +63,12 @@
                                         data-mess-id="<%= message._id %>"
                                     >
                                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
-                                        <div class="bubble-content">
+                                        <!-- <div class="bubble-content"> -->
                                             <img
                                                 src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
                                                 class="show-image-chat"
                                             />
-                                        </div>
+                                        <!-- </div> -->
                                     </div>
                                 <% } %>
 
@@ -171,12 +171,12 @@
                                     <div class="bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %> bubble-image-file" 
                                         data-mess-id="<%= message._id %>"
                                     >
-                                        <div class="bubble-content">
+                                        <!-- <div class="bubble-content"> -->
                                             <img
                                                 src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
                                                 class="show-image-chat"
                                             />  
-                                        </div>   
+                                        <!-- </div>    -->
                                     </div>
                                 <% } %>
 

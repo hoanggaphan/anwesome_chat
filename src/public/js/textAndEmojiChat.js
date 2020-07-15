@@ -88,7 +88,7 @@ $(document).ready(function () {
     let divId = "";
 
     // step 01: handle message data before show
-    let messageOfYou = $(`<div class="bubble me" data-mess-id="${response.message._id}">
+    let messageOfYou = $(`<div class="bubble you" data-mess-id="${response.message._id}">
                               <div class="bubble-content"></div>
                             </div>`
                           );
