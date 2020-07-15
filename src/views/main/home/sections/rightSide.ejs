@@ -10,7 +10,7 @@
                     <div class="top">
                         <span>To: <span class="name"><%= conversation.name %></span></span>
                         <span class="chat-menu-right">
-                            <a href="#attachsModal_<%= conversation._id %>" class="show-attachs" data-toggle="modal">
+                            <a href="#attachmentsModal_<%= conversation._id %>" class="show-attachments" data-toggle="modal">
                                 Tệp đính kèm
                                 <i class="fa fa-paperclip"></i>
                             </a>
@@ -106,12 +106,12 @@
                             />
                             <i class="fa fa-photo"></i>
                         </label>
-                        <label for="attach-chat">
+                        <label for="attachment-chat-<%= conversation._id %>">
                             <input
                                 type="file"
-                                id="attach-chat"
-                                name="my-attach-chat"
-                                class="attach-chat"
+                                id="attachment-chat-<%= conversation._id %>"
+                                name="my-attachment-chat"
+                                class="attachment-chat chat-in-group"
                                 data-chat="<%= conversation._id %>"
                             />
                             <i class="fa fa-paperclip"></i>
@@ -138,7 +138,7 @@
                     <div class="top">
                         <span>To: <span class="name"><%= conversation.username %></span></span>
                         <span class="chat-menu-right">
-                        <a href="#attachsModal_<%= conversation._id %>" class="show-attachs" data-toggle="modal">
+                        <a href="#attachmentsModal_<%= conversation._id %>" class="show-attachments" data-toggle="modal">
                             Tệp đính kèm
                             <i class="fa fa-paperclip"></i>
                         </a>
@@ -213,12 +213,12 @@
                             />
                             <i class="fa fa-photo"></i>
                         </label>
-                        <label for="attach-chat">
+                        <label for="attachment-chat-<%= conversation._id %>">
                             <input
                                 type="file"
-                                id="attach-chat"
-                                name="my-attach-chat"
-                                class="attach-chat"
+                                id="attachment-chat-<%= conversation._id %>"
+                                name="my-attachment-chat"
+                                class="attachment-chat"
                                 data-chat="<%= conversation._id %>"
                             />
                             <i class="fa fa-paperclip"></i>

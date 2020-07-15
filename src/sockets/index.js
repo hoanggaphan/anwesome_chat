@@ -5,6 +5,7 @@ import approveRequestContactReceived from './contact/approveRequestContactReceiv
 import removeContact from './contact/removeContact';
 import chatTextEmoji from './chat/chatTextEmoji';
 import chatImage from './chat/chatImage';
+import chatAttachment from './chat/chatAttachment';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
 
@@ -21,6 +22,7 @@ const initSockets = (io) => {
   typingOn(io);
   typingOff(io);
   chatImage(io);
+  chatAttachment(io)
   //
 };
 
