@@ -198,6 +198,9 @@ function changeScreenChat() {
 
     // Bật lắng nghe DOM cho việc chat tin nhắn hình ảnh
     imageChat(divId);
+
+    // Bật lắng nghe DOM cho việc chat tin nhắn tệp
+    attachmentChat(divId);
   })
 }
 
@@ -207,6 +210,13 @@ function convertEmoji() {
     var converted = emojione.toImage(original);
     $(this).html(converted);
 });
+}
+
+function bufferToBase64(arrayBuffer) {
+  return btoa(
+    new Uint8Array(arrayBuffer)
+      .reduce((data, byte) => data + String.fromCharCode(byte), '')
+  );
 }
 
 $(document).ready(function() {

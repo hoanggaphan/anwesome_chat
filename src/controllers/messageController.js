@@ -5,6 +5,7 @@ import { app } from "../config/app";
 import { message } from '../services/index';
 import fsExtra from 'fs-extra';
 
+// Handle emoji chat
 const addNewTextEmoji = async (req, res) => {
   let validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
@@ -30,6 +31,7 @@ const addNewTextEmoji = async (req, res) => {
   }
 };
 
+// Handle images chat
 const storageImageChat = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, app.image_message_directory);
@@ -84,7 +86,57 @@ const addNewImage =  (req, res) => {
 
 };
 
+// Handle attachment chat
+const storageAttachmentChat = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, app.attachment_message_directory);
+  },
+  filename: (req, file, cb) => {
+    const attachmentName = file.originalname;
+    cb(null, attachmentName);
+  },
+});
+
+const attachmentMessageUploadFile = multer({
+  storage: storageAttachmentChat,
+  limits: { fileSize: app.attachment_message_limit_size },
+}).single("my-attachment-chat");
+
+const addNewAttachment =  (req, res) => {
+  attachmentMessageUploadFile(req, res, async (error) => {
+    if (error) {
+      if(error.message) {
+        return res.status(500).send(transError.image_message_size);
+      }
+      return res.status(500).send(error);
+    }
+
+    try {
+      let sender = {
+        id: req.user._id,
+        name: req.user.username,
+        avatar: req.user.avatar
+      };
+      let receiverId = req.body.uid;
+      let messageVal = req.file;
+      let isChatGroup = req.body.isChatGroup;
+      
+      let newMessage = await message.addNewAttachment(sender, receiverId, messageVal, isChatGroup);
+  
+      // Remove attachment, because this attachment is saved to mongodb
+      await fsExtra.remove(`${app.attachment_message_directory}/${newMessage.file.fileName}`)
+
+      return res.status(200).send({ message: newMessage });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send(error);
+    }
+  });
+
+};
+
 module.exports = {
   addNewTextEmoji,
-  addNewImage
+  addNewImage,
+  addNewAttachment
 };
