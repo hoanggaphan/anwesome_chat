@@ -1,5 +1,35 @@
-import { notification, contact, message } from '../services/index';
-import { bufferToBase64, lastItemFromArr, convertTimestampHumanTime } from '../helpers/clientHelper';
+import Axios from 'axios';
+import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from "../helpers/clientHelper";
+import { contact, message, notification } from "../services/index";
+
+const getICETurnServer = () => {
+  return new Promise(async (resolve, reject) => {
+    // Node Get ICE STUN and TURN list
+    let o = {
+      format: "urls"
+    };
+  
+    let bodyString = JSON.stringify(o);
+    let options = {
+      url: "https://global.xirsys.net/_turn/awesome-chat",
+      method: "PUT",
+      data: {},
+      headers: {
+          Authorization: "Basic " + Buffer.from("hoanggaphan007:e8b3814e-c82f-11ea-9daf-0242ac150003").toString("base64"),
+          "Content-Type": "application/json",
+          "Content-Length": bodyString.length
+      }
+    };
+
+    try {
+      let response = await Axios(options);
+      resolve(response.data.v.iceServers);
+    } catch (error) {
+      console.error("Error when get ICE list: " + error);
+      reject(error);
+    }
+  });
+};
 
 const getHome = async (req, res) => {
   // only (10 items one time)
@@ -23,6 +53,9 @@ const getHome = async (req, res) => {
   // all messages with conversation, max 30 item
   let allConversationWithMessages = getAllConversationItems.allConversationWithMessages;
 
+  // get ICE list from xirsys turn server
+  let iceServerList = await getICETurnServer();
+
   res.render("main/home/home", {
     success: req.flash("success"),
     errors: req.flash("error"),
@@ -38,7 +71,8 @@ const getHome = async (req, res) => {
     allConversationWithMessages,
     bufferToBase64,
     lastItemFromArr,
-    convertTimestampHumanTime 
+    convertTimestampHumanTime,
+    iceServerList: JSON.stringify(iceServerList),
   });
 };
 
