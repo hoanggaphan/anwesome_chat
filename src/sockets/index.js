@@ -8,6 +8,7 @@ import chatImage from './chat/chatImage';
 import chatAttachment from './chat/chatAttachment';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
+import chatVideo from './chat/chatVideo';
 
 /**
  * @param io from socket.io library
@@ -22,7 +23,8 @@ const initSockets = (io) => {
   typingOn(io);
   typingOff(io);
   chatImage(io);
-  chatAttachment(io)
+  chatAttachment(io);
+  chatVideo(io);
   //
 };
 
