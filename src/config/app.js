@@ -1,10 +1,6 @@
 export const app = {
   // Config the number of connection event listener
   max_event_listeners: 30,
-  
-  // Config of peer server
-  peer_port: 9000,
-  peer_path: "/peerjs",
 
   // Config of multer module
   avatar_directory: "src/public/images/users",
