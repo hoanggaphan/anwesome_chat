@@ -1,18 +1,17 @@
-import express from "express";
-import connectDB from "./config/connectDB";
-import configViewEngine from "./config/viewEngine";
-import session from "./config/session";
-import initRoutes from "./routes/web";
 import connectFlash from "connect-flash";
-import passport from "passport";
-import http from "http";
-import socketio from "socket.io";
-import initSockets from "./sockets/index";
 import cookieParse from "cookie-parser";
-import configSocketio from "./config/socketio";
 import events from 'events';
+import express from "express";
+import http from "http";
+import passport from "passport";
+import socketio from "socket.io";
 import * as configApp from './config/app';
-import { PeerServer } from 'peer';
+import connectDB from "./config/connectDB";
+import session from "./config/session";
+import configSocketio from "./config/socketio";
+import configViewEngine from "./config/viewEngine";
+import initRoutes from "./routes/web";
+import initSockets from "./sockets/index";
 
 // Init app
 const app = express();
@@ -24,12 +23,6 @@ events.EventEmitter.defaultMaxListeners = configApp.app.max_event_listeners;
 // Init server with socket.io & express app
 const server = http.createServer(app);
 const io = socketio(server);
-
-// Init a peer server 
-const peerServer = PeerServer({
-  port: configApp.app.peer_port, 
-  path: configApp.app.peer_path 
-});
 
 // Connect to MongoDB
 connectDB();

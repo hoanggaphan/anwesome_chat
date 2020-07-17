@@ -14,6 +14,18 @@ function videoChat(divId) {
   });
 }
 
+function playVideoStream(videoTagId, stream) {
+  let video = document.getElementById(videoTagId);
+  video.srcObject = stream;
+  video.onloadeddata = function () {
+    video.play();
+  }
+}
+
+function closeVideoStream(stream) {
+  return stream.getTracks().map(track => track.stop());
+}
+
 $(document).ready(function () {
   // step 02 of caller
   socket.on("server-send-listener-is-offline", function () {
@@ -22,9 +34,11 @@ $(document).ready(function () {
 
   let getPeerId = "";
   const peer = new Peer({
-    host: 'localhost',
-    port: 9000,
-    path: "/peerjs"
+    key: "peerjs",
+    host: 'peerjs-server-trungquandev.herokuapp.com',
+    port: 443,
+    secure: true,
+    // debug: 3
   });
 
   peer.on("open", function (peerId) {
@@ -47,6 +61,8 @@ $(document).ready(function () {
     socket.emit("listener-emit-peer-id-to-server", dataToEmit);
   });
 
+  let timerInterval;
+
   // step 05 of caller
   socket.on("server-send-peer-id-of-listener-to-caller", function (response) {
     let dataToEmit = {
@@ -60,7 +76,6 @@ $(document).ready(function () {
     // step 06 of caller
     socket.emit("caller-request-call-to-server", dataToEmit);
 
-    let timerInterval;
     Swal.fire({
       title: `Đang gọi cho &nbsp; <span style="color: #2ECC71;">${response.listenerName}</span> &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
@@ -82,10 +97,12 @@ $(document).ready(function () {
          socket.emit("caller-cancel-request-call-to-server", dataToEmit);
         });
 
-        Swal.showLoading();
-        timerInterval = setInterval(() => {
-          Swal.getContent().querySelector("strong").textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-        }, 1000);
+        if(Swal.getContent().querySelector !== null) {
+          Swal.showLoading();
+          timerInterval = setInterval(() => {
+            Swal.getContent().querySelector("strong").textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 1000);
+        }
       },
       onOpen: () => {
         // step 12 of caller
@@ -102,14 +119,6 @@ $(document).ready(function () {
             confirmButtonColor: "#2ECC71",
             confirmButtonText: "Xác nhận",
           });
-        });
-
-        // step 13 of caller
-        socket.on("server-send-accept-call-to-caller", function (response) {
-          Swal.close();
-          clearInterval(timerInterval);
-          console.log("Caller OK...");
-          // 
         });
       },
       onClose: () => {
@@ -130,7 +139,6 @@ $(document).ready(function () {
       listenerPeerId: response.listenerPeerId,
     };
 
-    let timerInterval;
     Swal.fire({
       title: `<span style="color: #2ECC71;">${response.callerName}</span> &nbsp; muốn trò chuyện video với bạn &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
@@ -163,24 +171,18 @@ $(document).ready(function () {
           socket.emit("listener-accept-request-call-to-server", dataToEmit);
         });
 
-        Swal.showLoading();
-        timerInterval = setInterval(() => {
-          Swal.getContent().querySelector("strong").textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-        }, 1000);
+        if(Swal.getContent().querySelector !== null) {
+          Swal.showLoading();
+          timerInterval = setInterval(() => {
+            Swal.getContent().querySelector("strong").textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 1000);
+        }
       },
       onOpen: () => {
         // step 09 of listener
         socket.on("server-send-cancel-request-call-to-listener", function (response) {
           Swal.close();
           clearInterval(timerInterval);
-        });
-
-        // step 14 of listener
-        socket.on("server-send-accept-call-to-listener", function (response) {
-          Swal.close();
-          clearInterval(timerInterval);
-          console.log("Listener OK...");
-          // 
         });
       },
       onClose: () => {
@@ -191,5 +193,100 @@ $(document).ready(function () {
     });
   });
 
+  // step 13 of caller
+  socket.on("server-send-accept-call-to-caller", function (response) {
+    Swal.close();
+    clearInterval(timerInterval);
+
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+
+    getUserMedia({ video: true, audio: true }, function(stream) {
+      // Show modal streaming
+      $("#streamModal").modal("show");
+
+      // Play stream of caller
+      playVideoStream("local-stream", stream);
+
+      // Call to listener
+      let call = peer.call(response.listenerPeerId, stream);
+
+      // wait listen & play stream of listener
+      call.on('stream', function(remoteStream) {
+        // Play stream of listener
+        playVideoStream("remote-stream", remoteStream);
+      });
+
+      // Close modal: remove stream
+      $("#streamModal").on("hidden.bs.modal", function () {
+        closeVideoStream(stream);
+
+        Swal.fire({
+          type: "info",
+          title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #2ECC71;">${response.listenerName}</span>`,
+          backdrop: "rgba(85, 85, 85, .4)",
+          width: "52rem",
+          allowOutsideClick: true,
+          confirmButtonColor: "#2ECC71",
+          confirmButtonText: "Xác nhận",
+        });
+      });
+
+    }, function(err) {
+      if (err.toString() === "NotAllowedError: Permission denied") {
+        alertify.error("Xin lỗi, bạn đã tắt quyền truy cập vào thiết bị nghe gọi trên trình duyệt, vui lòng mở lại trong phần cài đặt của trình duyệt", 5);
+      }
+
+      if (err.toString() === "NotFoundError: Requested device not found") {
+        alertify.error("Xin lỗi, không tìm thấy thiết bị nghe gọi trên máy tính của bạn", 5);
+      }
+    });
+  });
+
+  // step 14 of listener
+  socket.on("server-send-accept-call-to-listener", function (response) {
+    Swal.close();
+    clearInterval(timerInterval);
+
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+
+    peer.on('call', function(call) {
+      getUserMedia({video: true, audio: true}, function(stream) {
+        // Show modal streaming
+        $("#streamModal").modal("show");
+
+        // Play stream of listener
+        playVideoStream("local-stream", stream);
+
+        call.answer(stream); // Answer the call with an A/V stream.
+        call.on('stream', function(remoteStream) {
+          // Play stream of caller
+          playVideoStream("remote-stream", remoteStream);
+        });
+
+        // Close modal: remove stream
+        $("#streamModal").on("hidden.bs.modal", function () {
+          closeVideoStream(stream);
+
+          Swal.fire({
+            type: "info",
+            title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #2ECC71;">${response.callerName}</span>`,
+            backdrop: "rgba(85, 85, 85, .4)",
+            width: "52rem",
+            allowOutsideClick: true,
+            confirmButtonColor: "#2ECC71",
+            confirmButtonText: "Xác nhận",
+          });
+        });
+
+      }, function(err) {
+        if (err.toString() === "NotAllowedError: Permission denied") {
+          alertify.error("Xin lỗi, bạn đã tắt quyền truy cập vào thiết bị nghe gọi trên trình duyệt, vui lòng mở lại trong phần cài đặt của trình duyệt", 5);
+        }
+
+        if (err.toString() === "NotFoundError: Requested device not found") {
+          alertify.error("Xin lỗi, không tìm thấy thiết bị nghe gọi trên máy tính của bạn", 5);
+        }
+      });
+    });
+  });
 });
-``
