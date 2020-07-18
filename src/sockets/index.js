@@ -9,6 +9,7 @@ import chatAttachment from './chat/chatAttachment';
 import typingOn from './chat/typingOn';
 import typingOff from './chat/typingOff';
 import chatVideo from './chat/chatVideo';
+import userOnlineOffline from './status/userOnlineOffline';
 
 /**
  * @param io from socket.io library
@@ -25,7 +26,7 @@ const initSockets = (io) => {
   chatImage(io);
   chatAttachment(io);
   chatVideo(io);
-  //
+  userOnlineOffline(io);
 };
 
 module.exports = initSockets;
