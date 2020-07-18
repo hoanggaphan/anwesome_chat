@@ -7,10 +7,11 @@ const chatTextEmoji = (io) => {
   let clients = {};
   io.on("connection", (socket) => {
     clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);
+    // Join all room chat of user
     socket.request.user.chatGroupIds.map(group => {
-      clients = pushSocketIdToArray(clients, group._id, socket.id);
-    })
-
+      socket.join(group._id);
+    });
+    
     socket.on("chat-text-emoji", (data) => {
       if (data.groupId) {
         let response = {
@@ -19,10 +20,8 @@ const chatTextEmoji = (io) => {
           message: data.message
         }
 
-        // emit notification
-        if (clients[data.groupId]) {
-          emitNotifyToArray(clients, data.groupId, io, "response-chat-text-emoji", response);
-        }
+        // Emit all users in room chat except sender
+        socket.to(data.groupId).emit("response-chat-text-emoji", response);
       }
 
       if (data.contactId) {
@@ -41,8 +40,8 @@ const chatTextEmoji = (io) => {
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
       socket.request.user.chatGroupIds.map(group => {
-        clients = removeSocketIdFromArray(clients, group._id, socket);
-      })
+        socket.leave(group._id);
+      });
     });
   });
 };

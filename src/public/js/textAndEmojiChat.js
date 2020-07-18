@@ -86,7 +86,7 @@ function textAndEmojiChat(divId) {
 $(document).ready(function () {
   socket.on("response-chat-text-emoji", function (response) {
     let divId = "";
-
+    
     // step 01: handle message data before show
     let messageOfYou = $(`<div class="bubble you" data-mess-id="${response.message._id}">
                               <div class="bubble-content"></div>
@@ -101,22 +101,18 @@ $(document).ready(function () {
 
       divId = response.currentGroupId;
 
-      if (response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
-        increaseNumberMessageGroup(divId);
-      }
+      increaseNumberMessageGroup(divId);
     } else {
       messageOfYou.html(convertEmojiMessage);
       divId = response.currentUserId;
     }
 
     // step 02: append message data to screen
-    if (response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
-      $(`.right .chat[data-chat=${divId}]`).append(messageOfYou);
-      nineScrollRight(divId);
-      $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
-    }
-
+    $(`.right .chat[data-chat=${divId}]`).append(messageOfYou);
+    nineScrollRight(divId);
+    
     // step 03: change data preview & time in leftSide
+    $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
     $(`.person[data-chat = ${divId}]`).find("span.time").html(moment(response.message.createdAt).locale("vi").startOf("seconds").fromNow());
     $(`.person[data-chat = ${divId}]`).find("span.preview").html(emojione.toImage(response.message.text));
 
