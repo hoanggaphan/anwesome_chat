@@ -7,9 +7,8 @@ const typingOff = (io) => {
   let clients = {};
   io.on("connection", (socket) => {
     clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);
-    socket.request.user.chatGroupIds.map(group => {
-      clients = pushSocketIdToArray(clients, group._id, socket.id);
-    })
+    // Join all room chat of user
+    socket.request.user.chatGroupIds.map(group => socket.join(group._id));
 
     socket.on("user-is-not-typing", (data) => {
       if (data.groupId) {
@@ -18,10 +17,8 @@ const typingOff = (io) => {
           currentGroupId: data.groupId,
         }
 
-        // emit notification
-        if (clients[data.groupId]) {
-          emitNotifyToArray(clients, data.groupId, io, "response-user-is-not-typing", response);
-        }
+        // Emit all users in room chat except sender
+        socket.to(data.groupId).emit("response-user-is-not-typing", response);
       }
 
       if (data.contactId) {
@@ -38,9 +35,7 @@ const typingOff = (io) => {
 
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
-      socket.request.user.chatGroupIds.map(group => {
-        clients = removeSocketIdFromArray(clients, group._id, socket);
-      })
+      socket.request.user.chatGroupIds.map(group => socket.leave(group._id));
     });
   });
 };

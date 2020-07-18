@@ -116,22 +116,18 @@ $(document).ready(function () {
 
       divId = response.currentGroupId;
 
-      if (response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
-        increaseNumberMessageGroup(divId);
-      }
+      increaseNumberMessageGroup(divId);
     } else {
       messageOfYou.html(attachmentChat);
       divId = response.currentUserId;
     }
 
     // step 02: append message data to screen
-    if (response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
-      $(`.right .chat[data-chat=${divId}]`).append(messageOfYou);
-      nineScrollRight(divId);
-      $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
-    }
-
+    $(`.right .chat[data-chat=${divId}]`).append(messageOfYou);
+    nineScrollRight(divId);
+      
     // step 03: change data preview & time in leftSide
+    $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
     $(`.person[data-chat = ${divId}]`).find("span.time").html(moment(response.message.createdAt).locale("vi").startOf("seconds").fromNow());
     $(`.person[data-chat = ${divId}]`).find("span.preview").html("Tệp đính kèm...");
 
@@ -143,21 +139,19 @@ $(document).ready(function () {
     })
     $(`.person[data-chat = ${divId}]`).trigger("event.moveConversationToTheTop");
 
-     // step 06: add image to modal attachment
-    if (response.currentUserId !== $("#dropdown-navbar-user").data("uid")) {
-      let attachmentChatToModal = `
-        <li>
-          <a
-            href="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}"
-            download="${response.message.file.fileName}"
-          >
-            ${response.message.file.fileName}
-          </a>
-        </li>
-      `
+    // step 06: add image to modal attachment
+    let attachmentChatToModal = `
+      <li>
+        <a
+          href="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}"
+          download="${response.message.file.fileName}"
+        >
+          ${response.message.file.fileName}
+        </a>
+      </li>
+    `
 
-      $(`#attachmentsModal_${divId}`).find(".list-attachments").append(attachmentChatToModal);
-    }
+    $(`#attachmentsModal_${divId}`).find(".list-attachments").append(attachmentChatToModal);
 
   });
 });
