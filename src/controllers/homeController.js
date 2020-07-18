@@ -5,29 +5,30 @@ import { contact, message, notification } from "../services/index";
 const getICETurnServer = () => {
   return new Promise(async (resolve, reject) => {
     // Node Get ICE STUN and TURN list
-    let o = {
-      format: "urls"
-    };
+    // let o = {
+    //   format: "urls"
+    // };
   
-    let bodyString = JSON.stringify(o);
-    let options = {
-      url: "https://global.xirsys.net/_turn/awesome-chat",
-      method: "PUT",
-      data: {},
-      headers: {
-          Authorization: "Basic " + Buffer.from("hoanggaphan007:e8b3814e-c82f-11ea-9daf-0242ac150003").toString("base64"),
-          "Content-Type": "application/json",
-          "Content-Length": bodyString.length
-      }
-    };
+    // let bodyString = JSON.stringify(o);
+    // let options = {
+    //   url: "https://global.xirsys.net/_turn/awesome-chat",
+    //   method: "PUT",
+    //   data: {},
+    //   headers: {
+    //       Authorization: "Basic " + Buffer.from("hoanggaphan007:e8b3814e-c82f-11ea-9daf-0242ac150003").toString("base64"),
+    //       "Content-Type": "application/json",
+    //       "Content-Length": bodyString.length
+    //   }
+    // };
 
-    try {
-      let response = await Axios(options);
-      resolve(response.data.v.iceServers);
-    } catch (error) {
-      console.error("Error when get ICE list: " + error);
-      reject(error);
-    }
+    // try {
+    //   let response = await Axios(options);
+    //   resolve(response.data.v.iceServers);
+    // } catch (error) {
+    //   console.error("Error when get ICE list: " + error);
+    //   reject(error);
+    // }
+    resolve([]);
   });
 };
 

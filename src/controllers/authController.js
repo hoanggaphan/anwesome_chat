@@ -10,17 +10,12 @@ const getLoginRegister = (req, res) => {
 };
 
 const getVerifyAccount = async (req, res) => {
-  let errorArr = [];
-  let successArr = [];
-
   try {
     const verifySuccess = await auth.verifyAccount(req.params.token);
-    successArr.push(verifySuccess);
-    req.flash("success", successArr);
+    req.flash("success", verifySuccess);
     res.redirect("/login-register");
   } catch (error) {
-    errorArr.push(error);
-    req.flash("errors", errorArr);
+    req.flash("errors", error);
     res.redirect("/login-register");
   }
 }
@@ -46,16 +41,12 @@ const checkLoggedIn = (req, res, next) => {
 }
 
 const postRegister = async (req, res) => {
-  let errorArr = [];
-  let successArr = [];
-
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors = Object.values(validationErrors.mapped()).map(
       (item) => item.msg
     );
-    errorArr.push(...errors);
-    req.flash("errors", errorArr);
+    req.flash("errors", errors);
     return res.redirect("/login-register");
   }
 
@@ -67,11 +58,10 @@ const postRegister = async (req, res) => {
       req.protocol,
       req.get("host")
     );
-    req.flash("success", [...successArr, createUserSuccess]);
+    req.flash("success", createUserSuccess);
     res.redirect("/login-register");
   } catch (error) {
-    errorArr = [...errorArr, error];
-    req.flash("errors", errorArr);
+    req.flash("errors", error);
     res.redirect("/login-register");
   }
 };
