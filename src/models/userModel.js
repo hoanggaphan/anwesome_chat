@@ -94,7 +94,7 @@ UserSchema.statics = {
     return this.find(
       {
         $and: [
-          { "_id": { $in: friendIds } }, // tìm data không nằm trong mảng deprecatedUserIds
+          { "_id": { $in: friendIds } },
           { "local.isActived": true },
           {
             $or: [

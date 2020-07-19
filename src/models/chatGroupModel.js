@@ -14,6 +14,10 @@ const ChatGroupSchema = new Schema({
 });
 
 ChatGroupSchema.statics = {
+  createNew(item) {
+    return this.create(item);
+  },
+
   /**
    * Get chat group item by userId and limit
    * @param { string: currentUserId } userId
