@@ -21,6 +21,26 @@ const findUsersContact = async (req, res) => {
   }
 };
 
+const searchFriends = async (req, res) => {
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    const errors = Object.values(validationErrors.mapped()).map(
+      (item) => item.msg
+    );
+    return res.status(500).send(errors);
+  }
+
+  try {
+    const currentUserId = req.user._id;
+    const keyword = req.params.keyword;
+
+    const users = await contact.searchFriends(currentUserId, keyword);
+    return res.render("main/groupChat/sections/_searchFriends", { users });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 const addNew = async (req, res) => {
   try {
     const currentUserId = req.user._id;
@@ -139,5 +159,6 @@ module.exports = {
   readMoreContactsReceived,
   removeRequestContactReceived,
   approveRequestContactReceived,
-  removeContact
+  removeContact,
+  searchFriends
 };
