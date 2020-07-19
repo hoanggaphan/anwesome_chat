@@ -22,6 +22,7 @@ const initRoutes = (app) => {
   router.get("/logout", auth.checkLoggedIn, auth.getLogout);
 
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
+  router.get("/contact/search-friends/:keyword", auth.checkLoggedIn, contactValid.searchFriends ,contact.searchFriends);
   router.get("/contact/read-more-contacts", auth.checkLoggedIn, contact.readMoreContacts);
   router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn, contact.readMoreContactsSent);
   router.get("/contact/read-more-contacts-received", auth.checkLoggedIn, contact.readMoreContactsReceived);
