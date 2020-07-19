@@ -31,9 +31,10 @@ const searchFriends = (currentUserId, keyword) => {
     });
 
     // Remove duplicate
-    friendIds = _.uniqBy(friendIds);
+    // friendIds = _.uniqBy(friendIds);
+    friendIds = [...new Set(friendIds)];
+    
     friendIds = friendIds.filter(userId => userId != currentUserId);
-
     let users = await UserModel.findAllToAddGroupChat(friendIds, keyword);
 
     resolve(users);
