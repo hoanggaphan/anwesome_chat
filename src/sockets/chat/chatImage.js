@@ -37,7 +37,6 @@ const chatImage = (io) => {
 
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
-      socket.request.user.chatGroupIds.map(group => socket.leave(group._id));
     });
   });
 };
