@@ -8,9 +8,7 @@ const chatAttachment = (io) => {
   io.on("connection", (socket) => {
     clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);
     // Join all room chat of user
-    socket.request.user.chatGroupIds.map(group => {
-      socket.join(group._id);
-    });
+    socket.request.user.chatGroupIds.map(group => socket.join(group._id));
 
     socket.on("chat-attachment", (data) => {
       if (data.groupId) {
@@ -39,9 +37,6 @@ const chatAttachment = (io) => {
 
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
-      socket.request.user.chatGroupIds.map(group => {
-        socket.leave(group._id);
-      });
     });
   });
 };

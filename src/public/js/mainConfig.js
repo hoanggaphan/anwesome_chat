@@ -228,5 +228,5 @@ $(document).ready(function() {
 
   $(".video-chat-group").on("click", function () {
     alertify.warning("Không khả dụng tính năng này với nhóm trò truyện. Vui lòng thử lại với nhóm trò chuyện cá nhân", 5)
-  })
+  });
 });
