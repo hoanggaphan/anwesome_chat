@@ -200,7 +200,8 @@ function callCreateGroupChat() {
         
           // Step 04: call function changeScreenChat
           changeScreenChat();
-
+          notSupportVideoChat();
+          
           // Step 05: handle imageModal
           let imgModalData = `
           <div class="modal fade" id="imagesModal_${data.groupChat._id}" role="dialog">
