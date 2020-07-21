@@ -26,7 +26,15 @@ function closeVideoStream(stream) {
   return stream.getTracks().map(track => track.stop());
 }
 
+function notSupportVideoChat() {
+  $(".video-chat-group").on("click", function () {
+    alertify.warning("Tính năng này không khả dụng với nhóm trò truyện. Vui lòng thử lại tính năng này với trò chuyện cá nhân", 5);
+  });
+}
+
 $(document).ready(function () {
+  notSupportVideoChat();
+  
   // step 02 of caller
   socket.on("server-send-listener-is-offline", function () {
     alertify.error("Người dùng này chưa online", 5);
