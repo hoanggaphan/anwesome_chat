@@ -50,9 +50,8 @@ const getHome = async (req, res) => {
   let countAllContactsSent = await contact.countAllContactsSent(req.user._id);
   let countAllContactsReceived = await contact.countAllContactsReceived(req.user._id);
 
-  let getAllConversationItems = await message.getAllConversationItems(req.user._id);
   // all messages with conversation, max 30 item
-  let allConversationWithMessages = getAllConversationItems.allConversationWithMessages;
+  let allConversationWithMessages = await message.getAllConversationItems(req.user._id);
 
   // get ICE list from xirsys turn server
   let iceServerList = await getICETurnServer();
