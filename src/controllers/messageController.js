@@ -1,9 +1,15 @@
-import { validationResult } from "express-validator";
-import multer from "multer";
-import { transError } from "../../lang/vi";
-import { app } from "../config/app";
-import { message } from '../services/index';
+import ejs from 'ejs';
+import {validationResult} from "express-validator";
 import fsExtra from 'fs-extra';
+import multer from "multer";
+import {transError} from "../../lang/vi";
+import {app} from "../config/app";
+import {message} from '../services/index';
+import {convertTimestampHumanTime, lastItemFromArr, bufferToBase64} from '../helpers/clientHelper';
+import {promisify} from 'util'
+
+// Make ejs function renderFile avaiable with async await
+const renderFile = promisify(ejs.renderFile).bind(ejs);
 
 // Handle emoji chat
 const addNewTextEmoji = async (req, res) => {
@@ -135,8 +141,42 @@ const addNewAttachment =  (req, res) => {
 
 };
 
+const readMoreAllChat = async (req, res) => {
+  try {
+    // get skip number from query param
+    let skipPersonal = +req.query.skipPersonal;
+    let skipGroup = +req.query.skipGroup;
+
+    // get more item
+    let newAllConversations = await message.readMoreAllChat(req.user._id, skipPersonal, skipGroup);
+    
+    let dataToRender = {
+      user: req.user,
+      newAllConversations,
+      convertTimestampHumanTime,
+      lastItemFromArr,
+      bufferToBase64,
+    };
+
+    let leftSideData = await renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender);
+    let rightSideData = await renderFile("src/views/main/readMoreConversations/_rightSide.ejs", dataToRender);
+    let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
+    let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
+
+    return res.status(200).send({
+      leftSideData,
+      rightSideData,
+      imageModalData,
+      attachmentModalData
+    });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   addNewTextEmoji,
   addNewImage,
-  addNewAttachment
+  addNewAttachment,
+  readMoreAllChat
 };

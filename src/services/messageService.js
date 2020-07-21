@@ -12,36 +12,27 @@ const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
  * Get all conversation
- * @param { string } currentUserId
+ * @param {string} currentUserId
  */
 const getAllConversationItems = (currentUserId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const contacts = await ContactModel.getContacts(
-        currentUserId,
-        LIMIT_CONVERSATION_TAKEN
-      );
+      const contacts = await ContactModel.getContacts(currentUserId, LIMIT_CONVERSATION_TAKEN);
       const userConversationPromise = contacts.map(async (contact) => {
         if (currentUserId == contact.userId) {
-          let getUserContact = await UserModel.getNormalUserDataById(
-            contact.contactId
-          );
+          let getUserContact = await UserModel.getNormalUserDataById(contact.contactId);
           getUserContact.updatedAt = contact.updatedAt;
           return getUserContact;
         } else {
-          let getUserContact = await UserModel.getNormalUserDataById(
-            contact.userId
-          );
+          let getUserContact = await UserModel.getNormalUserDataById(contact.userId);
           getUserContact.updatedAt = contact.updatedAt;
           return getUserContact;
         }
       });
 
       const userConversations = await Promise.all(userConversationPromise);
-      const groupConversations = await ChatGroupModel.getChatGroups(
-        currentUserId,
-        LIMIT_CONVERSATION_TAKEN
-      );
+      const groupConversations = await ChatGroupModel.getChatGroups(currentUserId, LIMIT_CONVERSATION_TAKEN);
+
       let allConversations = [...userConversations, ...groupConversations];
       allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
 
@@ -70,7 +61,7 @@ const getAllConversationItems = (currentUserId) => {
         (item) => -item.updatedAt
       );
 
-      resolve({ allConversationWithMessages });
+      resolve(allConversationWithMessages);
     } catch (error) {
       reject(error);
     }
@@ -79,10 +70,10 @@ const getAllConversationItems = (currentUserId) => {
 
 /**
  * Add new message text emoji
- * @param { object } sender cuurent user
- * @param { string } receiverId id of an user or a group
- * @param { string } messageVal 
- * @param { boolean } isChatGroup 
+ * @param {object} sender cuurent user
+ * @param {string} receiverId id of an user or a group
+ * @param {string} messageVal 
+ * @param {boolean} isChatGroup 
  */
 const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
   return new Promise(async (resolve, reject) => {
@@ -153,10 +144,10 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
 
 /**
  * add new image attachment
- * @param { object } sender 
- * @param { string } receiverId 
- * @param { file } messageVal 
- * @param { boolean } isChatGroup 
+ * @param {object} sender 
+ * @param {string} receiverId 
+ * @param {file} messageVal 
+ * @param {boolean} isChatGroup 
  */
 const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
   return new Promise(async (resolve, reject) => {
@@ -235,10 +226,10 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
 
 /**
  * add new message attachment
- * @param { object } sender 
- * @param { string } receiverId 
- * @param { file } messageVal 
- * @param { boolean } isChatGroup 
+ * @param {object} sender 
+ * @param {string} receiverId 
+ * @param {file} messageVal 
+ * @param {boolean} isChatGroup 
  */
 const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
   return new Promise(async (resolve, reject) => {
@@ -314,9 +305,73 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
     }
   });
 };
+
+/**
+ * Read more personal and group chat
+ * @param {string} currentUserId 
+ * @param {number} skipPersonal 
+ * @param {number} skipGroup 
+ */
+const readMoreAllChat = (currentUserId, skipPersonal, skipGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const contacts = await ContactModel.readMoreContacts(currentUserId, skipPersonal, LIMIT_CONVERSATION_TAKEN);
+
+      const userConversationPromise = contacts.map(async (contact) => {
+        if (currentUserId == contact.userId) {
+          let getUserContact = await UserModel.getNormalUserDataById(
+            contact.contactId
+          );
+          getUserContact.updatedAt = contact.updatedAt;
+          return getUserContact;
+        } else {
+          let getUserContact = await UserModel.getNormalUserDataById(
+            contact.userId
+          );
+          getUserContact.updatedAt = contact.updatedAt;
+          return getUserContact;
+        }
+      });
+
+      const userConversations = await Promise.all(userConversationPromise);
+      const groupConversations = await ChatGroupModel.readMoreChatGroup(currentUserId, skipGroup, LIMIT_CONVERSATION_TAKEN);
+      let allConversations = [...userConversations, ...groupConversations];
+      allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
+
+      // get message to apply in screen chat
+      let allConversationWithMessagesPromise = allConversations.map(
+        async (conversation) => {
+          conversation = conversation.toObject();
+
+          if (conversation.members) {
+            let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
+            conversation.messages = _.reverse(messages);
+          } else {
+            let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, conversation._id, LIMIT_MESSAGES_TAKEN);
+            conversation.messages = _.reverse(messages);
+          }
+
+          return conversation;
+        }
+      );
+      let allConversationWithMessages = await Promise.all(allConversationWithMessagesPromise);
+      // sort by updatedAt desending
+      allConversationWithMessages = _.sortBy(
+        allConversationWithMessages,
+        (item) => -item.updatedAt
+      );
+
+      resolve(allConversationWithMessages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = { 
   getAllConversationItems, 
   addNewTextEmoji, 
   addNewImage,
-  addNewAttachment
+  addNewAttachment,
+  readMoreAllChat
 };

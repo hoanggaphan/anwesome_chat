@@ -14,6 +14,15 @@ function nineScrollLeft() {
   });
 }
 
+function resizeNineScrollLeft() {
+  $(".left").getNiceScroll().resize();
+}
+
+function resizeNineScrollRight() {
+  $(".right").getNiceScroll().resize();
+}
+
+
 function nineScrollRight(divId) {
   $(`.right .chat[data-chat = ${divId}]`).niceScroll({
     smoothscroll: true,
@@ -164,7 +173,8 @@ function changeScreenChat() {
 
     // Cấu hình thanh cuộn bên box chat rightSide.ejs mỗi khi mà mình click chuột vào 1 cuộc trò chuyện cụ thể
     nineScrollRight(divId);
-
+    resizeNineScrollRight();
+    
     // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
     enableEmojioneArea(divId);
 

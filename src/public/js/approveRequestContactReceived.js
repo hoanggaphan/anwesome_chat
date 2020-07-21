@@ -38,7 +38,7 @@ function approveRequestContactReceived() {
           // All steps handle chat after approve contact
           // Step 01: handle leftSide.js
           let subUsername = targetName;
-          if (subUsername.length > 5) {
+          if (subUsername.length > 15) {
             subUsername = subUsername.substr(0, 14) + "...";
           }
           let leftSideData = `
@@ -218,7 +218,7 @@ socket.on("response-approve-request-contact-received", function (user) {
   // All steps handle chat after approve contact
   // Step 01: handle leftSide.js
   let subUsername = user.username;
-  if (subUsername.length > 5) {
+  if (subUsername.length > 15) {
     subUsername = subUsername.substr(0, 14) + "...";
   }
   let leftSideData = `

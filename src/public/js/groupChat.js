@@ -100,7 +100,7 @@ function callCreateGroupChat() {
           
           // Step 02: handle leftSide.js
           let subGroupChatName = data.groupChat.name;
-          if (subGroupChatName.length > 5) {
+          if (subGroupChatName.length > 15) {
             subGroupChatName = subGroupChatName.substr(0, 14) + "...";
           }
           let leftSideData = `
@@ -261,7 +261,7 @@ $(document).ready(function () {
     
     // Step 01: handle leftSide.js
     let subGroupChatName = response.groupChat.name;
-    if (subGroupChatName.length > 5) {
+    if (subGroupChatName.length > 15) {
       subGroupChatName = subGroupChatName.substr(0, 14) + "...";
     }
     let leftSideData = `
