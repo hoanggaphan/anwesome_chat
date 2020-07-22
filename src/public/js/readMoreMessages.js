@@ -1,5 +1,5 @@
 function readMoreMessages() {
-  $(".right .chat").scroll(function () {
+  $(".right .chat").off("scroll").on("scroll", function () {
     let thisDom = $(this);
 
     // get the first message
@@ -8,24 +8,23 @@ function readMoreMessages() {
     let currentOffset = firstMessage.offset().top - thisDom.scrollTop();
 
     if (thisDom.scrollTop() === 0) {
-      let messageLoading = `<img src="images/chat/message-loading.gif" class="message-loading" />`;
-      thisDom.prepend(messageLoading);
-
       let targetId = thisDom.data("chat");
       let skipMessage = thisDom.find("div.bubble").length;
       let chatInGroup = thisDom.hasClass("chat-in-group") ? true : false;
+
+      $(`.right .chat[data-chat = ${targetId}]`).find(`img.message-loading`).css("visibility", "visible");
 
       $.get(
         `/message/read-more?skipMessage=${skipMessage}&targetId=${targetId}&chatInGroup=${chatInGroup}`,
         function (data) {
           if (data.rightSideData.trim() === "") {
             alertify.notify("Bạn không còn tin nhắn nào nữa.", "error", 5);
-            thisDom.find("img.message-loading").remove();
+            $(`.right .chat[data-chat = ${targetId}]`).find(`img.message-loading`).css("visibility", "hidden");
             return;
           }
 
           // Step 01: handle rightSide
-          $(`.right .chat[data-chat = ${targetId}]`).prepend(data.rightSideData);
+          $(`.right .chat[data-chat = ${targetId}]`).find(`img.message-loading`).after(data.rightSideData);
 
           // Step 02: prevent scroll
           $(`.right .chat[data-chat = ${targetId}]`).scrollTop(firstMessage.offset().top  - currentOffset);
@@ -41,7 +40,7 @@ function readMoreMessages() {
           $(`#attachmentsModal_${targetId}`).find(".list-attachments").append(data.attachmentModalData);
 
           // Step 06: remove message loading
-          thisDom.find("img.message-loading").remove();
+          $(`.right .chat[data-chat = ${targetId}]`).find(`img.message-loading`).css("visibility", "hidden");
 
         }
       );

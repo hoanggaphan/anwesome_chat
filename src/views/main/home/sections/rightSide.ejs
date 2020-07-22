@@ -45,6 +45,7 @@
                     </div>
                     <div class="content-chat">
                         <div class="chat chat-in-group" data-chat="<%= conversation._id %>">
+                            <img src="images/chat/message-loading.gif" class="message-loading" />
                             <% conversation.messages.map(message => { %>
                                 <% if (message.messageType === "text") { %>
                                     <div 
@@ -148,6 +149,7 @@
                     </div>
                     <div class="content-chat">
                         <div class="chat" data-chat="<%= conversation._id %>">
+                            <img src="images/chat/message-loading.gif" class="message-loading" />
                             <% conversation.messages.map(message => { %>
                                 <% if (message.messageType === "text") { %>
                                     <div 

@@ -70,23 +70,23 @@ function enableEmojioneArea(divId) {
   });
 }
 
-function spinLoaded() {
-  $('.master-loader').css('display', 'none');
-}
+// function spinLoaded() {
+//   $('.master-loader').css('display', 'none');
+// }
 
-function spinLoading() {
-  $('.master-loader').css('display', 'block');
-}
+// function spinLoading() {
+//   $('.master-loader').css('display', 'block');
+// }
 
-function ajaxLoading() {
-  $(document)
-    .ajaxStart(function() {
-      spinLoading();
-    })
-    .ajaxStop(function() {
-      spinLoaded();
-    });
-}
+// function ajaxLoading() {
+//   $(document)
+//     .ajaxStart(function() {
+//       spinLoading();
+//     })
+//     .ajaxStop(function() {
+//       spinLoaded();
+//     });
+// }
 
 function showModalContacts() {
   $('#show-modal-contacts').click(function() {
@@ -215,7 +215,7 @@ $(document).ready(function() {
   nineScrollLeft();
 
   // Icon loading khi chạy ajax
-  ajaxLoading();
+  // ajaxLoading();
 
   // Hiển thị hình ảnh grid slide trong modal tất cả ảnh, tham số truyền vào là số ảnh được hiển thị trên 1 hàng.
   // Tham số chỉ được phép trong khoảng từ 1 đến 5
@@ -231,7 +231,21 @@ $(document).ready(function() {
   changeScreenChat();
 
   // Click vào phần tử đầu tiên của cuộc trò truyện
-  $("ul.people").find("a")[0].click();
+  if(!$("ul.people").find("a").length) {
+    Swal.fire({
+      title: "Bạn chưa có bạn bè, hãy tìm kiếm bạn bè để trò chuyện!",
+      type: "info",
+      confirmButtonColor: "#2ECC71",
+      confirmButtonText: "Xác nhận",
+      width: "52rem",
+    }).then((result) => {
+      if (!result.value) return;
+      $("#show-modal-contacts").click();
+    });
+  }
+  if($("ul.people").find("a").length) {
+    $("ul.people").find("a")[0].click();
+  }
 
   // Convert unicode thành hình ảnh cảm xúc
   convertEmoji();

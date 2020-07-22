@@ -45,9 +45,12 @@ $(document).ready(function () {
       // Step 10: update online
       socket.emit("check-status");
 
-
+      // Step 11: remove loading
       $("#link-read-more-all-chat").css("display", "inline-block");
       $(".read-more-all-chat-loader").css("display", "none");
+
+      // Step 12: call readMoreMessages
+      readMoreMessages();
     });
   });
 });
