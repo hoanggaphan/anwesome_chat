@@ -83,7 +83,9 @@ function approveRequestContactReceived() {
               </span>
             </div>
             <div class="content-chat">
-              <div class="chat" data-chat="${targetId}"></div>
+              <div class="chat" data-chat="${targetId}">
+                <img src="images/chat/message-loading.gif" class="message-loading" />
+              </div>
             </div>
             <div class="write" data-chat="${targetId}">
               <input type="text" class="write-chat" id="write-chat-${targetId}" data-chat="${targetId}" />
@@ -263,7 +265,9 @@ socket.on("response-approve-request-contact-received", function (user) {
       </span>
     </div>
     <div class="content-chat">
-      <div class="chat" data-chat="${user.id}"></div>
+      <div class="chat" data-chat="${user.id}">
+        <img src="images/chat/message-loading.gif" class="message-loading" />
+      </div>
     </div>
     <div class="write" data-chat="${user.id}">
       <input type="text" class="write-chat" id="write-chat-${user.id}" data-chat="${user.id}" />
