@@ -368,10 +368,39 @@ const readMoreAllChat = (currentUserId, skipPersonal, skipGroup) => {
   });
 }
 
+/**
+ * 
+ * @param {string} currentUserId 
+ * @param {number} skipMessage 
+ * @param {string} targetId 
+ * @param {boolean} chatInGroup 
+ */
+const readMore = (currentUserId, skipMessage, targetId, chatInGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // message in group
+      if (chatInGroup) {
+        let messages = await MessageModel.model.readMoreMessagesInGroup(targetId, skipMessage, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+        return resolve(messages);
+      } 
+
+      // message in personal
+      let messages = await MessageModel.model.readMoreMessagesInPersonal(currentUserId, targetId, skipMessage, LIMIT_MESSAGES_TAKEN);
+      messages = _.reverse(messages);
+      resolve(messages);
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = { 
   getAllConversationItems, 
   addNewTextEmoji, 
   addNewImage,
   addNewAttachment,
-  readMoreAllChat
+  readMoreAllChat,
+  readMore
 };
