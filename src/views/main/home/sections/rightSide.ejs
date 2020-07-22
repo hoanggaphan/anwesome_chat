@@ -44,7 +44,7 @@
                         </span>
                     </div>
                     <div class="content-chat">
-                        <div class="chat" data-chat="<%= conversation._id %>">
+                        <div class="chat chat-in-group" data-chat="<%= conversation._id %>">
                             <% conversation.messages.map(message => { %>
                                 <% if (message.messageType === "text") { %>
                                     <div 
