@@ -15,19 +15,23 @@
             <% } %>
         </span>
         <span class="time">
-            <%= convertTimestampHumanTime(lastItemFromArr(contactConversation.messages).createdAt) %>
+            <% if(contactConversation.messages) { %> 
+                <%= convertTimestampHumanTime(lastItemFromArr(contactConversation.messages).createdAt) %>
+            <% } %>
         </span>
         <span class="preview convert-emoji">
-            <% if (lastItemFromArr(contactConversation.messages).messageType === "text") { %> 
-                <%= lastItemFromArr(contactConversation.messages).text %>
-            <% } %>
-
-            <% if (lastItemFromArr(contactConversation.messages).messageType === "image") { %> 
-                Hình ảnh...
-            <% } %>
-
-            <% if (lastItemFromArr(contactConversation.messages).messageType === "file") { %> 
-                Tệp đính kèm...
+            <% if(contactConversation.messages) { %> 
+                <% if (lastItemFromArr(contactConversation.messages).messageType === "text") { %> 
+                    <%= lastItemFromArr(contactConversation.messages).text %>
+                <% } %>
+    
+                <% if (lastItemFromArr(contactConversation.messages).messageType === "image") { %> 
+                    Hình ảnh...
+                <% } %>
+    
+                <% if (lastItemFromArr(contactConversation.messages).messageType === "file") { %> 
+                    Tệp đính kèm...
+                <% } %>
             <% } %>
         </span>
     </li>

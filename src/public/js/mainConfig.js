@@ -1,7 +1,6 @@
 /**
  * Created by https://trungquandev.com's author on 25/02/2018.
  */
-
 const socket = io();
 
 function nineScrollLeft() {
@@ -202,6 +201,18 @@ function bufferToBase64(arrayBuffer) {
     new Uint8Array(arrayBuffer)
       .reduce((data, byte) => data + String.fromCharCode(byte), '')
   );
+}
+
+function lastItemFromArr(arr) {
+  if(!arr.length) return [];
+  return arr[arr.length - 1];
+}
+
+function convertTimestampHumanTime(timestamp) {
+  if(!timestamp) {
+    return "";
+  }
+  return moment(timestamp).locale("vi").startOf("second").fromNow();   
 }
 
 function notifNoFriendLogin() {

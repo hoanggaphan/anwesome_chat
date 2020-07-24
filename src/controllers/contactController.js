@@ -90,9 +90,9 @@ const removeRequestContactReceived = async (req, res) => {
     const contactId = req.body.uid;
 
     const removeReq = await contact.removeRequestContactReceived(currentUserId, contactId)
-    return res.status(200).send({ success: !!removeReq });
+    res.status(200).send({ success: !!removeReq });
   } catch (error) {
-    return res.status(500).send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -101,10 +101,11 @@ const approveRequestContactReceived = async (req, res) => {
     const currentUserId = req.user._id;
     const contactId = req.body.uid;
 
-    const approveReq = await contact.approveRequestContactReceived(currentUserId, contactId)
-    return res.status(200).send({ success: !!approveReq });
+    const messages = await contact.approveRequestContactReceived(currentUserId, contactId)
+
+    res.status(200).send({ messages });
   } catch (error) {
-    return res.status(500).send(error);
+    res.status(500).send(error);
   }
 };
 

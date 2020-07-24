@@ -121,24 +121,28 @@ const removeRequestContactReceived = (currentUserId, contactId) => {
 
 const approveRequestContactReceived = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
-    const approveReq = await ContactModel.approveRequestContactReceived(
-      currentUserId,
-      contactId
-    );
+    try {
+      let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, contactId, LIMIT_MESSAGES_TAKEN);
+      messages = _.reverse(messages);
+      // Create new contact
+      let approveReq = await ContactModel.approveRequestContactReceived(currentUserId, contactId);
+      if (approveReq.nModified === 0) {
+        return reject(false);
+      }
 
-    if (approveReq.nModified === 0) {
-      return reject(false);
+      // Create notification
+      let notificationItem = {
+        senderId: currentUserId,
+        receiverId: contactId,
+        type: NotificationModel.types.APPROVE_CONTACT,
+      };
+      await NotificationModel.model.createNew(notificationItem);
+
+      resolve(messages);
+    } catch (error) {
+      reject(error);
     }
-
-    // Create notification
-    const notificationItem = {
-      senderId: currentUserId,
-      receiverId: contactId,
-      type: NotificationModel.types.APPROVE_CONTACT,
-    };
-    await NotificationModel.model.createNew(notificationItem);
-
-    resolve(true);
+    
   });
 };
 

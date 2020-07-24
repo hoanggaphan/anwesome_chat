@@ -24,11 +24,11 @@ function contactConversation() {
       // Step 03: handle rightSide
       $("#screen-chat").prepend(data.rightSideData);
 
-      // Step 04: Not support video chat
-      notSupportVideoChat();
-
-      // Step 05: call screenChat
+      // Step 04: call screenChat
       changeScreenChat();
+
+      // Step 05: Enable chat emoji
+      enableEmojioneArea();
 
       // Step 06: convert emoji
       convertEmoji();
@@ -39,13 +39,16 @@ function contactConversation() {
       // Step 08: call function gridPhotos
       gridPhotos(5);
 
-      // Step 09: handle attachmentModal
+      // Step 9: handle attachmentModal
       $("body").append(data.attachmentModalData);
       
       // Step 10: update online
       socket.emit("check-status");
 
-      // Step 011: Click chat with target user
+      // Step 12: Read more messages
+      readMoreMessages();
+
+      // Step 13: Click chat with target user
       $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
     });
 
