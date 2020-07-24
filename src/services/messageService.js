@@ -6,8 +6,9 @@ import MessageModel from "../models/messageModel";
 import { transError } from '../../lang/vi';
 import { app } from '../config/app';
 import fsExtra from 'fs-extra';
+import { contact } from ".";
 
-const LIMIT_CONVERSATION_TAKEN = 15;
+const LIMIT_CONVERSATION_TAKEN = 1;
 const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
@@ -311,12 +312,14 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
  * @param {string} currentUserId 
  * @param {number} skipPersonal 
  * @param {number} skipGroup 
+ * @param {array} personalIds 
+ * @param {array} groupIds 
  */
-const readMoreAllChat = (currentUserId, skipPersonal, skipGroup) => {
+const readMoreAllChat = (currentUserId, skipPersonal, skipGroup, personalIds, groupIds) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const contacts = await ContactModel.readMoreContacts(currentUserId, skipPersonal, LIMIT_CONVERSATION_TAKEN);
-
+      const contacts = await ContactModel.readMoreChatContact(currentUserId, skipPersonal, personalIds, LIMIT_CONVERSATION_TAKEN);
+      
       const userConversationPromise = contacts.map(async (contact) => {
         if (currentUserId == contact.userId) {
           let getUserContact = await UserModel.getNormalUserDataById(
@@ -334,7 +337,8 @@ const readMoreAllChat = (currentUserId, skipPersonal, skipGroup) => {
       });
 
       const userConversations = await Promise.all(userConversationPromise);
-      const groupConversations = await ChatGroupModel.readMoreChatGroup(currentUserId, skipGroup, LIMIT_CONVERSATION_TAKEN);
+      const groupConversations = await ChatGroupModel.readMoreChatGroup(currentUserId, skipGroup, groupIds, LIMIT_CONVERSATION_TAKEN);
+      
       let allConversations = [...userConversations, ...groupConversations];
       allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
 

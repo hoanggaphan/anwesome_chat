@@ -204,6 +204,21 @@ function bufferToBase64(arrayBuffer) {
   );
 }
 
+function notifNoFriendLogin() {
+  if(!$("ul.people").find("a").length) {
+    Swal.fire({
+      title: "Bạn chưa có bạn bè, hãy tìm kiếm bạn bè để trò chuyện!",
+      type: "info",
+      confirmButtonColor: "#2ECC71",
+      confirmButtonText: "Xác nhận",
+      width: "52rem",
+    }).then((result) => {
+      if (!result.value) return;
+      $("#contactsModal").modal("show");
+    });
+  }
+}
+
 $(document).ready(function() {
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
@@ -230,19 +245,8 @@ $(document).ready(function() {
   // Thay đởi màn hình chat 
   changeScreenChat();
 
-  // Click vào phần tử đầu tiên của cuộc trò truyện
-  if(!$("ul.people").find("a").length) {
-    Swal.fire({
-      title: "Bạn chưa có bạn bè, hãy tìm kiếm bạn bè để trò chuyện!",
-      type: "info",
-      confirmButtonColor: "#2ECC71",
-      confirmButtonText: "Xác nhận",
-      width: "52rem",
-    }).then((result) => {
-      if (!result.value) return;
-      $("#show-modal-contacts").click();
-    });
-  }
+  notifNoFriendLogin();
+
   if($("ul.people").find("a").length) {
     $("ul.people").find("a")[0].click();
   }

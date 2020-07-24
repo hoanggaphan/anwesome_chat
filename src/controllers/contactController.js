@@ -1,5 +1,11 @@
-import { contact } from "../services/index";
+import ejs from 'ejs';
 import { validationResult } from "express-validator";
+import { promisify } from 'util';
+import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from '../helpers/clientHelper';
+import { contact } from "../services/index";
+
+// Make ejs function renderFile avaiable with async await
+const renderFile = promisify(ejs.renderFile).bind(ejs);
 
 const findUsersContact = async (req, res) => {
   const validationErrors = validationResult(req);
@@ -150,6 +156,38 @@ const readMoreContactsReceived = async (req, res) => {
   }
 };
 
+
+const contactConversation = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let contactId = req.params.contactId;
+    let contactConversation = await contact.contactConversation(currentUserId, contactId);
+
+    let dataToRender = {
+      user: req.user,
+      contactConversation,
+      convertTimestampHumanTime,
+      lastItemFromArr,
+      bufferToBase64,
+    };
+
+    let leftSideData = await renderFile("src/views/main/contactConversation/_leftSide.ejs", dataToRender);
+    let rightSideData = await renderFile("src/views/main/contactConversation/_rightSide.ejs", dataToRender);
+    let imageModalData = await renderFile("src/views/main/contactConversation/_imageModal.ejs", dataToRender);
+    let attachmentModalData = await renderFile("src/views/main/contactConversation/_attachmentModal.ejs", dataToRender);
+
+    return res.status(200).send({
+      leftSideData,
+      rightSideData,
+      imageModalData,
+      attachmentModalData
+    });
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   findUsersContact,
   addNew,
@@ -160,5 +198,6 @@ module.exports = {
   removeRequestContactReceived,
   approveRequestContactReceived,
   removeContact,
-  searchFriends
+  searchFriends,
+  contactConversation
 };

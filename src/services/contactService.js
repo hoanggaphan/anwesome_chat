@@ -1,9 +1,11 @@
 import ContactModel from "../models/contactModel";
 import UserModel from "../models/userModel";
 import NotificationModel from "../models/notificationModel";
+import MessageModel from "../models/messageModel";
 import _ from "lodash";
 
 const LIMIT_NUMBER_TAKEN = 10;
+const LIMIT_MESSAGES_TAKEN = 30;
 
 const findUsersContact = (currentUserId, keyword) => {
   return new Promise(async (resolve, reject) => {
@@ -294,6 +296,22 @@ const readMoreContactsReceived = (currentUserId, skipNumberContacts) => {
   });
 };
 
+const contactConversation = (currentUserId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let contactConversation = await UserModel.getNormalUserDataById(contactId);
+      
+      contactConversation = contactConversation.toObject();
+      let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, contactConversation._id, LIMIT_MESSAGES_TAKEN);
+      contactConversation.messages = _.reverse(messages);
+
+      resolve(contactConversation);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   findUsersContact,
   addNew,
@@ -310,5 +328,6 @@ module.exports = {
   removeRequestContactReceived,
   approveRequestContactReceived,
   removeContact,
-  searchFriends
+  searchFriends,
+  contactConversation
 };

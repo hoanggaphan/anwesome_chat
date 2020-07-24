@@ -1,12 +1,20 @@
 $(document).ready(function () {
   $("#link-read-more-all-chat").bind("click", function () {
-    const skipPersonal = $("#all-chat").find("li:not(.group-chat)").length;
-    const skipGroup = $("#all-chat").find("li.group-chat").length;
+    let personElements = $("#all-chat").find("li:not(.group-chat)");
+    let groupElements = $("#all-chat").find("li.group-chat");
 
+    let skipPersonal = personElements.length;
+    let skipGroup = groupElements.length;
+
+    let personalIds = [];
+    let groupIds = [];
+    personElements.each((index, item) => personalIds.push($(item).data("chat")));
+    groupElements.each((index, item) => groupIds.push($(item).data("chat")));
+    
     $("#link-read-more-all-chat").css("display", "none");
     $(".read-more-all-chat-loader").css("display", "inline-block");
 
-    $.get(`/message/read-more-all-chat?skipPersonal=${skipPersonal}&skipGroup=${skipGroup}`, function (data) {
+    $.get(`/message/read-more-all-chat?skipPersonal=${skipPersonal}&skipGroup=${skipGroup}&personalIds[]=${personalIds}&groupIds[]=${groupIds}`, function (data) {
       if (data.leftSideData.trim() === "") {
         alertify.notify("Bạn không còn cuộc trò chuyện nào để xem nữa.", "error", 5);
         $("#link-read-more-all-chat").css("display", "inline-block");
