@@ -227,6 +227,29 @@ ContactSchema.statics = {
   },
 
   /**
+     * Read more all chat by userId, skip, personalIds, limit
+     * @param {string} userId
+     * @param {number} skip
+     * @param {array} personalIds
+     * @param {number} limit
+     */
+  readMoreChatContact(userId, skip, personalIds, limit) {
+    return this.find({
+      $and: [
+        { $or: [{ userId: { $nin: personalIds } }, { contactId: { $nin: personalIds } } ] },
+        {
+          $or: [{ userId: userId }, { contactId: userId } ],
+        },
+        { status: true },
+      ],
+    })
+      .sort({ updatedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  },
+
+  /**
    * Update contact (chat personal) when has new message
    * @param { string } userId
    * @param { string } contactId

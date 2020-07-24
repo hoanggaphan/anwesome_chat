@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import connectFlash from "connect-flash";
 import cookieParse from "cookie-parser";
 import events from 'events';

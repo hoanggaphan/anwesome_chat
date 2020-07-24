@@ -57,8 +57,9 @@ ChatGroupSchema.statics = {
     ).exec();
   },
 
-  readMoreChatGroup(userId, skip, limit) {
+  readMoreChatGroup(userId, skip, groupIds, limit) {
     return this.find({
+      id: { $nin: groupIds },
       members: { $elemMatch: { userId } },
     })
       .sort({ updatedAt: -1 })

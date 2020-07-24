@@ -147,8 +147,13 @@ const readMoreAllChat = async (req, res) => {
     let skipPersonal = +req.query.skipPersonal;
     let skipGroup = +req.query.skipGroup;
 
+    let personalIds = req.query.personalIds;
+    let groupIds = req.query.groupIds;
+    personalIds = personalIds[0].split(",");
+    groupIds = groupIds[0].split(",");
+
     // get more item
-    let newAllConversations = await message.readMoreAllChat(req.user._id, skipPersonal, skipGroup);
+    let newAllConversations = await message.readMoreAllChat(req.user._id, skipPersonal, skipGroup, personalIds, groupIds);
     
     let dataToRender = {
       user: req.user,
@@ -209,5 +214,5 @@ module.exports = {
   addNewImage,
   addNewAttachment,
   readMoreAllChat,
-  readMore
+  readMore,
 };

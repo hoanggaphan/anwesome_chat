@@ -168,6 +168,9 @@ function approveRequestContactReceived() {
 
           // Step 07: update online
           socket.emit("check-status");
+
+          // Step 08: contact conversation
+          contactConversation();
         }
       }
     });
@@ -350,6 +353,9 @@ socket.on("response-approve-request-contact-received", function (user) {
 
   // Step 07: update online
   socket.emit("check-status");
+
+  // Step 08: contact conversation
+  contactConversation();
 });
 
 
