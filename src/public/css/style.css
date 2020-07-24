@@ -1097,7 +1097,7 @@ label:focus,
   border-bottom: 1px solid #337ab7;
 }
 
-.right .bubble a:hover {
+.right .bubble a:hover, .right .bubble a:focus {
   text-decoration: none;
 }
 

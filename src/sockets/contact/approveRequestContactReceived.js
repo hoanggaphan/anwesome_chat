@@ -14,6 +14,7 @@ const approveRequestContactReceived = (io) => {
         username: socket.request.user.username,
         avatar: socket.request.user.avatar,
         address: socket.request.user.address || "",
+        messages: data.messages
       };
 
       // emit notification

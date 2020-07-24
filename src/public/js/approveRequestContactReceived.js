@@ -9,39 +9,42 @@ function approveRequestContactReceived() {
       type: "put",
       data: { uid: targetId },
       success: function (data) {
-        if(data.success) {
-          let userInfo = $("#request-contact-received").find(`ul li[data-uid = ${targetId}]`);
-          $(userInfo).find("div.user-approve-request-contact-received").remove();
-          $(userInfo).find("div.user-remove-request-contact-received").remove();
-          $(userInfo).find("div.contactPanel")
-            .append(`
-              <div class="user-talk" data-uid="${targetId}">
-                Trò chuyện
-              </div>
-              <div class="user-remove-contact action-danger" data-uid="${targetId}">
-                Xóa liên hệ
-              </div>
-            `);
-          let userInfoHtml = userInfo.get(0).outerHTML;
-          $("#contacts").find("ul").prepend(userInfoHtml);
-          $(userInfo).remove();
-          
-          decreaseNumberNotifContact("count-request-contact-received"); // js/caculateNotifContact.js
-          increaseNumberNotifContact("count-contacts"); //js/caculateNotifContact.js
-      
-          decreaseNumberNotification("noti_contact_counter", 1); // js/caculateNotification.js
+        let userInfo = $("#request-contact-received").find(`ul li[data-uid = ${targetId}]`);
+        $(userInfo).find("div.user-approve-request-contact-received").remove();
+        $(userInfo).find("div.user-remove-request-contact-received").remove();
+        $(userInfo).find("div.contactPanel")
+          .append(`
+            <div class="user-talk" data-uid="${targetId}">
+              Trò chuyện
+            </div>
+            <div class="user-remove-contact action-danger" data-uid="${targetId}">
+              Xóa liên hệ
+            </div>
+          `);
+        let userInfoHtml = userInfo.get(0).outerHTML;
+        $("#contacts").find("ul").prepend(userInfoHtml);
+        $(userInfo).remove();
+        
+        decreaseNumberNotifContact("count-request-contact-received"); // js/caculateNotifContact.js
+        increaseNumberNotifContact("count-contacts"); //js/caculateNotifContact.js
+    
+        decreaseNumberNotification("noti_contact_counter", 1); // js/caculateNotification.js
 
-          removeContact(); // js/removeContact.js
+        removeContact(); // js/removeContact.js
 
-          socket.emit("approve-request-contact-received", { contactId: targetId });
+        socket.emit("approve-request-contact-received", { contactId: targetId, messages: data.messages });
 
-          // All steps handle chat after approve contact
-          // Step 01: handle leftSide.js
-          let subUsername = targetName;
-          if (subUsername.length > 15) {
-            subUsername = subUsername.substr(0, 14) + "...";
-          }
-          let leftSideData = `
+        // All steps handle chat after approve contact
+        // Step 01: handle leftSide.js
+        let subUsername = targetName;
+        if (subUsername.length > 15) {
+          subUsername = subUsername.substr(0, 14) + "...";
+        }
+        let leftSideData = "";
+        let lastMess = lastItemFromArr(data.messages);
+        
+        if (lastMess.messageType === "text") {
+          leftSideData = `
               <a href="#uid_${targetId}" class="room-chat" data-target="#to_${targetId}">
                 <li class="person" data-chat="${targetId}">
                   <div class="left-avatar">
@@ -51,127 +54,256 @@ function approveRequestContactReceived() {
                   <span class="name">
                     ${subUsername}
                   </span>
-                  <span class="time"></span>
-                  <span class="preview convert-emoji"></span>
+                  <span class="time">
+                    ${convertTimestampHumanTime(lastMess.createdAt)}
+                  </span>
+                  <span class="preview convert-emoji">
+                    ${lastMess.text}
+                  </span>
                 </li>
               </a>`;
-          
-          $("#all-chat").find("ul").prepend(leftSideData);
-          $("#user-chat").find("ul").prepend(leftSideData);
-
-          // Step 02: handle rightSide.ejs
-          let rightSideData = `
-          <div class="right tab-pane" data-chat="${targetId}" id="to_${targetId}">
-            <div class="top">
-              <span>To: 
-                <span class="name">${targetName}</span>
-              </span>
-              <span class="chat-menu-right">
-                <a href="#attachmentsModal_${targetId}" class="show-attachments" data-toggle="modal">
-                  Tệp đính kèm
-                  <i class="fa fa-paperclip"></i>
-                </a>
-              </span>
-              <span class="chat-menu-right">
-                <a href="javascript:void(0)">&nbsp;</a>
-              </span>
-              <span class="chat-menu-right">
-              <a href="#imagesModal_${targetId}" class="show-images" data-toggle="modal">
-                Hình ảnh
-                <i class="fa fa-photo"></i>
-              </a>
-              </span>
-            </div>
-            <div class="content-chat">
-              <div class="chat" data-chat="${targetId}">
-                <img src="images/chat/message-loading.gif" class="message-loading" />
-              </div>
-            </div>
-            <div class="write" data-chat="${targetId}">
-              <input type="text" class="write-chat" id="write-chat-${targetId}" data-chat="${targetId}" />
-              <div class="icons">
-                <a href="#" class="icon-chat" data-chat="">
-                  <i class="fa fa-smile-o"></i>
-                </a>
-                <label for="image-chat-${targetId}">
-                  <input
-                    type="file"
-                    id="image-chat-${targetId}"
-                    name="my-image-chat"
-                    class="image-chat"
-                    data-chat="${targetId}"
-                  />
-                  <i class="fa fa-photo"></i>
-                </label>
-                <label for="attachment-chat-${targetId}">
-                  <input
-                    type="file"
-                    id="attachment-chat-${targetId}"
-                    name="my-attachment-chat"
-                    class="attachment-chat"
-                    data-chat="${targetId}"
-                  />
-                  <i class="fa fa-paperclip"></i>
-                </label>
-                <a
-                  href="javascript:void(0)"
-                  id="video-chat-${targetId}"
-                  class="video-chat"
-                  data-chat="${targetId}"
-                >
-                  <i class="fa fa-video-camera"></i>
-                </a>
-              </div>
-            </div>
-          </div>`
-          $("#screen-chat").prepend(rightSideData);
-
-          // Step 03: call function changeScreenChat
-          changeScreenChat();
-
-          // Step 04: handle imageModal
-          let imgModalData = `
-          <div class="modal fade" id="imagesModal_${targetId}" role="dialog">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Tất cả hình ảnh trong cuộc trò truyện.</h4>
-                </div>
-                <div class="modal-body">
-                  <div class="all-images" style="visibility: hidden;"></div>
-                </div>
-              </div>
-            </div>
-          </div>`;
-          $("body").append(imgModalData);
-
-          // Step 05: call grid photo
-          gridPhotos(5);
-
-          // Step 06: handle attachmentModal
-          let attachmentModalData = `
-          <div class="modal fade" id="attachmentsModal_${targetId}" role="dialog">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Tất cả tệp đính kèm trong cuộc trò chuyện.</h4>
-                </div>
-                <div class="modal-body">
-                  <ul class="list-attachments"></ul>
-                </div>
-              </div>
-            </div>
-          </div>`
-          $("body").append(attachmentModalData);
-
-          // Step 07: update online
-          socket.emit("check-status");
-
-          // Step 08: contact conversation
-          contactConversation();
         }
+        
+        if (lastMess.messageType === "image") {
+          leftSideData = `
+              <a href="#uid_${targetId}" class="room-chat" data-target="#to_${targetId}">
+                <li class="person" data-chat="${targetId}">
+                  <div class="left-avatar">
+                  <div class="dot"></div>
+                    <img src="${targetAvatar}" alt="" />
+                  </div>
+                  <span class="name">
+                    ${subUsername}
+                  </span>
+                  <span class="time">
+                    ${convertTimestampHumanTime(lastMess.createdAt)}
+                  </span>
+                  <span class="preview convert-emoji">
+                    Hình ảnh...
+                  </span>
+                </li>
+              </a>`;
+        }
+
+        if (lastMess.messageType === "file") {
+          leftSideData = `
+              <a href="#uid_${targetId}" class="room-chat" data-target="#to_${targetId}">
+                <li class="person" data-chat="${targetId}">
+                  <div class="left-avatar">
+                  <div class="dot"></div>
+                    <img src="${targetAvatar}" alt="" />
+                  </div>
+                  <span class="name">
+                    ${subUsername}
+                  </span>
+                  <span class="time">
+                    ${convertTimestampHumanTime(lastMess.createdAt)}
+                  </span>
+                  <span class="preview convert-emoji">
+                    Tệp đính kèm...
+                  </span>
+                </li>
+              </a>`;
+        }
+        $("#all-chat").find("ul").prepend(leftSideData);
+        $("#user-chat").find("ul").prepend(leftSideData);
+
+        
+
+        // Step 02: handle rightSide.ejs
+        let rightSideData = `
+        <div class="right tab-pane" data-chat="${targetId}" id="to_${targetId}">
+          <div class="top">
+            <span>To: 
+              <span class="name">${targetName}</span>
+            </span>
+            <span class="chat-menu-right">
+              <a href="#attachmentsModal_${targetId}" class="show-attachments" data-toggle="modal">
+                Tệp đính kèm
+                <i class="fa fa-paperclip"></i>
+              </a>
+            </span>
+            <span class="chat-menu-right">
+              <a href="javascript:void(0)">&nbsp;</a>
+            </span>
+            <span class="chat-menu-right">
+            <a href="#imagesModal_${targetId}" class="show-images" data-toggle="modal">
+              Hình ảnh
+              <i class="fa fa-photo"></i>
+            </a>
+            </span>
+          </div>
+          <div class="content-chat">
+            <div class="chat" data-chat="${targetId}">
+              <img src="images/chat/message-loading.gif" class="message-loading" />
+            </div>
+          </div>
+          <div class="write" data-chat="${targetId}">
+            <input type="text" class="write-chat" id="write-chat-${targetId}" data-chat="${targetId}" />
+            <div class="icons">
+              <a href="#" class="icon-chat" data-chat="">
+                <i class="fa fa-smile-o"></i>
+              </a>
+              <label for="image-chat-${targetId}">
+                <input
+                  type="file"
+                  id="image-chat-${targetId}"
+                  name="my-image-chat"
+                  class="image-chat"
+                  data-chat="${targetId}"
+                />
+                <i class="fa fa-photo"></i>
+              </label>
+              <label for="attachment-chat-${targetId}">
+                <input
+                  type="file"
+                  id="attachment-chat-${targetId}"
+                  name="my-attachment-chat"
+                  class="attachment-chat"
+                  data-chat="${targetId}"
+                />
+                <i class="fa fa-paperclip"></i>
+              </label>
+              <a
+                href="javascript:void(0)"
+                id="video-chat-${targetId}"
+                class="video-chat"
+                data-chat="${targetId}"
+              >
+                <i class="fa fa-video-camera"></i>
+              </a>
+            </div>
+          </div>
+        </div>`
+        $("#screen-chat").prepend(rightSideData);
+        
+        data.messages.forEach(message => {
+          let messageHtml = "";
+          if (message.messageType === "text") {
+            messageHtml = `
+            <div 
+              class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
+              data-mess-id="${targetId}"
+            >
+              <div class="bubble-content">
+                ${message.text}  
+              </div>
+            </div>`;
+          }
+
+          if (message.messageType === "image") {
+            messageHtml = `
+            <div 
+              class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
+              data-mess-id="${targetId}"
+            >
+              <img
+                src="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+                class="show-image-chat"
+              />
+            </div>`;
+          }
+
+          if (message.messageType === "file") {
+            messageHtml = `
+            <div 
+              class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
+              data-mess-id="${targetId}"
+            >
+              <div class="bubble-content">
+                <a
+                  href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+                  download="${message.file.fileName}"
+                >
+                  ${message.file.fileName}
+                </a>
+              </div>
+            </div>`;
+          }
+          $(`.chat[data-chat = ${targetId}]`).append(messageHtml);
+        });
+
+        // Step 03: call function changeScreenChat
+        changeScreenChat();
+
+        // Step 04: Enable chat emoji
+        enableEmojioneArea();
+
+        // Step 05: convert emoji
+        convertEmoji();
+
+        // Step 06: handle imageModal
+        let imgModalData = `
+        <div class="modal fade" id="imagesModal_${targetId}" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tất cả hình ảnh trong cuộc trò truyện.</h4>
+              </div>
+              <div class="modal-body">
+                <div class="all-images" style="visibility: hidden;"></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+        $("body").append(imgModalData);
+
+        data.messages.forEach(message => {
+          if (message.messageType === "image") {
+            let messageHtml = `
+              <img src="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}" />
+            `;
+
+            $(`#imagesModal_${targetId}`).find(".all-images").append(messageHtml);
+          }
+        });
+
+        // Step 07: call grid photo
+        gridPhotos(5);
+
+        // Step 08: handle attachmentModal
+        let attachmentModalData = `
+        <div class="modal fade" id="attachmentsModal_${targetId}" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tất cả tệp đính kèm trong cuộc trò chuyện.</h4>
+              </div>
+              <div class="modal-body">
+                <ul class="list-attachments"></ul>
+              </div>
+            </div>
+          </div>
+        </div>`
+        $("body").append(attachmentModalData);
+
+        data.messages.forEach(message => {
+          if (message.messageType === "file") {
+            let messageHtml = `
+                <li>
+                  <a
+                    href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+                    download="${message.file.fileName}"
+                  >
+                    ${message.file.fileName}
+                  </a>
+                </li>
+              `;
+
+            $(`#attachmentsModal_${targetId}`).find(".list-attachments").append(messageHtml);
+          }
+        });
+
+        // Step 09: update online
+        socket.emit("check-status");
+
+        // Step 10: contact conversation
+        contactConversation();
+
+        // Step 11: Read more messages
+        readMoreMessages();
       }
     });
   });
@@ -226,95 +358,197 @@ socket.on("response-approve-request-contact-received", function (user) {
   if (subUsername.length > 15) {
     subUsername = subUsername.substr(0, 14) + "...";
   }
-  let leftSideData = `
-      <a href="#uid_${user.id}" class="room-chat" data-target="#to_${user.id}">
-        <li class="person" data-chat="${user.id}">
-          <div class="left-avatar">
-          <div class="dot"></div>
-            <img src="images/users/${user.avatar}" alt="" />
-          </div>
-          <span class="name">
-            ${subUsername}
-          </span>
-          <span class="time"></span>
-          <span class="preview convert-emoji"></span>
-        </li>
-      </a>`;
+  let leftSideData = "";
+  let lastMess = lastItemFromArr(user.messages);
   
+  if (lastMess.messageType === "text") {
+    leftSideData = `
+        <a href="#uid_${user.id}" class="room-chat" data-target="#to_${user.id}">
+          <li class="person" data-chat="${user.id}">
+            <div class="left-avatar">
+            <div class="dot"></div>
+              <img src="images/users/${user.avatar}" alt="" />
+            </div>
+            <span class="name">
+              ${subUsername}
+            </span>
+            <span class="time">
+              ${convertTimestampHumanTime(lastMess.createdAt)}
+            </span>
+            <span class="preview convert-emoji">
+              ${lastMess.text}
+            </span>
+          </li>
+        </a>`;
+  }
+  
+  if (lastMess.messageType === "image") {
+    leftSideData = `
+        <a href="#uid_${user.id}" class="room-chat" data-target="#to_${user.id}">
+          <li class="person" data-chat="${user.id}">
+            <div class="left-avatar">
+            <div class="dot"></div>
+              <img src="images/users/${user.avatar}" alt="" />
+            </div>
+            <span class="name">
+              ${subUsername}
+            </span>
+            <span class="time">
+              ${convertTimestampHumanTime(lastMess.createdAt)}
+            </span>
+            <span class="preview convert-emoji">
+              Hình ảnh...
+            </span>
+          </li>
+        </a>`;
+  }
+
+  if (lastMess.messageType === "file") {
+    leftSideData = `
+        <a href="#uid_${user.id}" class="room-chat" data-target="#to_${user.id}">
+          <li class="person" data-chat="${user.id}">
+            <div class="left-avatar">
+            <div class="dot"></div>
+              <img src="images/users/${user.avatar}" alt="" />
+            </div>
+            <span class="name">
+              ${subUsername}
+            </span>
+            <span class="time">
+              ${convertTimestampHumanTime(lastMess.createdAt)}
+            </span>
+            <span class="preview convert-emoji">
+              Tệp đính kèm...
+            </span>
+          </li>
+        </a>`;
+  }
   $("#all-chat").find("ul").prepend(leftSideData);
   $("#user-chat").find("ul").prepend(leftSideData);
 
   // Step 02: handle rightSide.ejs
   let rightSideData = `
-  <div class="right tab-pane" data-chat="${user.id}" id="to_${user.id}">
-    <div class="top">
-      <span>To: 
-        <span class="name">${user.username}</span>
-      </span>
-      <span class="chat-menu-right">
-        <a href="#attachmentsModal_${user.id}" class="show-attachments" data-toggle="modal">
-          Tệp đính kèm
-          <i class="fa fa-paperclip"></i>
-        </a>
-      </span>
-      <span class="chat-menu-right">
-        <a href="javascript:void(0)">&nbsp;</a>
-      </span>
-      <span class="chat-menu-right">
-      <a href="#imagesModal_${user.id}" class="show-images" data-toggle="modal">
-        Hình ảnh
-        <i class="fa fa-photo"></i>
-      </a>
-      </span>
-    </div>
-    <div class="content-chat">
-      <div class="chat" data-chat="${user.id}">
-        <img src="images/chat/message-loading.gif" class="message-loading" />
-      </div>
-    </div>
-    <div class="write" data-chat="${user.id}">
-      <input type="text" class="write-chat" id="write-chat-${user.id}" data-chat="${user.id}" />
-      <div class="icons">
-        <a href="#" class="icon-chat" data-chat="">
-          <i class="fa fa-smile-o"></i>
-        </a>
-        <label for="image-chat-${user.id}">
-          <input
-            type="file"
-            id="image-chat-${user.id}"
-            name="my-image-chat"
-            class="image-chat"
-            data-chat="${user.id}"
-          />
-          <i class="fa fa-photo"></i>
-        </label>
-        <label for="attachment-chat-${user.id}">
-          <input
-            type="file"
-            id="attachment-chat-${user.id}"
-            name="my-attachment-chat"
-            class="attachment-chat"
-            data-chat="${user.id}"
-          />
-          <i class="fa fa-paperclip"></i>
-        </label>
-        <a
-          href="javascript:void(0)"
-          id="video-chat-${user.id}"
-          class="video-chat"
-          data-chat="${user.id}"
-        >
-          <i class="fa fa-video-camera"></i>
-        </a>
-      </div>
-    </div>
-  </div>`
+        <div class="right tab-pane" data-chat="${user.id}" id="to_${user.id}">
+          <div class="top">
+            <span>To: 
+              <span class="name">${user.username}</span>
+            </span>
+            <span class="chat-menu-right">
+              <a href="#attachmentsModal_${user.id}" class="show-attachments" data-toggle="modal">
+                Tệp đính kèm
+                <i class="fa fa-paperclip"></i>
+              </a>
+            </span>
+            <span class="chat-menu-right">
+              <a href="javascript:void(0)">&nbsp;</a>
+            </span>
+            <span class="chat-menu-right">
+            <a href="#imagesModal_${user.id}" class="show-images" data-toggle="modal">
+              Hình ảnh
+              <i class="fa fa-photo"></i>
+            </a>
+            </span>
+          </div>
+          <div class="content-chat">
+            <div class="chat" data-chat="${user.id}">
+              <img src="images/chat/message-loading.gif" class="message-loading" />
+            </div>
+          </div>
+          <div class="write" data-chat="${user.id}">
+            <input type="text" class="write-chat" id="write-chat-${user.id}" data-chat="${user.id}" />
+            <div class="icons">
+              <a href="#" class="icon-chat" data-chat="">
+                <i class="fa fa-smile-o"></i>
+              </a>
+              <label for="image-chat-${user.id}">
+                <input
+                  type="file"
+                  id="image-chat-${user.id}"
+                  name="my-image-chat"
+                  class="image-chat"
+                  data-chat="${user.id}"
+                />
+                <i class="fa fa-photo"></i>
+              </label>
+              <label for="attachment-chat-${user.id}">
+                <input
+                  type="file"
+                  id="attachment-chat-${user.id}"
+                  name="my-attachment-chat"
+                  class="attachment-chat"
+                  data-chat="${user.id}"
+                />
+                <i class="fa fa-paperclip"></i>
+              </label>
+              <a
+                href="javascript:void(0)"
+                id="video-chat-${user.id}"
+                class="video-chat"
+                data-chat="${user.id}"
+              >
+                <i class="fa fa-video-camera"></i>
+              </a>
+            </div>
+          </div>
+        </div>`
   $("#screen-chat").prepend(rightSideData);
+  
+  user.messages.forEach(message => {
+    let messageHtml = "";
+    if (message.messageType === "text") {
+      messageHtml = `
+      <div 
+        class="convert-emoji bubble ${message.senderId == user.id ? 'you': 'me'}"
+        data-mess-id="${user.id}"
+      >
+        <div class="bubble-content">
+          ${message.text}  
+        </div>
+      </div>`;
+    }
+
+    if (message.messageType === "image") {
+      messageHtml = `
+      <div 
+        class="convert-emoji bubble ${message.senderId == user.id ? 'you': 'me'}"
+        data-mess-id="${user.id}"
+      >
+        <img
+          src="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+          class="show-image-chat"
+        />
+      </div>`;
+    }
+
+    if (message.messageType === "file") {
+      messageHtml = `
+      <div 
+        class="convert-emoji bubble ${message.senderId == user.id ? 'you': 'me'}"
+        data-mess-id="${user.id}"
+      >
+        <div class="bubble-content">
+          <a
+            href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+            download="${message.file.fileName}"
+          >
+            ${message.file.fileName}
+          </a>
+        </div>
+      </div>`;
+    }
+    $(`.chat[data-chat = ${user.id}]`).append(messageHtml);
+  });
 
   // Step 03: call function changeScreenChat
   changeScreenChat();
 
-  // Step 04: handle imageModal
+  // Step 04: Enable chat emoji
+  enableEmojioneArea();
+
+  // Step 05: convert emoji
+  convertEmoji();
+
+  // Step 06: handle imageModal
   let imgModalData = `
   <div class="modal fade" id="imagesModal_${user.id}" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -331,10 +565,20 @@ socket.on("response-approve-request-contact-received", function (user) {
   </div>`;
   $("body").append(imgModalData);
 
-  // Step 05: call grid photo
+  user.messages.forEach(message => {
+    if (message.messageType === "image") {
+      let messageHtml = `
+        <img src="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}" />
+      `;
+
+      $(`#imagesModal_${user.id}`).find(".all-images").append(messageHtml);
+    }
+  });
+
+  // Step 07: call grid photo
   gridPhotos(5);
 
-  // Step 06: handle attachmentModal
+  // Step 08: handle attachmentModal
   let attachmentModalData = `
   <div class="modal fade" id="attachmentsModal_${user.id}" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -351,11 +595,31 @@ socket.on("response-approve-request-contact-received", function (user) {
   </div>`
   $("body").append(attachmentModalData);
 
-  // Step 07: update online
+  user.messages.forEach(message => {
+    if (message.messageType === "file") {
+      let messageHtml = `
+          <li>
+            <a
+              href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
+              download="${message.file.fileName}"
+            >
+              ${message.file.fileName}
+            </a>
+          </li>
+        `;
+
+      $(`#attachmentsModal_${user.id}`).find(".list-attachments").append(messageHtml);
+    }
+  });
+
+  // Step 09: update online
   socket.emit("check-status");
 
-  // Step 08: contact conversation
+  // Step 10: contact conversation
   contactConversation();
+
+  // Step 11: Read more messages
+  readMoreMessages();
 });
 
 
