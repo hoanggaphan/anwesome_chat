@@ -1,12 +1,11 @@
+import fsExtra from 'fs-extra';
 import _ from "lodash";
-import ChatGroupModel from "../models/chatGroupModel";
-import ContactModel from "../models/contactModel";
-import UserModel from "../models/userModel";
-import MessageModel from "../models/messageModel";
 import { transError } from '../../lang/vi';
 import { app } from '../config/app';
-import fsExtra from 'fs-extra';
-import { contact } from ".";
+import ChatGroupModel from "../models/chatGroupModel";
+import ContactModel from "../models/contactModel";
+import MessageModel from "../models/messageModel";
+import UserModel from "../models/userModel";
 
 const LIMIT_CONVERSATION_TAKEN = 1;
 const LIMIT_MESSAGES_TAKEN = 30;
@@ -89,7 +88,7 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
           id: getChatGroupReceiver._id,
           name: getChatGroupReceiver.name,
           avatar: app.general_avatar_group_chat
-        }
+        };
 
         let newMessageItem = {
           senderId: sender.id,
@@ -100,13 +99,22 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
           receiver: receiver,
           text: messageVal,
           createdAt: Date.now(),
-        }
+        };
         
         // Create new message
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update group chat
         await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount + 1);
-        resolve(newMessage);
+
+        let messages = await MessageModel.model.getMessagesInGroup(getChatGroupReceiver._id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       } else {
         let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
         if(!getUserReceiver) {
@@ -117,7 +125,7 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
           id: getUserReceiver._id,
           name: getUserReceiver.username,
           avatar: getUserReceiver.avatar
-        }
+        };
 
         let newMessageItem = {
           senderId: sender.id,
@@ -128,13 +136,22 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
           receiver: receiver,
           text: messageVal,
           createdAt: Date.now(),
-        }
+        };
 
         // Create new message
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update contact
         await ContactModel.updateWhenHasNewMessage(sender.id, getUserReceiver._id);
-        resolve(newMessage);
+
+        let messages = await MessageModel.model.getMessagesInPersonal(sender.id, receiver.id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       }
 
     } catch (error) {
@@ -184,7 +201,16 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update group chat
         await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount + 1);
-        resolve(newMessage);
+
+        let messages = await MessageModel.model.getMessagesInGroup(getChatGroupReceiver._id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       } else {
         let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
         if(!getUserReceiver) {
@@ -195,7 +221,7 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
           id: getUserReceiver._id,
           name: getUserReceiver.username,
           avatar: getUserReceiver.avatar
-        }
+        };
 
         let imageBuffer = await fsExtra.readFile(messageVal.path)
         let imageContentType = messageVal.mimetype;
@@ -210,13 +236,22 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
           receiver: receiver,
           file: { data: imageBuffer, contentType: imageContentType, fileName: imageName },
           createdAt: Date.now(),
-        }
+        };
 
         // Create new message
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update contact
         await ContactModel.updateWhenHasNewMessage(sender.id, getUserReceiver._id);
-        resolve(newMessage);
+
+        let messages = await MessageModel.model.getMessagesInPersonal(sender.id, receiver.id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       }
 
     } catch (error) {
@@ -266,7 +301,16 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update group chat
         await ChatGroupModel.updateWhenHasNewMessage(getChatGroupReceiver._id, getChatGroupReceiver.messagesAmount + 1);
-        resolve(newMessage);
+        
+        let messages = await MessageModel.model.getMessagesInGroup(getChatGroupReceiver._id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       } else {
         let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
         if(!getUserReceiver) {
@@ -298,7 +342,16 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
         let newMessage = await MessageModel.model.createNew(newMessageItem);
         // Update contact
         await ContactModel.updateWhenHasNewMessage(sender.id, getUserReceiver._id);
-        resolve(newMessage);
+        
+        let messages = await MessageModel.model.getMessagesInPersonal(sender.id, receiver.id, LIMIT_MESSAGES_TAKEN);
+        messages = _.reverse(messages);
+
+        let data = {
+          newMessage,
+          messages
+        };
+
+        resolve(data);
       }
 
     } catch (error) {

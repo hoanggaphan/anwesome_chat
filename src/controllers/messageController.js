@@ -29,9 +29,10 @@ const addNewTextEmoji = async (req, res) => {
     };
     let { uid: receiverId, messageVal, isChatGroup } = req.body;
 
-    let newMessage = await message.addNewTextEmoji(sender, receiverId, messageVal, isChatGroup);
-
-    return res.status(200).send({ message: newMessage });
+    let data = await message.addNewTextEmoji(sender, receiverId, messageVal, isChatGroup);
+    data.sender = sender;
+    
+    return res.status(200).send(data);
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -78,12 +79,13 @@ const addNewImage =  (req, res) => {
       let messageVal = req.file;
       let isChatGroup = req.body.isChatGroup;
       
-      let newMessage = await message.addNewImage(sender, receiverId, messageVal, isChatGroup);
-  
-      // Remove image, because this image is saved to mongodb
-      await fsExtra.remove(`${app.image_message_directory}/${newMessage.file.fileName}`)
+      let data = await message.addNewImage(sender, receiverId, messageVal, isChatGroup);
+      data.sender = sender;
 
-      return res.status(200).send({ message: newMessage });
+      // Remove image, because this image is saved to mongodb
+      await fsExtra.remove(`${app.image_message_directory}/${data.newMessage.file.fileName}`)
+
+      return res.status(200).send(data);
     } catch (error) {
       console.error(error);
       return res.status(500).send(error);
@@ -127,12 +129,13 @@ const addNewAttachment =  (req, res) => {
       let messageVal = req.file;
       let isChatGroup = req.body.isChatGroup;
       
-      let newMessage = await message.addNewAttachment(sender, receiverId, messageVal, isChatGroup);
+      let data = await message.addNewAttachment(sender, receiverId, messageVal, isChatGroup);
+      data.sender = sender;
   
       // Remove attachment, because this attachment is saved to mongodb
-      await fsExtra.remove(`${app.attachment_message_directory}/${newMessage.file.fileName}`)
+      await fsExtra.remove(`${app.attachment_message_directory}/${data.newMessage.file.fileName}`)
 
-      return res.status(200).send({ message: newMessage });
+      return res.status(200).send(data);
     } catch (error) {
       console.error(error);
       return res.status(500).send(error);
