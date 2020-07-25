@@ -15,7 +15,9 @@ const chatAttachment = (io) => {
         let response = {
           currentUserId: socket.request.user._id,
           currentGroupId: data.groupId,
-          message: data.message
+          newMessage: data.newMessage,
+          messages: data.messages,
+          sender: data.sender
         }
 
         // Emit all users in room chat except sender
@@ -25,7 +27,9 @@ const chatAttachment = (io) => {
       if (data.contactId) {
         let response = {
           currentUserId: socket.request.user._id,
-          message: data.message
+          newMessage: data.newMessage,
+          messages: data.messages,
+          sender: data.sender
         }
 
         // emit notification
