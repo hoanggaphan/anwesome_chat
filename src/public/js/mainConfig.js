@@ -222,7 +222,7 @@ function notifNoFriendLogin() {
     Swal.fire({
       title: "Bạn chưa có bạn bè, hãy tìm kiếm bạn bè để trò chuyện!",
       type: "info",
-      confirmButtonColor: "#2ECC71",
+      confirmButtonColor: "#82cc28",
       confirmButtonText: "Xác nhận",
       width: "52rem",
     }).then((result) => {

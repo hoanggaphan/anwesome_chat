@@ -87,7 +87,7 @@ $(document).ready(function () {
     socket.emit("caller-request-call-to-server", dataToEmit);
 
     Swal.fire({
-      title: `Đang gọi cho &nbsp; <span style="color: #2ECC71;">${response.listenerName}</span> &nbsp; <i class="fa fa-volume-control-phone"></i>`,
+      title: `Đang gọi cho &nbsp; <span style="color: #82cc28;">${response.listenerName}</span> &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
         Thời gian: <strong style="color: #d43f3a;"></strong> giây. <br/> <br/>
         <button id="btn-cancel-call" class="btn btn-danger">
@@ -122,11 +122,11 @@ $(document).ready(function () {
 
           Swal.fire({
             type: "info",
-            title: `<span style="color: #2ECC71;">${response.listenerName}</span> &nbsp; đã từ chối cuộc gọi.`,
+            title: `<span style="color: #82cc28;">${response.listenerName}</span> &nbsp; đã từ chối cuộc gọi.`,
             backdrop: "rgba(85, 85, 85, .4)",
             width: "52rem",
             allowOutsideClick: true,
-            confirmButtonColor: "#2ECC71",
+            confirmButtonColor: "#82cc28",
             confirmButtonText: "Xác nhận",
           });
         });
@@ -150,7 +150,7 @@ $(document).ready(function () {
     };
 
     Swal.fire({
-      title: `<span style="color: #2ECC71;">${response.callerName}</span> &nbsp; muốn trò chuyện video với bạn &nbsp; <i class="fa fa-volume-control-phone"></i>`,
+      title: `<span style="color: #82cc28;">${response.callerName}</span> &nbsp; muốn trò chuyện video với bạn &nbsp; <i class="fa fa-volume-control-phone"></i>`,
       html: `
         Thời gian: <strong style="color: #d43f3a;"></strong> giây. <br/> <br/>
         <button id="btn-accept-call" class="btn btn-success">
@@ -232,11 +232,11 @@ $(document).ready(function () {
 
         Swal.fire({
           type: "info",
-          title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #2ECC71;">${response.listenerName}</span>`,
+          title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #82cc28;">${response.listenerName}</span>`,
           backdrop: "rgba(85, 85, 85, .4)",
           width: "52rem",
           allowOutsideClick: true,
-          confirmButtonColor: "#2ECC71",
+          confirmButtonColor: "#82cc28",
           confirmButtonText: "Xác nhận",
         });
       });
@@ -279,11 +279,11 @@ $(document).ready(function () {
 
           Swal.fire({
             type: "info",
-            title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #2ECC71;">${response.callerName}</span>`,
+            title: `Đã kết thúc cuộc trò chuyện với &nbsp; <span style="color: #82cc28;">${response.callerName}</span>`,
             backdrop: "rgba(85, 85, 85, .4)",
             width: "52rem",
             allowOutsideClick: true,
-            confirmButtonColor: "#2ECC71",
+            confirmButtonColor: "#82cc28",
             confirmButtonText: "Xác nhận",
           });
         });

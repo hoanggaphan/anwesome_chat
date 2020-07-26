@@ -48,16 +48,16 @@ function imageChat(divId) {
         let imageChat = `<img 
                           src="data:${data.newMessage.file.contentType}; base64, ${bufferToBase64(data.newMessage.file.data.data)}" class="show-image-chat"
                         />`
+        let senderAvatar = `<img src="/images/users/${data.newMessage.sender.avatar}" class="avatar-small" title="" />`
 
         if (isChatGroup) {
-          let senderAvatar = `<img src="/images/users/${data.newMessage.sender.avatar}" class="avatar-small" title="" />`
           messageOfMe.html(`${senderAvatar} ${imageChat}`);
 
           increaseNumberMessageGroup(divId);
           dataToEmit.groupId = targetId;
 
         } else {
-          messageOfMe.html(imageChat);
+          messageOfMe.html(`${senderAvatar} ${imageChat}`);
           dataToEmit.contactId = targetId;
         }
 
@@ -100,16 +100,16 @@ $(document).ready(function () {
     let imageChat = `<img 
                       src="data:${response.newMessage.file.contentType}; base64, ${bufferToBase64(response.newMessage.file.data.data)}" class="show-image-chat"
                     />`
+    let senderAvatar = `<img src="/images/users/${response.newMessage.sender.avatar}" class="avatar-small" title="${response.newMessage.sender.name}" />`
 
     if (response.currentGroupId) {
-      let senderAvatar = `<img src="/images/users/${response.newMessage.sender.avatar}" class="avatar-small" title="${response.newMessage.sender.name}" />`
       messageOfYou.html(`${senderAvatar} ${imageChat}`);
 
       divId = response.currentGroupId;
 
       increaseNumberMessageGroup(divId);
     } else {
-      messageOfYou.html(imageChat);
+      messageOfYou.html(`${senderAvatar} ${imageChat}`);
       divId = response.currentUserId;
     }
 
@@ -294,6 +294,7 @@ $(document).ready(function () {
             class="convert-emoji bubble ${message.senderId == divId ? 'you': 'me'}"
             data-mess-id="${divId}"
           >
+            <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
             <div class="bubble-content">
               ${message.text}  
             </div>
@@ -319,6 +320,7 @@ $(document).ready(function () {
             class="convert-emoji bubble ${message.senderId == divId ? 'you': 'me'}"
             data-mess-id="${divId}"
           >
+            <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
             <div class="bubble-content">
               <a
                 href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"

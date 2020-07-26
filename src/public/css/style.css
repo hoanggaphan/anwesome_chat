@@ -22,9 +22,10 @@ body {
   text-rendering: optimizeLegibility;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  background-image: url("../images/background/image.jpg");
-  background-size: cover;
-  background-repeat: none;
+}
+
+:root {
+  --main-color: #82cc28;
 }
 
 .alertify-notifier .ajs-message.ajs-error {
@@ -32,14 +33,14 @@ body {
 }
 
 .custom-background-btn-primary {
-  background-color: #2ECC71;
-  border-color: #2ECC71;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .custom-background-btn-primary:hover,
 .custom-background-btn-primary:focus {
-  background-color: #2ECC71 !important;
-  border-color: #2ECC71 !important;
+  background-color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
 }
 
 .custom-background-btn-reset {
@@ -425,15 +426,27 @@ label:focus,
   background-color: #eceff1;
 }
 
+.navbar-nav {
+  padding-top: 7px;
+}
+
+.icon-header {
+  padding-top: 19px!important;
+}
+
+.navbar-brand {
+  height: 100%;
+  padding: 10px 15px;
+}
+
 .navbar-brand>img {
-  margin: -12px 0px 0px 7px;
-  width: 150px;
-  -webkit-filter: brightness(130%);
-  filter: brightness(130%);
+  width: 80px;
 }
 
 .navbar {
   font-size: 14px;
+  border: none;
+  background-color: #333;
 }
 
 .dropdown-menu {
@@ -458,7 +471,7 @@ label:focus,
 }
 
 .active {
-  background-color: #2ECC71;
+  background-color: var(--main-color);
   color: #fff;
 }
 
@@ -527,7 +540,7 @@ label:focus,
 /* When the radio button is checked, add a blue background */
 
 .radio-inline input:checked~.checkmark {
-  background-color: #2ECC71;
+  background-color: var(--main-color);
 }
 
 
@@ -559,6 +572,10 @@ label:focus,
 }
 
 .searchBox {
+  padding: 19px 0;
+}
+
+.searchBox input {
   width: 300px;
   color: #fff;
   border: 0;
@@ -567,17 +584,16 @@ label:focus,
   box-shadow: none;
   line-height: normal;
   vertical-align: top;
-  margin: 11px 0px 0px 0px;
   height: 30px;
   border-radius: 2px;
   padding-left: 10px;
 }
 
-.searchBox::placeholder {
-  color: #95a5a6;
+.searchBox input::placeholder {
+  color: rgba(255, 255, 255, .5);
 }
 
-.searchBox:focus {
+.searchBox input:focus {
   outline: none;
 }
 
@@ -685,8 +701,7 @@ label:focus,
   width: 40px;
   height: 40px;
   margin-left: 10px;
-  border: 1px solid #2ECC71;
-  background-color: #2ECC71;
+  background-color: var(--main-color);
   background-image: url("../images/icons/name-type.png");
   background-repeat: no-repeat;
   background-position: top 11px left 12.5px;
@@ -1012,7 +1027,7 @@ label:focus,
   font-size: 20px;
   font-weight: 500;
   margin-right: 10px;
-  color: #2ECC81;
+  color: var(--main-color);
 }
 
 .right .bubble {
@@ -1042,7 +1057,7 @@ label:focus,
 }
 
 .right .bubble.you .bubble-content {
-  background-color: #2ECC71;
+  background-color: var(--main-color);
   position: relative;
 }
 
@@ -1057,7 +1072,7 @@ label:focus,
 
 .right .bubble.you .bubble-content::before {
   left: -4px;
-  background-color: #2ECC71;
+  background-color: var(--main-color);
 }
 
 .right .bubble.me .bubble-content::before {
@@ -1100,6 +1115,16 @@ label:focus,
 .right .bubble a:hover, .right .bubble a:focus {
   text-decoration: none;
 }
+
+.right .bubble.you .bubble-content a {
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+.right .bubble.me .bubble-content a:hover {
+  color: #337ab7;
+}
+
 
 .right .conversation-start {
   position: relative;
@@ -1588,4 +1613,17 @@ label:focus,
   display: block;
   margin: 0 auto;
   visibility: hidden;
+}
+
+#navbar-username {
+  margin-left: 4px;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+  color: #fff;
+  background-color: #222;
+}
+
+.navbar-nav > li > .dropdown-menu {
+  width: 100%;
 }

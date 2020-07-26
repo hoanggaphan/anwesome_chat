@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   gender: { type: String, default: "male" },
   phone: { type: String, default: null },
   address: { type: String, default: null },
-  avatar: { type: String, default: "avatar-default.jpg" },
+  avatar: { type: String, default: "user-default.jpg" },
   role: { type: String, default: "user" },
   local: {
     email: { type: String, trim: true },
