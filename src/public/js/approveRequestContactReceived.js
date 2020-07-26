@@ -185,6 +185,7 @@ function approveRequestContactReceived() {
               class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
               data-mess-id="${targetId}"
             >
+              <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
               <div class="bubble-content">
                 ${message.text}  
               </div>
@@ -197,6 +198,7 @@ function approveRequestContactReceived() {
               class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
               data-mess-id="${targetId}"
             >
+              <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
               <img
                 src="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
                 class="show-image-chat"
@@ -210,6 +212,7 @@ function approveRequestContactReceived() {
               class="convert-emoji bubble ${message.senderId == targetId ? 'you': 'me'}"
               data-mess-id="${targetId}"
             >
+              <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
               <div class="bubble-content">
                 <a
                   href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"
@@ -501,6 +504,7 @@ socket.on("response-approve-request-contact-received", function (user) {
         class="convert-emoji bubble ${message.senderId == user.id ? 'you': 'me'}"
         data-mess-id="${user.id}"
       >
+        <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
         <div class="bubble-content">
           ${message.text}  
         </div>
@@ -526,6 +530,7 @@ socket.on("response-approve-request-contact-received", function (user) {
         class="convert-emoji bubble ${message.senderId == user.id ? 'you': 'me'}"
         data-mess-id="${user.id}"
       >
+        <img src="/images/users/${message.sender.avatar}" class="avatar-small" title="">
         <div class="bubble-content">
           <a
             href="data:${message.file.contentType}; base64, ${bufferToBase64(message.file.data.data)}"

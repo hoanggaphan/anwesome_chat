@@ -1,7 +1,6 @@
 /*
  *
  * login-register modal css
- * https://trungquandev.com
  *
 /*  Shake animation  */
 
@@ -9,24 +8,35 @@
 
 /* @charset "UTF-8"; */
 
+:root {
+  --main-color: #82cc28;
+}
+
 body {
-  /*position: fixed;*/
-  /*width: 100%;*/
   height: 100vh;
-  background-color: #f8f8f8;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  background-image: url("../images/background/image.jpg");
+  background-image: url("../images/background/background-login.png");
   background-size: cover;
-  background-repeat: none;
+  background-repeat: no-repeat;
+  background-position: center;
   color: #fff;
+}
+
+.background-canvas {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
 }
 
 .container {
   height: 100%;
+  position: relative;
+  z-index: 1050;
 }
 
 .my-content {
@@ -49,6 +59,10 @@ hr {
 
 .login-title {
   font-size: 52px;
+}
+
+.table {
+  width: auto;
 }
 
 .table a {
@@ -285,8 +299,8 @@ hr {
 
 .login .btn-login,
 .registerBox .btn-register {
-  background-color: #00BBFF;
-  border-color: #00BBFF;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
   border-width: 0;
   color: #FFFFFF;
   display: block;
@@ -298,7 +312,7 @@ hr {
 
 .login .btn-login:hover,
 .registerBox .btn-register:hover {
-  background-color: #00A4E4;
+  background-color: var(--main-color);
   color: #FFFFFF;
 }
 
@@ -339,32 +353,39 @@ hr {
 
 .big-login,
 .big-register {
-  background-color: #00bbff;
-  color: #FFFFFF;
+  background-color: var(--main-color);
+  color: white;
   border-radius: 7px;
   border-width: 2px;
   font-size: 14px;
   font-style: normal;
-  font-weight: 200;
   padding: 12px 40px;
   text-transform: uppercase;
   transition: all 0.3s ease 0s;
 }
 
+.big-login:focus {
+  color: white;
+}
+
+.big-register:focus {
+  color: var(--main-color);
+}
+
 .big-login:hover {
-  background-color: #00A4E4;
+  background-color: var(--main-color);
   color: #FFFFFF;
 }
 
 .big-register {
   background-color: rgba(0, 0, 0, .0);
-  color: #00bbff;
-  border-color: #00bbff;
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .big-register:hover {
-  border-color: #00A4E4;
-  color: #00A4E4;
+  border-color: var(--main-color);
+  color: var(--main-color);
 }
 
 label {
@@ -376,4 +397,19 @@ label {
 .alert {
   padding: 12px;
   margin-bottom: 10px;
+}
+
+.btn-default:active:focus {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+  color: #FFFFFF;
+}
+
+.btn-default:focus {
+  outline: none!important;
+}
+
+.forgot a, .forgot a:hover {
+  color: #797979;
+  font-weight: bold;
 }

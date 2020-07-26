@@ -13,38 +13,35 @@
       </button>
       <a class="navbar-brand" href="https://trungquandev.com/" target="__blank">
         <img
-          src="images/logo_favicon/logo-trungquandev.png"
+          src="images/logo_favicon/logo.png"
           alt="logo-trungquandev"
         />
       </a>
     </div>
-    <div class="col-sm-3 no-padding">
-      <ul class="nav navbar-nav navbar-left no-padding-start">
-        <li>
-          <input
-            type="text"
-            name="search"
-            class="searchBox"
-            placeholder="Tìm kiếm tên cuộc trò chuyện"
-          />
-          <div id="search-results">
-            <h3>Kết quả</h3>
-            <div class="search_content">
-              <ul></ul>
-            </div>
-          </div>
-        </li>
-      </ul>
+    <div class="col-sm-3 searchBox">
+      <input
+        type="text"
+        name="search"
+        id="input-search"
+        placeholder="Tìm kiếm tên cuộc trò chuyện"
+      />
+      <div id="search-results">
+        <h3>Kết quả</h3>
+        <div class="search_content">
+          <ul></ul>
+        </div>
+      </div>
     </div>
     <div class="collapse navbar-collapse col-sm-6 navbar-right" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <a href="/" title="Trang chủ">
+          <a class="icon-header" href="/" title="Trang chủ">
             <i class="fa fa-home"></i>
           </a>
         </li>
         <li>
           <a
+            class="icon-header"
             href="#contactsModal"
             data-toggle="modal"
             title="Quản lý liên lạc"
@@ -63,7 +60,7 @@
           </a>
         </li>
         <li>
-          <a href="javascript:void(0)" id="noti_Button" data-toggle="modal" title="Thông báo">
+          <a class="icon-header" href="javascript:void(0)" id="noti_Button" data-toggle="modal" title="Thông báo">
             <i class="fa fa-globe"></i>
             
             <% if(countNotifUnread) { %>
@@ -90,7 +87,7 @@
           </a>
         </li>
         <li class="dropdown" id="dropdown-navbar-user" data-uid="<%= user._id %>">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
             <img
               id="navbar-avatar"
               class="avatar-small"

@@ -386,7 +386,7 @@ $(document).ready(function () {
       text: "Bạn không thể hoàn tác lại qui trình này!",
       type: "info",
       showCancelButton: true,
-      confirmButtonColor: "#2ECC71",
+      confirmButtonColor: "#82cc28",
       cancelButtonColor: "#ff7675",
       confirmButtonText: "Xác nhận",
       cancelButtonText: "Hủy",
