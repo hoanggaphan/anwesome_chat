@@ -23,6 +23,7 @@ const findUsersContact = async (req, res) => {
     const users = await contact.findUsersContact(currentUserId, keyword);
     return res.render("main/contact/sections/_findUsersContact", { users });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -43,6 +44,7 @@ const searchFriends = async (req, res) => {
     const users = await contact.searchFriends(currentUserId, keyword);
     return res.render("main/groupChat/sections/_searchFriends", { users });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -56,6 +58,7 @@ const addNew = async (req, res) => {
     const response = { success: !!newContact };
     return res.status(200).send(response);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -68,6 +71,7 @@ const removeContact = async (req, res) => {
     const removeContact = await contact.removeContact(currentUserId, contactId)
     return res.status(200).send({ success: !!removeContact });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -80,6 +84,7 @@ const removeRequestContactSent = async (req, res) => {
     const removeReq = await contact.removeRequestContactSent(currentUserId, contactId)
     return res.status(200).send({ success: !!removeReq });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -92,6 +97,7 @@ const removeRequestContactReceived = async (req, res) => {
     const removeReq = await contact.removeRequestContactReceived(currentUserId, contactId)
     res.status(200).send({ success: !!removeReq });
   } catch (error) {
+    console.error(error)
     res.status(500).send(error);
   }
 };
@@ -105,6 +111,7 @@ const approveRequestContactReceived = async (req, res) => {
 
     res.status(200).send({ messages });
   } catch (error) {
+    console.error(error)
     res.status(500).send(error);
   }
 };
@@ -121,6 +128,7 @@ const readMoreContacts = async (req, res) => {
 
     return res.status(200).send(newContactUsers);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -137,6 +145,7 @@ const readMoreContactsSent = async (req, res) => {
 
     return res.status(200).send(newContactUsers);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -153,16 +162,16 @@ const readMoreContactsReceived = async (req, res) => {
 
     return res.status(200).send(newContactUsers);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
 
-
-const contactConversation = async (req, res) => {
+const talkContact = async (req, res) => {
   try {
     let currentUserId = req.user._id;
     let contactId = req.params.contactId;
-    let contactConversation = await contact.contactConversation(currentUserId, contactId);
+    let contactConversation = await contact.talkContact(currentUserId, contactId);
 
     let dataToRender = {
       user: req.user,
@@ -172,10 +181,10 @@ const contactConversation = async (req, res) => {
       bufferToBase64,
     };
 
-    let leftSideData = await renderFile("src/views/main/contactConversation/_leftSide.ejs", dataToRender);
-    let rightSideData = await renderFile("src/views/main/contactConversation/_rightSide.ejs", dataToRender);
-    let imageModalData = await renderFile("src/views/main/contactConversation/_imageModal.ejs", dataToRender);
-    let attachmentModalData = await renderFile("src/views/main/contactConversation/_attachmentModal.ejs", dataToRender);
+    let leftSideData = await renderFile("src/views/main/talkContact/_leftSide.ejs", dataToRender);
+    let rightSideData = await renderFile("src/views/main/talkContact/_rightSide.ejs", dataToRender);
+    let imageModalData = await renderFile("src/views/main/talkContact/_imageModal.ejs", dataToRender);
+    let attachmentModalData = await renderFile("src/views/main/talkContact/_attachmentModal.ejs", dataToRender);
 
     return res.status(200).send({
       leftSideData,
@@ -189,6 +198,58 @@ const contactConversation = async (req, res) => {
   }
 };
 
+const talkGroup = async (req, res) => {
+  try {
+    let currentUserId = req.user._id;
+    let groupId = req.params.groupId;
+    let groupConversation = await contact.talkGroup(currentUserId, groupId);
+
+    let dataToRender = {
+      user: req.user,
+      groupConversation,
+      convertTimestampHumanTime,
+      lastItemFromArr,
+      bufferToBase64,
+    };
+
+    let leftSideData = await renderFile("src/views/main/talkGroup/_leftSide.ejs", dataToRender);
+    let rightSideData = await renderFile("src/views/main/talkGroup/_rightSide.ejs", dataToRender);
+    let imageModalData = await renderFile("src/views/main/talkGroup/_imageModal.ejs", dataToRender);
+    let attachmentModalData = await renderFile("src/views/main/talkGroup/_attachmentModal.ejs", dataToRender);
+
+    return res.status(200).send({
+      leftSideData,
+      rightSideData,
+      imageModalData,
+      attachmentModalData
+    });
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error);
+  }
+};
+
+const findUserConversations = async (req, res) => {
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    const errors = Object.values(validationErrors.mapped()).map(
+      (item) => item.msg
+    );
+    return res.status(500).send(errors);
+  }
+  
+  try {
+    let keyword = req.query.keyword;
+    let currentUserId = req.user._id;
+    let conversations = await contact.findUserConversations(currentUserId, keyword);
+    res.render("main/findNameConversations/_findNameConvetsations.ejs", { conversations });
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error);
+  }
+
+};
+
 module.exports = {
   findUsersContact,
   addNew,
@@ -200,5 +261,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  contactConversation
+  talkContact,
+  findUserConversations,
+  talkGroup
 };

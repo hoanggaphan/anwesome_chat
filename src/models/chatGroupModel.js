@@ -66,6 +66,13 @@ ChatGroupSchema.statics = {
       .skip(skip)
       .limit(limit)
       .exec();
+  },
+
+  findAllGroupConversations(id, keyword) {
+    return this.find({
+      members: { $elemMatch: { userId: id } },
+      name: { $regex: keyword, $options: "i" }
+    }).exec();
   }
 };
 

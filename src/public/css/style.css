@@ -393,18 +393,35 @@ label:focus,
   border-bottom: 1px solid #dfe6e9;
   width: 90%;
   height: auto;
-  padding: 7px 0px 12px 5px;
+  padding: 12px 5px;
   margin: 0 auto;
   list-style-type: none;
+  display: flex;
 }
 
 .search_content ul li img {
-  float: left;
   width: 27px;
   height: 27px;
   margin-right: 7px;
   border-radius: 50%;
   border: 1px solid #b2bec3;
+}
+
+.search_content ul li .name {
+  font-size: 14px;
+  line-height: 22px;
+  color: #1a1a1a;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  display: block;
+}
+
+.search_content ul li .name.group-chat {
+  color: #ff7675 ;
+}
+
+.search_content ul li .address {
+  display: block;
 }
 
 .search_content ul li:hover {
@@ -440,7 +457,7 @@ label:focus,
 }
 
 .navbar-brand>img {
-  width: 80px;
+  width: 100px;
 }
 
 .navbar {

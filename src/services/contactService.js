@@ -2,6 +2,7 @@ import ContactModel from "../models/contactModel";
 import UserModel from "../models/userModel";
 import NotificationModel from "../models/notificationModel";
 import MessageModel from "../models/messageModel";
+import ChatGroupModel from "../models/chatGroupModel";
 import _ from "lodash";
 
 const LIMIT_NUMBER_TAKEN = 10;
@@ -11,7 +12,7 @@ const findUsersContact = (currentUserId, keyword) => {
   return new Promise(async (resolve, reject) => {
     let deprecatedUserIds = [currentUserId];
     let contactsByUser = await ContactModel.findAllByUser(currentUserId);
-    contactsByUser.map((contact) => {
+    contactsByUser.forEach((contact) => {
       deprecatedUserIds.push(contact.userId);
       deprecatedUserIds.push(contact.contactId);
     });
@@ -33,13 +34,38 @@ const searchFriends = (currentUserId, keyword) => {
     });
 
     // Remove duplicate
-    // friendIds = _.uniqBy(friendIds);
     friendIds = [...new Set(friendIds)];
     
     friendIds = friendIds.filter(userId => userId != currentUserId);
     let users = await UserModel.findAllToAddGroupChat(friendIds, keyword);
 
     resolve(users);
+  });
+};
+
+const findUserConversations = (currentUserId, keyword) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let friendIds = [];
+      let friends = await ContactModel.getFriends(currentUserId);
+  
+      friends.forEach(item => {
+        friendIds.push(item.userId);
+        friendIds.push(item.contactId);
+      });
+  
+      // Remove duplicate
+      friendIds = [...new Set(friendIds)];
+      
+      friendIds = friendIds.filter(userId => userId != currentUserId);
+      let users = await UserModel.findAllUserConversations(friendIds, keyword);
+
+      let groups = await ChatGroupModel.findAllGroupConversations(currentUserId, keyword);
+      let conversations = [...users, ...groups];      
+      resolve(conversations);
+    } catch (error) {
+      reject(error);
+    }
   });
 };
 
@@ -300,7 +326,7 @@ const readMoreContactsReceived = (currentUserId, skipNumberContacts) => {
   });
 };
 
-const contactConversation = (currentUserId, contactId) => {
+const talkContact = (currentUserId, contactId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let contactConversation = await UserModel.getNormalUserDataById(contactId);
@@ -310,6 +336,22 @@ const contactConversation = (currentUserId, contactId) => {
       contactConversation.messages = _.reverse(messages);
 
       resolve(contactConversation);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const talkGroup = (currentUserId, groupId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let groupConversation = await ChatGroupModel.getChatGroupById(groupId);
+      
+      groupConversation = groupConversation.toObject();
+      let messages = await MessageModel.model.getMessagesInGroup(groupConversation._id, LIMIT_MESSAGES_TAKEN);
+      groupConversation.messages = _.reverse(messages);
+
+      resolve(groupConversation);
     } catch (error) {
       reject(error);
     }
@@ -333,5 +375,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  contactConversation
+  talkContact,
+  findUserConversations,
+  talkGroup
 };

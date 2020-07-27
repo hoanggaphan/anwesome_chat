@@ -12,6 +12,7 @@ const readMore = async (req, res) => {
 
     return res.status(200).send(newNotification);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -21,6 +22,7 @@ const markAllAsRead = async (req, res) => {
     let mark = await notification.markAllAsRead(req.user._id, req.body.targetUser);
     return res.status(200).send(mark);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };

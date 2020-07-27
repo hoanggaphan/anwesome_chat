@@ -23,10 +23,12 @@ const initRoutes = (app) => {
 
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
   router.get("/contact/search-friends/:keyword", auth.checkLoggedIn, contactValid.searchFriends ,contact.searchFriends);
+  router.get("/contact/find-user-conversations", auth.checkLoggedIn, contactValid.findUserConversations, contact.findUserConversations);
   router.get("/contact/read-more-contacts", auth.checkLoggedIn, contact.readMoreContacts);
   router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn, contact.readMoreContactsSent);
   router.get("/contact/read-more-contacts-received", auth.checkLoggedIn, contact.readMoreContactsReceived);
-  router.get("/contact/contact-conversation/:contactId", auth.checkLoggedIn, contact.contactConversation);
+  router.get("/contact/talk-contact/:contactId", auth.checkLoggedIn, contact.talkContact);
+  router.get("/contact/talk-group/:groupId", auth.checkLoggedIn, contact.talkGroup);
   router.post("/contact/add-new", auth.checkLoggedIn, contact.addNew);
   router.delete("/contact/remove-contact", auth.checkLoggedIn, contact.removeContact);
   router.delete("/contact/remove-request-contact-sent", auth.checkLoggedIn, contact.removeRequestContactSent);

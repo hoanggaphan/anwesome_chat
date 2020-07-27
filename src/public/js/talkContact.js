@@ -1,5 +1,5 @@
-function contactConversation() {
-  $(".user-talk").off("click").on("click", function () {
+function talkContact() {
+  $(".user-talk").off("mousedown").on("mousedown", function () {
     let targetId = $(this).data("uid");
     $("#contactsModal").modal("hide");
 
@@ -8,12 +8,12 @@ function contactConversation() {
       return;
     }
 
-    $.get(`/contact/contact-conversation/${targetId}`, function (data) {
+    $.get(`/contact/talk-contact/${targetId}`, function (data) {
       if (data.leftSideData.trim() === "") {
         alertify.notify("2 người không còn là bạn bè hãy refresh trang và kết bạn lại.", "error", 5);
         return;
       }
-
+      
       // Step 01: handle leftSide
       $(`#all-chat`).find("ul").prepend(data.leftSideData);
       $(`#user-chat`).find("ul").prepend(data.leftSideData);
@@ -57,5 +57,5 @@ function contactConversation() {
 }
 
 $(document).ready(function () {
-  contactConversation();
+  talkContact();
 });
