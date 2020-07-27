@@ -34,6 +34,7 @@ const addNewTextEmoji = async (req, res) => {
     
     return res.status(200).send(data);
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -178,6 +179,7 @@ const readMoreAllChat = async (req, res) => {
       attachmentModalData
     });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };
@@ -208,6 +210,7 @@ const readMore = async (req, res) => {
       attachmentModalData,
     });
   } catch (error) {
+    console.error(error)
     return res.status(500).send(error);
   }
 };

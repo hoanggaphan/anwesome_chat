@@ -110,6 +110,31 @@ UserSchema.statics = {
     ).exec();
   },
 
+  /**
+   * Find all users conversations.
+   * @param { array: friend userIds } friendIds
+   * @param { string: keyword search } keyword
+   */
+  findAllUserConversations(friendIds, keyword) {
+    return this.find(
+      {
+        $and: [
+          { "_id": { $in: friendIds } },
+          { "local.isActived": true },
+          {
+            $or: [
+              { "username": { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
+              { "local.email": { $regex: keyword, $options: "i" } },
+              { "facebook.email": { $regex: keyword, $options: "i" } },
+              { "google.email": { $regex: keyword, $options: "i" } },
+            ],
+          },
+        ],
+      },
+      { _id: 1, username: 1, address: 1, avatar: 1 } // lấy ra các trường tương ứng
+    ).exec();
+  },
+
   deleteById(id) {
     return this.findByIdAndDelete({ _id: id }).exec();
   },
