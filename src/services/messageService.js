@@ -87,6 +87,8 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
         let receiver = {
           id: getChatGroupReceiver._id,
           name: getChatGroupReceiver.name,
+          usersAmount: getChatGroupReceiver.usersAmount,
+          messagesAmount: getChatGroupReceiver.messagesAmount,
           avatar: app.general_avatar_group_chat
         };
 
@@ -111,7 +113,8 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);
@@ -148,7 +151,8 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);
@@ -207,7 +211,8 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);
@@ -248,7 +253,8 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);
@@ -307,7 +313,8 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);
@@ -348,7 +355,8 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
 
         let data = {
           newMessage,
-          messages
+          messages,
+          receiver
         };
 
         resolve(data);

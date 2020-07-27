@@ -8,7 +8,7 @@ export const transValidation = {
   update_address: "Địa chỉ từ 3-30 kí tự.",
   update_phone: "Số điện thoại bắt đầu từ 0, gồm 9-10 số.",
   keyword_find_user: "Nội dung tìm kiếm gồm 1-16 kí tự, không được chứa kí tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trống",
-  keyword_find_user_conversations: "Nội dung tìm kiếm không hợp lệ, giới hạn từ 5 - 30 kí tự và không chứa kí tự đặc biệt.",
+  keyword_find_user_conversations: "Nội dung tìm kiếm không hợp lệ, giới hạn từ 1 - 16 kí tự và không chứa kí tự đặc biệt.",
   message_text_emoji_incorrect: "Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 ký tự, tối đa 400 kí tự",
   add_new_group_users_incorrect: "Vui lòng chọn bạn bè để thêm vào nhóm, tối thiểu 2 người",
   add_new_group_name_incorrect: "Vui lòng nhập tên cuộc trò chuyện, giới hạn từ 5 - 30 kí tự và không chứa kí tự đặc biệt.",
