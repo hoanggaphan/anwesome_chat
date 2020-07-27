@@ -110,8 +110,8 @@ function findNameConversation(e) {
   if (e.which === 13) {
     let keyword = $("#input-search").val();
     let regKeyword = new RegExp(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
-    if (keyword.length < 5 || keyword.length > 30 || !regKeyword.test(keyword)) {
-      alertify.error("Nội dung tìm kiếm không hợp lệ, giới hạn từ 5 - 30 kí tự và không chứa kí tự đặc biệt.", 5);
+    if (keyword.length < 1 || keyword.length > 16 || !regKeyword.test(keyword)) {
+      alertify.error("Nội dung tìm kiếm không hợp lệ, giới hạn từ 1 - 16 kí tự và không chứa kí tự đặc biệt.", 5);
       return;
     }
 

@@ -18,7 +18,7 @@ function resizeNineScrollLeft() {
 }
 
 function resizeNineScrollRight() {
-  $(".right").getNiceScroll().resize();
+  $(".chat").getNiceScroll().resize();
 }
 
 

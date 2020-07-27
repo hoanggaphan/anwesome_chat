@@ -16,7 +16,7 @@ const searchFriends = [
 
 const findUserConversations = [
   query("keyword", transValidation.keyword_find_user_conversations)
-    .isLength({ min: 5, max: 30 })
+    .isLength({ min: 1, max: 16 })
     .matches(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
     
 ];

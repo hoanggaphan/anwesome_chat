@@ -1,5 +1,5 @@
 function talkContact() {
-  $(".user-talk").off("mousedown").on("mousedown", function () {
+  $(".user-talk").off("click").on("click", function () {
     let targetId = $(this).data("uid");
     $("#contactsModal").modal("hide");
 

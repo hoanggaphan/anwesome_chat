@@ -50,6 +50,8 @@ function removeContact() {
                 $("ul.people").find("a")[0].click();
               } 
 
+              // Step 07: reset create group
+              $("#btn-cancel-group-chat").click();
             }
           },
         });

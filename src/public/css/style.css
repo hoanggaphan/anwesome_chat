@@ -26,6 +26,8 @@ body {
 
 :root {
   --main-color: #82cc28;
+  --primary-text-color: #999;
+  --secondary-text-color: #777;
 }
 
 .alertify-notifier .ajs-message.ajs-error {
@@ -221,8 +223,8 @@ label:focus,
   min-height: 26px;
   line-height: 26px;
   font-size: 13px;
-  border-color: #2ACC77;
-  background-color: #2ACC77;
+  border-color: var(--main-color);
+  background-color: var(--main-color);
   color: #fff;
   fill: #fff;
   margin: 10px 0px 5px 2px;
@@ -410,7 +412,7 @@ label:focus,
 .search_content ul li .name {
   font-size: 14px;
   line-height: 22px;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
   display: block;
@@ -441,6 +443,10 @@ label:focus,
 .list-attachments li:hover {
   cursor: pointer;
   background-color: #eceff1;
+}
+
+.navbar {
+  border-radius: unset;
 }
 
 .navbar-nav {
@@ -494,7 +500,7 @@ label:focus,
 
 .modal .active {
   background-color: #fff;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
 }
 
 #seting-profile {
@@ -771,7 +777,7 @@ label:focus,
 .left .people .person .name {
   font-size: 14px;
   line-height: 22px;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
 }
@@ -782,7 +788,7 @@ label:focus,
   top: 12px;
   right: 10%;
   padding: 0 0 5px 5px;
-  color: #999;
+  color: var(--primary-text-color);
   background-color: #fff;
 }
 
@@ -793,7 +799,7 @@ label:focus,
   width: 70%;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #999;
+  color: var(--primary-text-color);
 }
 
 .left .people .person.active,
@@ -834,11 +840,11 @@ label:focus,
 
 .right .top span {
   font-size: 15px;
-  color: #999;
+  color: var(--primary-text-color);
 }
 
 .right .top span .name {
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
 }
@@ -846,7 +852,7 @@ label:focus,
 .right .top .chat-menu-right a {
   float: right;
   margin-right: 10px;
-  color: #2c3e50;
+  color: var(--primary-text-color);
 }
 
 .right .content-chat {
@@ -1002,7 +1008,7 @@ label:focus,
   width: 100%;
   height: 70%;
   padding: 0 10px;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   border: 0;
   background-color: #eceff1;
   font-family: 'Source Sans Pro', sans-serif;
@@ -1025,7 +1031,7 @@ label:focus,
   width: 100%;
   height: 70%;
   padding: 0 10px;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   border: 0;
   outline: none;
   background-color: #eceff1;
@@ -1044,7 +1050,7 @@ label:focus,
   font-size: 20px;
   font-weight: 500;
   margin-right: 10px;
-  color: var(--main-color);
+  color: #777;
 }
 
 .right .bubble {
@@ -1101,7 +1107,7 @@ label:focus,
   float: right;
   display: flex;
   flex-direction: row-reverse;
-  color: #1a1a1a;
+  color: var(--primary-text-color);
   -ms-flex-item-align: end;
   -webkit-animation-name: slideFromRight;
   animation-name: slideFromRight;
@@ -1153,7 +1159,7 @@ label:focus,
 .right .conversation-start span {
   font-size: 14px;
   display: inline-block;
-  color: #999;
+  color: var(--primary-text-color);
 }
 
 .right .conversation-start span:before,
@@ -1251,8 +1257,8 @@ label:focus,
   min-height: 26px;
   line-height: 26px;
   font-size: 13px;
-  border-color: #2ACC77;
-  background-color: #2ACC77;
+  border-color: var(--main-color);
+  background-color: var(--main-color);
   color: #fff;
   fill: #fff;
   margin: 10px 0px 5px 2px;
@@ -1281,8 +1287,8 @@ label:focus,
 }
 
 .list-user-added button#btn-create-group-chat {
-  border-color: #2ACC77;
-  background-color: #2ACC77;
+  border-color: var(--main-color);
+  background-color: var(--main-color);
 }
 
 .list-user-added button#btn-cancel-group-chat {
@@ -1581,7 +1587,7 @@ label:focus,
 }
 
 .show-number-members, .show-number-messages {
-  color: #2c3e59!important;
+  color: var(--primary-text-color)!important;
 }
 
 .message-time-realtime {
@@ -1644,3 +1650,29 @@ label:focus,
 .navbar-nav > li > .dropdown-menu {
   width: 100%;
 }
+
+i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip {
+  color: #777;
+}
+
+.alertify-notifier .ajs-message.ajs-success {
+  background: var(--main-color);
+}
+
+/* .alertify-notifier .ajs-message {
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
+  text-align: center;
+  border: solid 1px #ddd;
+  border-radius: 2px;
+}
+
+.alertify-notifier .ajs-message.ajs-error {
+  color: #fff;
+  background: rgba(217, 92, 92, 0.95);
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+.alertify-notifier .ajs-message.ajs-warning {
+  background: rgba(252, 248, 215, 0.95);
+  border-color: #999;
+} */
