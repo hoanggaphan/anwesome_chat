@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from "../helpers/clientHelper";
-import { contact, message, notification } from "../services/index";
+import { contact, message, notification, groupChat } from "../services/index";
 
 const getICETurnServer = () => {
   return new Promise(async (resolve, reject) => {
@@ -50,6 +50,12 @@ const getHome = async (req, res) => {
   let countAllContactsSent = await contact.countAllContactsSent(req.user._id);
   let countAllContactsReceived = await contact.countAllContactsReceived(req.user._id);
 
+  // count chatGroup 
+  let countAllChatGroups = await groupChat.countAllGroupChats(req.user._id);
+
+  // count all conversations
+  let countAllConversations = countAllChatGroups + countAllContacts;
+
   // all messages with conversation, max 30 item
   let allConversationWithMessages = await message.getAllConversationItems(req.user._id);
 
@@ -68,6 +74,8 @@ const getHome = async (req, res) => {
     countAllContacts,
     countAllContactsSent,
     countAllContactsReceived,
+    countAllChatGroups,
+    countAllConversations,
     allConversationWithMessages,
     bufferToBase64,
     lastItemFromArr,

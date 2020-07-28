@@ -5,15 +5,15 @@ $(document).ready(function () {
     $(this).css("display", "none");
     $(".read-more-contact-loader").css("display", "inline-block");
 
-    $.get(`/contact/read-more-contacts?skipNumber=${skipNumber}`, function (newContactUsers) {
-      if(!newContactUsers.length) {
+    $.get(`/contact/read-more-contacts?skipNumber=${skipNumber}`, function (data) {
+      if(!data.newContactUsers.length) {
         alertify.notify("Bạn không còn bạn bè nào để xem nữa cả.", "error", 5);
         $("#link-read-more-contacts").css("display", "inline-block");
         $(".read-more-contact-loader").css("display", "none");
         return;
       }
 
-      newContactUsers.map(user => {
+      data.newContactUsers.map(user => {
         $("#contacts")
           .find("ul")
           .append(
@@ -43,6 +43,10 @@ $(document).ready(function () {
 
       $("#link-read-more-contacts").css("display", "inline-block");
       $(".read-more-contact-loader").css("display", "none");
+
+      if($(`#contacts .contactList`).find("._contactList").length === data.countAllContacts) {
+        $("#link-read-more-contacts").remove();
+      }
     });
   });
 });

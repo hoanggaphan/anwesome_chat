@@ -4,7 +4,7 @@ import fsExtra from 'fs-extra';
 import multer from "multer";
 import {transError} from "../../lang/vi";
 import {app} from "../config/app";
-import {message} from '../services/index';
+import {message, contact, groupChat} from '../services/index';
 import {convertTimestampHumanTime, lastItemFromArr, bufferToBase64} from '../helpers/clientHelper';
 import {promisify} from 'util'
 
@@ -158,7 +158,14 @@ const readMoreAllChat = async (req, res) => {
 
     // get more item
     let newAllConversations = await message.readMoreAllChat(req.user._id, skipPersonal, skipGroup, personalIds, groupIds);
-    
+
+    // count contact
+    let countAllContacts = await contact.countAllContacts(req.user._id);
+    // count chatGroup 
+    let countAllChatGroups = await groupChat.countAllGroupChats(req.user._id);
+    // count all conversations
+    let countAllConversations = countAllChatGroups + countAllContacts;
+
     let dataToRender = {
       user: req.user,
       newAllConversations,
@@ -176,8 +183,10 @@ const readMoreAllChat = async (req, res) => {
       leftSideData,
       rightSideData,
       imageModalData,
-      attachmentModalData
+      attachmentModalData,
+      countAllConversations
     });
+    
   } catch (error) {
     console.error(error)
     return res.status(500).send(error);

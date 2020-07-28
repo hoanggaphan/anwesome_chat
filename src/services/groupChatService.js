@@ -23,6 +23,18 @@ let addNewGroup = (currentUserId, arrayMemberIds, groupChatName) => {
   });
 }
 
+let countAllGroupChats = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let count = await ChatGroupModel.countAllChatGroups(currentUserId);
+      resolve(count);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
-  addNewGroup
+  addNewGroup,
+  countAllGroupChats
 }
