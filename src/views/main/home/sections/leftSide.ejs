@@ -188,9 +188,11 @@
                     <% }); %>
                 </ul>
                 <div class="read-more-group-chat">
-                    <a href="javascript:void(0)" id="link-read-more-group-chat" >
-                        <strong>Xem thêm...</strong>
-                    </a>
+                    <% if (countAllChatGroups !== groupConversationWithMessages.length) { %> 
+                        <a href="javascript:void(0)" id="link-read-more-group-chat" >
+                            <strong>Xem thêm...</strong>
+                        </a>
+                    <% } %>
                     <div class="read-more-group-chat-loader"><div></div><div></div></div>
                 </div>
             </div>

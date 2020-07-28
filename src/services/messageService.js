@@ -7,7 +7,7 @@ import ContactModel from "../models/contactModel";
 import MessageModel from "../models/messageModel";
 import UserModel from "../models/userModel";
 
-const LIMIT_CONVERSATION_TAKEN = 2;
+const LIMIT_CONVERSATION_TAKEN = 1;
 const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
@@ -69,7 +69,7 @@ const getAllConversationItems = (currentUserId) => {
 };
 
 /**
- * Get all conversation
+ * Get user conversation
  * @param {string} currentUserId
  */
 const getUserConversationItems = (currentUserId) => {
@@ -109,6 +109,40 @@ const getUserConversationItems = (currentUserId) => {
       );
 
       resolve(userConversationWithMessages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/**
+ * Get group conversation
+ * @param {string} currentUserId
+ */
+const getGroupConversationItems = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const groupConversations = await ChatGroupModel.getChatGroups(currentUserId, LIMIT_CONVERSATION_TAKEN);
+
+      // get message to apply in screen chat
+      let groupConversationWithMessagesPromise = groupConversations.map(
+        async (conversation) => {
+          conversation = conversation.toObject();
+          let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
+          conversation.messages = _.reverse(messages);
+          return conversation;
+        }
+      );
+
+      let groupConversationWithMessages = await Promise.all(groupConversationWithMessagesPromise);
+
+      // sort by updatedAt desending
+      groupConversationWithMessages = _.sortBy(
+        groupConversationWithMessages,
+        (item) => -item.updatedAt
+      );
+
+      resolve(groupConversationWithMessages);
     } catch (error) {
       reject(error);
     }
@@ -529,6 +563,40 @@ const readMoreUserChat = (currentUserId, skipPersonal, personalIds) => {
 };
 
 /**
+ * Read more personal and group chat
+ * @param {string} currentUserId 
+ * @param {number} skipGroup 
+ * @param {array} groupIds 
+ */
+const readMoreGroupChat = (currentUserId, skipGroup, groupIds) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const groupConversations = await ChatGroupModel.readMoreChatGroup(currentUserId, skipGroup, groupIds, LIMIT_CONVERSATION_TAKEN);
+
+      // get message to apply in screen chat
+      let groupConversationWithMessagesPromise = groupConversations.map(
+        async (conversation) => {
+          conversation = conversation.toObject();
+          let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
+          conversation.messages = _.reverse(messages);
+          return conversation;
+        }
+      );
+      let groupConversationWithMessages = await Promise.all(groupConversationWithMessagesPromise);
+      // sort by updatedAt desending
+      groupConversationWithMessages = _.sortBy(
+        groupConversationWithMessages,
+        (item) => -item.updatedAt
+      );
+
+      resolve(groupConversationWithMessages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/**
  * 
  * @param {string} currentUserId 
  * @param {number} skipMessage 
@@ -559,10 +627,12 @@ const readMore = (currentUserId, skipMessage, targetId, chatInGroup) => {
 module.exports = { 
   getAllConversationItems, 
   getUserConversationItems,
+  getGroupConversationItems,
   addNewTextEmoji, 
   addNewImage,
   addNewAttachment,
   readMoreAllChat,
+  readMoreUserChat,
+  readMoreGroupChat,
   readMore,
-  readMoreUserChat
 };
