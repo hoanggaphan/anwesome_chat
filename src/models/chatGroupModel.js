@@ -73,7 +73,17 @@ ChatGroupSchema.statics = {
       members: { $elemMatch: { userId: id } },
       name: { $regex: keyword, $options: "i" }
     }).exec();
-  }
+  },
+
+  /**
+   * Count all chatGroups by userId
+   * @param {string} userId
+   */
+  countAllChatGroups(userId) {
+    return this.countDocuments({
+      members: { $elemMatch: { userId: userId } },
+    }).exec();
+  },
 };
 
 module.exports = mongoose.model("chat-group", ChatGroupSchema);

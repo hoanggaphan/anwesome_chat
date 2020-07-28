@@ -7,7 +7,7 @@ import ContactModel from "../models/contactModel";
 import MessageModel from "../models/messageModel";
 import UserModel from "../models/userModel";
 
-const LIMIT_CONVERSATION_TAKEN = 1;
+const LIMIT_CONVERSATION_TAKEN = 5;
 const LIMIT_MESSAGES_TAKEN = 30;
 
 /**
@@ -431,7 +431,7 @@ const readMoreAllChat = (currentUserId, skipPersonal, skipGroup, personalIds, gr
       reject(error);
     }
   });
-}
+};
 
 /**
  * 
@@ -459,7 +459,7 @@ const readMore = (currentUserId, skipMessage, targetId, chatInGroup) => {
       reject(error);
     }
   });
-}
+};
 
 module.exports = { 
   getAllConversationItems, 
@@ -467,5 +467,5 @@ module.exports = {
   addNewImage,
   addNewAttachment,
   readMoreAllChat,
-  readMore
+  readMore,
 };

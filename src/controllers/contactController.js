@@ -119,14 +119,14 @@ const approveRequestContactReceived = async (req, res) => {
 const readMoreContacts = async (req, res) => {
   try {
     // get skip number from query param
-    const skipNumberContacts = +req.query.skipNumber;
+    let skipNumberContacts = +req.query.skipNumber;
     // get more item
-    const newContactUsers = await contact.readMoreContacts(
-      req.user._id,
-      skipNumberContacts
-    );
+    let newContactUsers = await contact.readMoreContacts(req.user._id, skipNumberContacts);
 
-    return res.status(200).send(newContactUsers);
+    // count all contacts
+    let countAllContacts = await contact.countAllContacts(req.user._id);
+
+    return res.status(200).send({newContactUsers, countAllContacts});
   } catch (error) {
     console.error(error)
     return res.status(500).send(error);
@@ -136,14 +136,17 @@ const readMoreContacts = async (req, res) => {
 const readMoreContactsSent = async (req, res) => {
   try {
     // get skip number from query param
-    const skipNumberContacts = +req.query.skipNumber;
+    let skipNumberContacts = +req.query.skipNumber;
     // get more item
-    const newContactUsers = await contact.readMoreContactsSent(
+    let newContactUsers = await contact.readMoreContactsSent(
       req.user._id,
       skipNumberContacts
     );
 
-    return res.status(200).send(newContactUsers);
+    // count all contacts sent
+    let countAllContactsSent = await contact.countAllContactsSent(req.user._id);
+
+    return res.status(200).send({newContactUsers, countAllContactsSent});
   } catch (error) {
     console.error(error)
     return res.status(500).send(error);
@@ -153,14 +156,17 @@ const readMoreContactsSent = async (req, res) => {
 const readMoreContactsReceived = async (req, res) => {
   try {
     // get skip number from query param
-    const skipNumberContacts = +req.query.skipNumber;
+    let skipNumberContacts = +req.query.skipNumber;
     // get more item
-    const newContactUsers = await contact.readMoreContactsReceived(
+    let newContactUsers = await contact.readMoreContactsReceived(
       req.user._id,
       skipNumberContacts
     );
 
-    return res.status(200).send(newContactUsers);
+    // count all contacts received
+    let countAllContactsReceived = await contact.countAllContactsReceived(req.user._id);
+
+    return res.status(200).send({newContactUsers, countAllContactsReceived});
   } catch (error) {
     console.error(error)
     return res.status(500).send(error);

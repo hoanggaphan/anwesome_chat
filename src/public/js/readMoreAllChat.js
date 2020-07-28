@@ -21,7 +21,7 @@ $(document).ready(function () {
         $(".read-more-all-chat-loader").css("display", "none");
         return;
       }
-
+      
       // Step 01: handle leftSide
       $(`#all-chat`).find("ul").append(data.leftSideData);
 
@@ -59,6 +59,11 @@ $(document).ready(function () {
 
       // Step 12: call readMoreMessages
       readMoreMessages();
+
+      // Step 13: hide button readmore
+      if($(`#all-chat`).find("ul a.room-chat").length === data.countAllConversations) {
+        $("#link-read-more-all-chat").remove();
+      }
     });
   });
 });
