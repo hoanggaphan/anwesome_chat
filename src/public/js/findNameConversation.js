@@ -16,7 +16,6 @@ function talk() {
         
         // Step 01: handle leftSide
         $(`#all-chat`).find("ul").prepend(data.leftSideData);
-        $(`#group-chat`).find("ul").prepend(data.leftSideData);
         
         // Step 02: handle scroll left
         nineScrollLeft();
@@ -66,7 +65,6 @@ function talk() {
       
       // Step 01: handle leftSide
       $(`#all-chat`).find("ul").prepend(data.leftSideData);
-      $(`#user-chat`).find("ul").prepend(data.leftSideData);
       
       // Step 02: handle scroll left
       nineScrollLeft();

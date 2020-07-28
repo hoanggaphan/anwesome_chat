@@ -153,13 +153,6 @@ function changeTypeChat() {
   $("#select-type-chat").on("change", function () {
     let optionSelected = $("option:selected", this);
     optionSelected.tab("show");
-
-    // Hiển thị button mở modal tạo nhóm trò chuyện
-    if($(this).val() === "user-chat") {
-      $(".create-group-chat").hide();
-    } else {
-      $(".create-group-chat").show();
-    }
   })
 }
 

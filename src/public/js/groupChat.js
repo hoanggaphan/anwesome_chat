@@ -133,7 +133,6 @@ function callCreateGroupChat() {
             </a>`;
           
           $("#all-chat").find("ul").prepend(leftSideData);
-          $("#group-chat").find("ul").prepend(leftSideData);
 
           // Step 03: handle rightSide.ejs
           let rightSideData = `
@@ -296,7 +295,6 @@ $(document).ready(function () {
       </a>`;
     
     $("#all-chat").find("ul").prepend(leftSideData);
-    $("#group-chat").find("ul").prepend(leftSideData);
 
     // Step 02: handle rightSide.ejs
     let rightSideData = `

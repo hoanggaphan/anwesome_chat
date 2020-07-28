@@ -43,8 +43,6 @@ const initRoutes = (app) => {
   router.put("/user/update-password", auth.checkLoggedIn, userValid.updatePassword , user.updatePassword);
 
   router.get("/message/read-more-all-chat", auth.checkLoggedIn, message.readMoreAllChat);
-  router.get("/message/read-more-user-chat", auth.checkLoggedIn, message.readMoreUserChat);
-  router.get("/message/read-more-group-chat", auth.checkLoggedIn, message.readMoreGroupChat);
   router.get("/message/read-more", auth.checkLoggedIn, message.readMore);
   router.post("/message/add-new-text-emoji", auth.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji)
   router.post("/message/add-new-image", auth.checkLoggedIn, message.addNewImage);
