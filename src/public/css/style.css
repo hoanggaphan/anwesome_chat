@@ -27,6 +27,7 @@ body {
 :root {
   --default-green-color: #82cc28;
   --default-red-color: #ff7675;
+  --default-text-color: rgba(0, 0, 0, 1);
   --primary-text-color: #999;
   --secondary-text-color: #777;
 }
@@ -413,7 +414,7 @@ label:focus,
 .search_content ul li .name {
   font-size: 14px;
   line-height: 22px;
-  color: var(--primary-text-color);
+  color: var(--secondary-text-color);
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
   display: block;
@@ -1596,7 +1597,7 @@ label:focus,
 }
 
 .message-time-realtime {
-  color: #e74c3c!important;
+  color: var(--default-red-color)!important;
   font-weight: bold;
 }
 
