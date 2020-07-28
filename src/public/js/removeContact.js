@@ -36,7 +36,6 @@ function removeContact() {
 
               // Step 01: remove leftSide.ejs
               $("#all-chat").find(`ul a[href = "#uid_${targetId}"]`).remove();
-              $("#user-chat").find(`ul a[href = "#uid_${targetId}"]`).remove();
 
               // Step 02: remove rightSide.ejs
               $("#screen-chat").find(`div#to_${targetId}`).remove();
@@ -70,7 +69,6 @@ socket.on("response-remove-contact", function (user) {
 
   // Step 01: remove leftSide.ejs
   $("#all-chat").find(`ul a[href = "#uid_${user.id}"]`).remove();
-  $("#user-chat").find(`ul a[href = "#uid_${user.id}"]`).remove();
 
   // Step 02: remove rightSide.ejs
   $("#screen-chat").find(`div#to_${user.id}`).remove();

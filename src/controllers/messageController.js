@@ -193,88 +193,6 @@ const readMoreAllChat = async (req, res) => {
   }
 };
 
-const readMoreUserChat = async (req, res) => {
-  try {
-    // get skip number from query param
-    let skipPersonal = +req.query.skipPersonal;
-
-    // get array user id is showing in screen
-    let personalIds = req.query.personalIds;
-    personalIds = personalIds[0].split(",");
-
-    // get more item
-    let newAllConversations = await message.readMoreUserChat(req.user._id, skipPersonal, personalIds);
-
-    // count contact
-    let countAllContacts = await contact.countAllContacts(req.user._id);
-
-    let dataToRender = {
-      user: req.user,
-      newAllConversations,
-      convertTimestampHumanTime,
-      lastItemFromArr,
-      bufferToBase64,
-    };
-
-    let leftSideData = await renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender);
-    let rightSideData = await renderFile("src/views/main/readMoreConversations/_rightSide.ejs", dataToRender);
-    let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
-    let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
-
-    return res.status(200).send({
-      leftSideData,
-      rightSideData,
-      imageModalData,
-      attachmentModalData,
-      countAllContacts
-    });
-    
-  } catch (error) {
-    console.error(error)
-    return res.status(500).send(error);
-  }
-};
-
-const readMoreGroupChat = async (req, res) => {
-  try {
-    // get skip number from query param
-    let skipGroup = +req.query.skipGroup;
-    let groupIds = req.query.groupIds;
-    groupIds = groupIds[0].split(",");
-
-    // get more item
-    let newAllConversations = await message.readMoreGroupChat(req.user._id, skipGroup, groupIds);
-
-    // count chatGroup 
-    let countAllChatGroups = await groupChat.countAllGroupChats(req.user._id);
-
-    let dataToRender = {
-      user: req.user,
-      newAllConversations,
-      convertTimestampHumanTime,
-      lastItemFromArr,
-      bufferToBase64,
-    };
-
-    let leftSideData = await renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender);
-    let rightSideData = await renderFile("src/views/main/readMoreConversations/_rightSide.ejs", dataToRender);
-    let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
-    let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
-
-    return res.status(200).send({
-      leftSideData,
-      rightSideData,
-      imageModalData,
-      attachmentModalData,
-      countAllChatGroups
-    });
-    
-  } catch (error) {
-    console.error(error)
-    return res.status(500).send(error);
-  }
-};
-
 const readMore = async (req, res) => {
   try {
     // get skip number from query param
@@ -312,6 +230,4 @@ module.exports = {
   addNewAttachment,
   readMoreAllChat,
   readMore,
-  readMoreUserChat,
-  readMoreGroupChat
 };

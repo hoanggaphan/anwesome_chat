@@ -106,7 +106,6 @@ function approveRequestContactReceived() {
               </a>`;
         }
         $("#all-chat").find("ul").prepend(leftSideData);
-        $("#user-chat").find("ul").prepend(leftSideData);
 
         
 
@@ -427,7 +426,6 @@ socket.on("response-approve-request-contact-received", function (user) {
         </a>`;
   }
   $("#all-chat").find("ul").prepend(leftSideData);
-  $("#user-chat").find("ul").prepend(leftSideData);
 
   // Step 02: handle rightSide.ejs
   let rightSideData = `
