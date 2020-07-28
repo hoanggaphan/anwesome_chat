@@ -9,7 +9,7 @@
 /* @charset "UTF-8"; */
 
 :root {
-  --main-color: #82cc28;
+  --default-green-color: #82cc28;
 }
 
 body {
@@ -299,8 +299,8 @@ hr {
 
 .login .btn-login,
 .registerBox .btn-register {
-  background-color: var(--main-color);
-  border-color: var(--main-color);
+  background-color: var(--default-green-color);
+  border-color: var(--default-green-color);
   border-width: 0;
   color: #FFFFFF;
   display: block;
@@ -312,7 +312,7 @@ hr {
 
 .login .btn-login:hover,
 .registerBox .btn-register:hover {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   color: #FFFFFF;
 }
 
@@ -353,7 +353,7 @@ hr {
 
 .big-login,
 .big-register {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   color: white;
   border-radius: 7px;
   border-width: 2px;
@@ -369,23 +369,23 @@ hr {
 }
 
 .big-register:focus {
-  color: var(--main-color);
+  color: var(--default-green-color);
 }
 
 .big-login:hover {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   color: #FFFFFF;
 }
 
 .big-register {
   background-color: rgba(0, 0, 0, .0);
-  color: var(--main-color);
-  border-color: var(--main-color);
+  color: var(--default-green-color);
+  border-color: var(--default-green-color);
 }
 
 .big-register:hover {
-  border-color: var(--main-color);
-  color: var(--main-color);
+  border-color: var(--default-green-color);
+  color: var(--default-green-color);
 }
 
 label {
@@ -400,8 +400,8 @@ label {
 }
 
 .btn-default:active:focus {
-  background-color: var(--main-color);
-  border-color: var(--main-color);
+  background-color: var(--default-green-color);
+  border-color: var(--default-green-color);
   color: #FFFFFF;
 }
 

@@ -25,7 +25,8 @@ body {
 }
 
 :root {
-  --main-color: #82cc28;
+  --default-green-color: #82cc28;
+  --default-red-color: #ff7675;
   --primary-text-color: #999;
   --secondary-text-color: #777;
 }
@@ -35,26 +36,26 @@ body {
 }
 
 .custom-background-btn-primary {
-  background-color: var(--main-color);
-  border-color: var(--main-color);
+  background-color: var(--default-green-color);
+  border-color: var(--default-green-color);
 }
 
 .custom-background-btn-primary:hover,
 .custom-background-btn-primary:focus {
-  background-color: var(--main-color) !important;
-  border-color: var(--main-color) !important;
+  background-color: var(--default-green-color) !important;
+  border-color: var(--default-green-color) !important;
 }
 
 .custom-background-btn-reset {
-  background-color: #ff7675;
-  border-color: #ff7675;
+  background-color: var(--default-red-color);
+  border-color: var(--default-red-color);
   color: #fff;
 }
 
 .custom-background-btn-reset:hover,
 .custom-background-btn-reset:focus {
-  background-color: #ff7675 !important;
-  border-color: #ff7675 !important;
+  background-color: var(--default-red-color) !important;
+  border-color: var(--default-red-color) !important;
   color: #fff !important;
 }
 
@@ -223,8 +224,8 @@ label:focus,
   min-height: 26px;
   line-height: 26px;
   font-size: 13px;
-  border-color: var(--main-color);
-  background-color: var(--main-color);
+  border-color: var(--default-green-color);
+  background-color: var(--default-green-color);
   color: #fff;
   fill: #fff;
   margin: 10px 0px 5px 2px;
@@ -235,8 +236,8 @@ label:focus,
 }
 
 .contactPanel .action-danger {
-  border-color: #ff7675;
-  background-color: #ff7675;
+  border-color: var(--default-red-color);
+  background-color: var(--default-red-color);
   margin: 10px 0px 5px 2px;
 }
 
@@ -419,7 +420,7 @@ label:focus,
 }
 
 .search_content ul li .name.group-chat {
-  color: #ff7675 ;
+  color: var(--default-red-color) ;
 }
 
 .search_content ul li .address {
@@ -494,7 +495,7 @@ label:focus,
 }
 
 .active {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   color: #fff;
 }
 
@@ -563,7 +564,7 @@ label:focus,
 /* When the radio button is checked, add a blue background */
 
 .radio-inline input:checked~.checkmark {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
 }
 
 
@@ -724,7 +725,7 @@ label:focus,
   width: 40px;
   height: 40px;
   margin-left: 10px;
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   background-image: url("../images/icons/name-type.png");
   background-repeat: no-repeat;
   background-position: top 11px left 12.5px;
@@ -1080,7 +1081,7 @@ label:focus,
 }
 
 .right .bubble.you .bubble-content {
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   position: relative;
 }
 
@@ -1095,7 +1096,7 @@ label:focus,
 
 .right .bubble.you .bubble-content::before {
   left: -4px;
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
 }
 
 .right .bubble.me .bubble-content::before {
@@ -1235,7 +1236,7 @@ label:focus,
   border-color: #576574 !important;
 }
 
-.add-user {
+.add-user, .remove-user {
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
@@ -1257,15 +1258,18 @@ label:focus,
   min-height: 26px;
   line-height: 26px;
   font-size: 13px;
-  border-color: var(--main-color);
-  background-color: var(--main-color);
+  background-color: var(--default-green-color);
   color: #fff;
   fill: #fff;
   margin: 10px 0px 5px 2px;
 }
 
+.remove-user {
+  background-color: var(--default-red-color);
+}
+
 .group-chat-name {
-  color: #ff7675 !important;
+  color: var(--default-red-color) !important;
 }
 
 .list-user-added {
@@ -1287,13 +1291,13 @@ label:focus,
 }
 
 .list-user-added button#btn-create-group-chat {
-  border-color: var(--main-color);
-  background-color: var(--main-color);
+  border-color: var(--default-green-color);
+  background-color: var(--default-green-color);
 }
 
 .list-user-added button#btn-cancel-group-chat {
-  border-color: #ff7675;
-  background-color: #ff7675;
+  border-color: var(--default-red-color);
+  background-color: var(--default-red-color);
   margin-left: 5px;
 }
 
@@ -1656,7 +1660,7 @@ i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip {
 }
 
 .alertify-notifier .ajs-message.ajs-success {
-  background: var(--main-color);
+  background: var(--default-green-color);
 }
 
 /* .alertify-notifier .ajs-message {
