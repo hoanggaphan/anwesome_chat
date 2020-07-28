@@ -1,17 +1,30 @@
+function removeFriendFromGroup(id) {
+  $(`ul#friends-added .remove-user[data-uid = ${id}]`).off("click").on("click", function () {
+    $('ul#friends-added').find(`li[data-uid = ${id}]`).remove();
+    if($(`ul#friends-added .remove-user`).length < 1) {
+      $('#groupChatModal .list-user-added').hide();
+    }
+  });
+}
+
 function addFriendsToGroup() {
   $('ul#group-chat-friends').find('div.add-user').bind('click', function() {
     let uid = $(this).data('uid');
     $(this).remove();
+
+    let removeButtonHtml = `
+      <div class="remove-user" data-uid="${uid}">
+        Xóa khỏi nhóm
+      </div>`; 
+    $('ul#group-chat-friends').find('li[data-uid=' + uid + '] .contactPanel').append(removeButtonHtml);
+
     let html = $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').html();
 
-    let promise = new Promise(function(resolve, reject) {
-      $('ul#friends-added').append(html);
-      $('#groupChatModal .list-user-added').show();
-      resolve(true);
-    });
-    promise.then(function(success) {
-      $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').remove();
-    });
+    $('ul#friends-added').append(html);
+    $('#groupChatModal .list-user-added').show();
+    $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').remove();
+
+    removeFriendFromGroup(uid);
   });
 }
 
@@ -56,7 +69,7 @@ function callCreateGroupChat() {
   $("#btn-create-group-chat").off("click").on("click", function name() {
     let countUsers = $("ul#friends-added").find("li");
     if(countUsers.length < 2) {
-      alertify.error("Vui lòng chọn bạn bè để thêm vào nhóm, tối thiểu 2 người", 5);
+      alertify.error("Vui lòng chọn bạn bè để thêm vào nhóm, ít nhất thêm 2 người", 5);
       return;
     }
 
