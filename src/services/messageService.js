@@ -17,8 +17,8 @@ const LIMIT_MESSAGES_TAKEN = 30;
 const getAllConversationItems = (currentUserId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const contacts = await ContactModel.getContacts(currentUserId, LIMIT_CONVERSATION_TAKEN);
-      const userConversationPromise = contacts.map(async (contact) => {
+      let contacts = await ContactModel.getContacts(currentUserId, LIMIT_CONVERSATION_TAKEN);
+      let userConversationPromise = contacts.map(async (contact) => {
         if (currentUserId == contact.userId) {
           let getUserContact = await UserModel.getNormalUserDataById(contact.contactId);
           getUserContact.updatedAt = contact.updatedAt;
@@ -30,8 +30,8 @@ const getAllConversationItems = (currentUserId) => {
         }
       });
 
-      const userConversations = await Promise.all(userConversationPromise);
-      const groupConversations = await ChatGroupModel.getChatGroups(currentUserId, LIMIT_CONVERSATION_TAKEN);
+      let userConversations = await Promise.all(userConversationPromise);
+      let groupConversations = await ChatGroupModel.getChatGroups(currentUserId, LIMIT_CONVERSATION_TAKEN);
 
       let allConversations = [...userConversations, ...groupConversations];
       allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
@@ -44,6 +44,14 @@ const getAllConversationItems = (currentUserId) => {
           if (conversation.members) {
             let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
             conversation.messages = _.reverse(messages);
+
+            // get user info
+            conversation.membersInfo = []; 
+            for (const member of conversation.members) {
+              let userInfo = await UserModel.getNormalUserDataById(member.userId);
+              conversation.membersInfo.push(userInfo); 
+            }
+            
           } else {
             let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, conversation._id, LIMIT_MESSAGES_TAKEN);
             conversation.messages = _.reverse(messages);
@@ -165,6 +173,15 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
           return reject(transError.conversation_not_found);
         }
 
+        getChatGroupReceiver = getChatGroupReceiver.toObject();
+
+        // get user info
+        getChatGroupReceiver.membersInfo = []; 
+        for (const member of getChatGroupReceiver.members) {
+          let userInfo = await UserModel.getNormalUserDataById(member.userId);
+          getChatGroupReceiver.membersInfo.push(userInfo); 
+        }
+
         let receiver = {
           id: getChatGroupReceiver._id,
           name: getChatGroupReceiver.name,
@@ -195,7 +212,8 @@ const addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
         let data = {
           newMessage,
           messages,
-          receiver
+          receiver,
+          getChatGroupReceiver
         };
 
         resolve(data);
@@ -261,6 +279,15 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
           return reject(transError.conversation_not_found);
         }
 
+        getChatGroupReceiver = getChatGroupReceiver.toObject();
+
+        // get user info
+        getChatGroupReceiver.membersInfo = []; 
+        for (const member of getChatGroupReceiver.members) {
+          let userInfo = await UserModel.getNormalUserDataById(member.userId);
+          getChatGroupReceiver.membersInfo.push(userInfo); 
+        }
+
         let receiver = {
           id: getChatGroupReceiver._id,
           name: getChatGroupReceiver.name,
@@ -293,7 +320,8 @@ const addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
         let data = {
           newMessage,
           messages,
-          receiver
+          receiver,
+          getChatGroupReceiver
         };
 
         resolve(data);
@@ -363,6 +391,15 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
           return reject(transError.conversation_not_found);
         }
 
+        getChatGroupReceiver = getChatGroupReceiver.toObject();
+
+        // get user info
+        getChatGroupReceiver.membersInfo = []; 
+        for (const member of getChatGroupReceiver.members) {
+          let userInfo = await UserModel.getNormalUserDataById(member.userId);
+          getChatGroupReceiver.membersInfo.push(userInfo); 
+        }
+
         let receiver = {
           id: getChatGroupReceiver._id,
           name: getChatGroupReceiver.name,
@@ -395,7 +432,8 @@ const addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
         let data = {
           newMessage,
           messages,
-          receiver
+          receiver,
+          getChatGroupReceiver
         };
 
         resolve(data);
@@ -492,6 +530,14 @@ const readMoreAllChat = (currentUserId, skipPersonal, skipGroup, personalIds, gr
           if (conversation.members) {
             let messages = await MessageModel.model.getMessagesInGroup(conversation._id, LIMIT_MESSAGES_TAKEN);
             conversation.messages = _.reverse(messages);
+
+            // get user info
+            conversation.membersInfo = []; 
+            for (const member of conversation.members) {
+              let userInfo = await UserModel.getNormalUserDataById(member.userId);
+              conversation.membersInfo.push(userInfo); 
+            }
+
           } else {
             let messages = await MessageModel.model.getMessagesInPersonal(currentUserId, conversation._id, LIMIT_MESSAGES_TAKEN);
             conversation.messages = _.reverse(messages);

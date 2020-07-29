@@ -68,6 +68,7 @@ function callSearchFriend(e) {
 function callCreateGroupChat() {
   $("#btn-create-group-chat").off("click").on("click", function name() {
     let countUsers = $("ul#friends-added").find("li");
+
     if(countUsers.length < 2) {
       alertify.error("Vui lòng chọn bạn bè để thêm vào nhóm, ít nhất thêm 2 người", 5);
       return;
@@ -158,8 +159,9 @@ function callCreateGroupChat() {
                 <a href="javascript:void(0)">&nbsp;</a>
               </span>
               <span class="chat-menu-right">
-                <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                <a href="#membersModal_${data.groupChat._id}" class="number-members" data-toggle="modal">
                   <span class="show-number-members" >${data.groupChat.usersAmount}</span>
+                  <span>Thành viên</span>
                   <i class="fa fa-users"></i>
                 </a>
               </span>
@@ -169,6 +171,7 @@ function callCreateGroupChat() {
               <span class="chat-menu-right">
                 <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
                   <span class="show-number-messages" >${data.groupChat.messagesAmount}</span>
+                  <span>Tin nhắn</span>
                   <i class="fa fa-comment-o"></i>
                 </a>
               </span>
@@ -253,10 +256,59 @@ function callCreateGroupChat() {
           </div>`
           $("body").append(attachmentModalData);
 
-          // Step 08: Emit new group created
+          // Step 08: handle membersModal
+          let membersModalData = `
+            <div class="modal fade" id="membersModal_${data.groupChat._id}" role="dialog">
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Tất cả thành viên trong nhóm.</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="member-types">
+                              <div class="member-type-admin">
+                                  <div></div>
+                                  <span>Chủ nhóm</span>
+                              </div>
+                              <div class="member-type-member">
+                                  <div></div>
+                                  <span>Thành viên</span>
+                              </div>
+                          </div>
+                          <div class="all-members">
+                              <div class="row">
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>`
+          $("body").append(membersModalData);
+          data.groupChat.membersInfo.forEach(member => {
+            let html = `
+              <div class="col-sm-2">
+                <div class="thumbnail">
+                  <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
+                  <div class="caption">
+                    <p class="member-name ${data.groupChat.userId === member._id ? "admin" : "" }">
+                      ${member.username}
+                    </p>
+                    <div class="member-talk" data-uid="${member._id}" >
+                      Trò chuyện
+                    </div> 
+                  </div>
+                </div>
+              </div>`;
+
+            $(`#membersModal_${data.groupChat._id}`).find(".all-members .row").append(html);
+          });
+
+          // Step 09: Emit new group created
           socket.emit("new-group-created", { groupChat: data.groupChat });
 
-          // Step 09: update online
+          // Step 10: update online
 
         }
       ).fail(function (response) {
@@ -320,8 +372,9 @@ $(document).ready(function () {
           <a href="javascript:void(0)">&nbsp;</a>
         </span>
         <span class="chat-menu-right">
-          <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+          <a href="#membersModal_${response.groupChat._id}" class="number-members" data-toggle="modal">
             <span class="show-number-members" >${response.groupChat.usersAmount}</span>
+            <span>Thành viên</span>
             <i class="fa fa-users"></i>
           </a>
         </span>
@@ -331,6 +384,7 @@ $(document).ready(function () {
         <span class="chat-menu-right">
           <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
             <span class="show-number-messages" >${response.groupChat.messagesAmount}</span>
+            <span>Tin nhắn</span>
             <i class="fa fa-comment-o"></i>
           </a>
         </span>
@@ -414,9 +468,58 @@ $(document).ready(function () {
     </div>`
     $("body").append(attachmentModalData);
     
-    // Step 07: Emit when member received a group chat
+    // Step 07: handle membersModal
+    let membersModalData = `
+    <div class="modal fade" id="membersModal_${response.groupChat._id}" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Tất cả thành viên trong nhóm.</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="member-types">
+                      <div class="member-type-admin">
+                          <div></div>
+                          <span>Chủ nhóm</span>
+                      </div>
+                      <div class="member-type-member">
+                          <div></div>
+                          <span>Thành viên</span>
+                      </div>
+                  </div>
+                  <div class="all-members">
+                      <div class="row">
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>`
+    $("body").append(membersModalData);
+    response.groupChat.membersInfo.forEach(member => {
+      let html = `
+        <div class="col-sm-2">
+          <div class="thumbnail">
+            <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
+            <div class="caption">
+              <p class="member-name ${response.groupChat.userId === member._id ? "admin" : "" }">
+                ${member.username}
+              </p>
+              <div class="member-talk" data-uid="${member._id}" >
+                Trò chuyện
+              </div> 
+            </div>
+          </div>
+        </div>`;
+
+      $(`#membersModal_${response.groupChat._id}`).find(".all-members .row").append(html);
+    });
+
+    // Step 08: Emit when member received a group chat
     socket.emit("member-received-group-chat", { groupChatId: response.groupChat._id });
 
-    // Step 08: update online
+    // Step 09: update online
   });
 });

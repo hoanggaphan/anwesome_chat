@@ -1,7 +1,7 @@
-function talkContact() {
-  $(".user-talk").off("click").on("click", function () {
+function talkWithMember() {
+  $(".member-talk").off("click").on("click", function () {
     let targetId = $(this).data("uid");
-    $("#contactsModal").modal("hide");
+    $(this).closest(".modal").modal("hide");
 
     if($("#all-chat").find(`li[data-chat = "${targetId}"]`).length) {
       $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
@@ -51,10 +51,9 @@ function talkContact() {
       // Step 13: Click chat with target user
       $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
     });
-
   });
 }
 
 $(document).ready(function () {
-  talkContact();
+  talkWithMember();
 });

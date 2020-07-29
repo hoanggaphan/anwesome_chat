@@ -222,12 +222,14 @@ const talkGroup = async (req, res) => {
     let rightSideData = await renderFile("src/views/main/talkGroup/_rightSide.ejs", dataToRender);
     let imageModalData = await renderFile("src/views/main/talkGroup/_imageModal.ejs", dataToRender);
     let attachmentModalData = await renderFile("src/views/main/talkGroup/_attachmentModal.ejs", dataToRender);
+    let membersModalData = await renderFile("src/views/main/talkGroup/_membersModal.ejs", dataToRender);
 
     return res.status(200).send({
       leftSideData,
       rightSideData,
       imageModalData,
-      attachmentModalData
+      attachmentModalData,
+      membersModalData
     });
   } catch (error) {
     console.error(error)
@@ -267,7 +269,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  talkContact,
   findUserConversations,
-  talkGroup
+  talkContact,
+  talkGroup,
 };

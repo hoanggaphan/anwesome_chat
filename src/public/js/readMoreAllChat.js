@@ -50,17 +50,20 @@ $(document).ready(function () {
       // Step 09: handle attachmentModal
       $("body").append(data.attachmentModalData);
 
-      // Step 10: update online
+      // Step 10: handle membersModal
+      $("body").append(data.membersModalData);
+
+      // Step 11: update online
       socket.emit("check-status");
 
-      // Step 11: remove loading
+      // Step 12: remove loading
       $("#link-read-more-all-chat").css("display", "inline-block");
       $(".read-more-all-chat-loader").css("display", "none");
 
-      // Step 12: call readMoreMessages
+      // Step 13: call readMoreMessages
       readMoreMessages();
 
-      // Step 13: hide button readmore
+      // Step 14: hide button readmore
       if($(`#all-chat`).find("ul a.room-chat").length === data.countAllConversations) {
         $("#link-read-more-all-chat").remove();
       }

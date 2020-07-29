@@ -1,50 +1,30 @@
 <div 
     class="right tab-pane" 
-    data-chat="<%= groupConversation._id %>" 
-    id="to_<%= groupConversation._id %>"
+    data-chat="<%= contactConversation._id %>" 
+    id="to_<%= contactConversation._id %>"
 >
     <div class="top">
-        <span>To: <span class="name"><%= groupConversation.name %></span></span>
+        <span>To: <span class="name"><%= contactConversation.username %></span></span>
         <span class="chat-menu-right">
-            <a href="#attachmentsModal_<%= groupConversation._id %>" class="show-attachments" data-toggle="modal">
-                Tệp đính kèm
-                <i class="fa fa-paperclip"></i>
-            </a>
+        <a href="#attachmentsModal_<%= contactConversation._id %>" class="show-attachments" data-toggle="modal">
+            Tệp đính kèm
+            <i class="fa fa-paperclip"></i>
+        </a>
         </span>
         <span class="chat-menu-right">
-            <a href="javascript:void(0)">&nbsp;</a>
+        <a href="javascript:void(0)">&nbsp;</a>
         </span>
         <span class="chat-menu-right">
-            <a href="#imagesModal_<%= groupConversation._id %>" class="show-images" data-toggle="modal">
-                Hình ảnh
-                <i class="fa fa-photo"></i>
-            </a>
-        </span>
-        <span class="chat-menu-right">
-            <a href="javascript:void(0)">&nbsp;</a>
-        </span>
-        <span class="chat-menu-right">
-            <a href="#membersModal_<%= groupConversation._id %>" class="number-members" data-toggle="modal">
-                <span class="show-number-members" ><%= groupConversation.usersAmount %></span>
-                <span>Thành viên</span>
-                <i class="fa fa-users"></i>
-            </a>
-        </span>
-        <span class="chat-menu-right">
-            <a href="javascript:void(0)">&nbsp;</a>
-        </span>
-        <span class="chat-menu-right">
-            <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
-                <span class="show-number-messages" ><%= groupConversation.messagesAmount %></span>
-                <span>Tin nhắn</span>
-                <i class="fa fa-comment-o"></i>
-            </a>
+        <a href="#imagesModal_<%= contactConversation._id %>" class="show-images" data-toggle="modal">
+            Hình ảnh
+            <i class="fa fa-photo"></i>
+        </a>
         </span>
     </div>
     <div class="content-chat">
-        <div class="chat chat-in-group" data-chat="<%= groupConversation._id %>">
+        <div class="chat" data-chat="<%= contactConversation._id %>">
             <img src="images/chat/message-loading.gif" class="message-loading" />
-            <% groupConversation.messages.map(message => { %>
+            <% contactConversation.messages.map(message => { %>
                 <% if (message.messageType === "text") { %>
                     <div 
                         class="convert-emoji bubble <% if (message.senderId == user._id) { %>me<% } else { %>you<% } %>"
@@ -53,7 +33,7 @@
                         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
                         <div class="bubble-content">
                             <%= message.text %>   
-                        </div>
+                        </div>   
                     </div>
                 <% } %>
 
@@ -65,7 +45,7 @@
                         <img
                             src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
                             class="show-image-chat"
-                        />
+                        />  
                     </div>
                 <% } %>
 
@@ -80,40 +60,45 @@
                                 download="<%= message.file.fileName %>"
                             >
                                 <%= message.file.fileName %>
-                            </a>
-                        </div>
+                            </a> 
+                        </div> 
                     </div>
                 <% } %>
             <% }); %>
         </div>
     </div>
-    <div class="write" data-chat="<%= groupConversation._id %>">
-        <input type="text" class="write-chat chat-in-group" id="write-chat-<%= groupConversation._id %>" data-chat="<%= groupConversation._id %>" />
+    <div class="write" data-chat="<%= contactConversation._id %>">
+        <input type="text" class="write-chat" id="write-chat-<%= contactConversation._id %>" data-chat="<%= contactConversation._id %>" />
         <div class="icons">
             <a href="#" class="icon-chat" data-chat=""
                 ><i class="fa fa-smile-o"></i
             ></a>
-            <label for="image-chat-<%= groupConversation._id %>">
+            <label for="image-chat-<%= contactConversation._id %>">
                 <input
                     type="file"
-                    id="image-chat-<%= groupConversation._id %>"
+                    id="image-chat-<%= contactConversation._id %>"
                     name="my-image-chat"
-                    class="image-chat chat-in-group"
-                    data-chat="<%= groupConversation._id %>"
+                    class="image-chat"
+                    data-chat="<%= contactConversation._id %>"
                 />
                 <i class="fa fa-photo"></i>
             </label>
-            <label for="attachment-chat-<%= groupConversation._id %>">
+            <label for="attachment-chat-<%= contactConversation._id %>">
                 <input
                     type="file"
-                    id="attachment-chat-<%= groupConversation._id %>"
+                    id="attachment-chat-<%= contactConversation._id %>"
                     name="my-attachment-chat"
-                    class="attachment-chat chat-in-group"
-                    data-chat="<%= groupConversation._id %>"
+                    class="attachment-chat"
+                    data-chat="<%= contactConversation._id %>"
                 />
                 <i class="fa fa-paperclip"></i>
             </label>
-            <a href="javascript:void(0)" class="video-chat-group">
+            <a
+                href="javascript:void(0)"
+                id="video-chat-<%= contactConversation._id %>"
+                class="video-chat"
+                data-chat="<%= contactConversation._id %>"
+            >
                 <i class="fa fa-video-camera"></i>
             </a>
         </div>
