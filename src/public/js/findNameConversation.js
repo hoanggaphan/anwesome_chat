@@ -45,13 +45,16 @@ function talk() {
         // Step 10: handle attachmentModal
         $("body").append(data.attachmentModalData);
         
-        // Step 11: update online
+        // Step 11: handle membersModal
+        $("body").append(data.membersModalData);
+
+        // Step 12: update online
         socket.emit("check-status");
   
-        // Step 12: Read more messages
+        // Step 13: Read more messages
         readMoreMessages();
   
-        // Step 13: Click chat with target group
+        // Step 14: Click chat with target group
         $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
       });
       return;

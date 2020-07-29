@@ -351,6 +351,13 @@ const talkGroup = (currentUserId, groupId) => {
       let messages = await MessageModel.model.getMessagesInGroup(groupConversation._id, LIMIT_MESSAGES_TAKEN);
       groupConversation.messages = _.reverse(messages);
 
+      // get user info
+      groupConversation.membersInfo = []; 
+      for (const member of groupConversation.members) {
+        let userInfo = await UserModel.getNormalUserDataById(member.userId);
+        groupConversation.membersInfo.push(userInfo); 
+      }
+
       resolve(groupConversation);
     } catch (error) {
       reject(error);
@@ -375,7 +382,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  talkContact,
   findUserConversations,
-  talkGroup
+  talkContact,
+  talkGroup,
 };

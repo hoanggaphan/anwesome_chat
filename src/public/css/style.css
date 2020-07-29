@@ -1686,3 +1686,84 @@ i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip {
 #link-read-more-all-chat strong {
   color: var(--secondary-text-color);
 }
+
+.photoset-cell img {
+  height: 172px!important;
+}
+
+.member-types {
+  display: flex;
+  margin-bottom: 7px;
+}
+
+.member-type-admin, .member-type-member {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.member-type-admin div, .member-type-member div {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 10px 5px;
+  background-color: var(--primary-text-color);
+}
+
+.member-type-member span {
+  color: var(--primary-text-color);
+}
+
+.member-type-admin div {
+  background-color: var(--default-red-color);
+}
+.member-type-admin span {
+  color: var(--default-red-color);
+}
+
+.all-members .member-talk {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0 12px;
+  min-width: 26px;
+  min-height: 26px;
+  line-height: 26px;
+  font-size: 13px;
+  border-color: var(--default-green-color);
+  background-color: var(--default-green-color);
+  color: #fff;
+  fill: #fff;
+  margin: 10px 0px 5px 2px;
+}
+
+.all-members .member-name {
+  width: 100%;
+  font-size: 12px;
+  flex-wrap: wrap;
+  color: var(--primary-text-color);
+  font-weight: bold;
+  text-align: center;
+}
+
+.all-members .member-name.admin {
+  color: var(--default-red-color);
+}
+
+.all-members .member-avatar {
+  width: 100%;
+  height: 100px;
+}

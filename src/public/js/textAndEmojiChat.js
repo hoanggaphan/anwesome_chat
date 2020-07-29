@@ -503,8 +503,9 @@ $(document).ready(function () {
           <a href="javascript:void(0)">&nbsp;</a>
         </span>
         <span class="chat-menu-right">
-          <a href="javascript:void(0)" class="number-members" data-toggle="modal">
-            <span class="show-number-members" >${response.receiver.usersAmount}</span>
+          <a href="#membersModal_${response.getChatGroupReceiver._id}" class="number-members" data-toggle="modal">
+            <span class="show-number-members" >${response.getChatGroupReceiver.usersAmount}</span>
+            <span>Thành viên</span>
             <i class="fa fa-users"></i>
           </a>
         </span>
@@ -514,6 +515,7 @@ $(document).ready(function () {
         <span class="chat-menu-right">
           <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
             <span class="show-number-messages" >${response.receiver.messagesAmount}</span>
+            <span>Tin nhắn</span>
             <i class="fa fa-comment-o"></i>
           </a>
         </span>
@@ -666,7 +668,6 @@ $(document).ready(function () {
       </div>
     </div>`
     $("body").append(attachmentModalData);
-
     response.messages.forEach(message => {
       if (message.messageType === "file") {
         let messageHtml = `
@@ -684,10 +685,59 @@ $(document).ready(function () {
       }
     });
 
-    // Step 09: update online
+    // Step 09: handle membersModal
+    let membersModalData = `
+      <div class="modal fade" id="membersModal_${response.getChatGroupReceiver._id}" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tất cả thành viên trong nhóm.</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="member-types">
+                        <div class="member-type-admin">
+                            <div></div>
+                            <span>Chủ nhóm</span>
+                        </div>
+                        <div class="member-type-member">
+                            <div></div>
+                            <span>Thành viên</span>
+                        </div>
+                    </div>
+                    <div class="all-members">
+                        <div class="row">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`
+    $("body").append(membersModalData);
+    response.getChatGroupReceiver.membersInfo.forEach(member => {
+      let html = `
+        <div class="col-sm-2">
+          <div class="thumbnail">
+            <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
+            <div class="caption">
+              <p class="member-name ${response.getChatGroupReceiver.userId === member._id ? "admin" : "" }">
+                ${member.username}
+              </p>
+              <div class="member-talk" data-uid="${member._id}" >
+                Trò chuyện
+              </div> 
+            </div>
+          </div>
+        </div>`;
+
+      $(`#membersModal_${response.getChatGroupReceiver._id}`).find(".all-members .row").append(html);
+    });
+
+    // Step 10: update online
     socket.emit("check-status");
 
-    // Step 10: Read more messages
+    // Step 11: Read more messages
     readMoreMessages();
   });
 });

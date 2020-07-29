@@ -18,7 +18,8 @@ const chatAttachment = (io) => {
           newMessage: data.newMessage,
           messages: data.messages,
           sender: data.sender,
-          receiver: data.receiver
+          receiver: data.receiver,
+          getChatGroupReceiver: data.getChatGroupReceiver
         }
 
         // Emit all users in room chat except sender
