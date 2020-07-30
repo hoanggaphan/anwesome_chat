@@ -45,7 +45,26 @@ let countAllGroupChats = (currentUserId) => {
   });
 };
 
+let leaveGroupChat = (currentUserId, groupId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let groupChatById = await ChatGroupModel.findGroupChatById(groupId);
+      let members = groupChatById.members;
+      
+      // remove member from groupChat
+      members = members.filter(member => member.userId != currentUserId);
+      let usersAmount = members.length;
+      let newGroupChat = await ChatGroupModel.updateMembersInGroupChat(groupId, members, usersAmount);
+      
+      resolve(newGroupChat);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   addNewGroup,
-  countAllGroupChats
+  countAllGroupChats,
+  leaveGroupChat
 }

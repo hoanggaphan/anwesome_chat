@@ -19,7 +19,7 @@
                 <div class="all-members">
                     <div class="row">
                         <% groupConversation.membersInfo.forEach(member => { %> 
-                            <div class="col-sm-2">
+                            <div id="<%= member._id %>" class="col-sm-2 member">
                                 <div class="thumbnail">
                                     <img class="member-avatar" src="/images/users/<%= member.avatar %>" alt="">
                                     <div class="caption">

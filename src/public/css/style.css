@@ -597,7 +597,7 @@ label:focus,
 }
 
 .searchBox {
-  padding: 19px 0;
+  padding: 20px 0;
 }
 
 .searchBox input {
@@ -1657,7 +1657,7 @@ label:focus,
   width: 100%;
 }
 
-i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip {
+i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip, i.fa-sign-out {
   color: #777;
 }
 

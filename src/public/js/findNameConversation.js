@@ -48,13 +48,16 @@ function talk() {
         // Step 11: handle membersModal
         $("body").append(data.membersModalData);
 
-        // Step 12: update online
+        // step 12: call function leaveGroupChat 
+        leaveGroupChat();
+
+        // Step 13: update online
         socket.emit("check-status");
   
-        // Step 13: Read more messages
+        // Step 14: Read more messages
         readMoreMessages();
   
-        // Step 14: Click chat with target group
+        // Step 15: Click chat with target group
         $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
       });
       return;
