@@ -141,6 +141,15 @@ function callCreateGroupChat() {
             <div class="top">
               <span>To: <span class="name">${data.groupChat.name}</span></span>
               <span class="chat-menu-right">
+                <a class="leave-group-chat" id="${data.groupChat._id}" href="javascript:void(0)">
+                  Rời nhóm
+                  <i class="fa fa-sign-out"></i>
+                </a>
+              </span>
+              <span class="chat-menu-right">
+                  <a href="javascript:void(0)">&nbsp;</a>
+              </span>
+              <span class="chat-menu-right">
                 <a href="#attachmentsModal_${data.groupChat._id}" class="show-attachments" data-toggle="modal">
                   Tệp đính kèm
                   <i class="fa fa-paperclip"></i>
@@ -288,7 +297,7 @@ function callCreateGroupChat() {
           $("body").append(membersModalData);
           data.groupChat.membersInfo.forEach(member => {
             let html = `
-              <div class="col-sm-2">
+              <div id="${member._id}" class="col-sm-2 member">
                 <div class="thumbnail">
                   <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
                   <div class="caption">
@@ -304,11 +313,14 @@ function callCreateGroupChat() {
 
             $(`#membersModal_${data.groupChat._id}`).find(".all-members .row").append(html);
           });
+          
+          // step 09: call function leaveGroupChat 
+          leaveGroupChat();
 
-          // Step 09: Emit new group created
+          // Step 10: Emit new group created
           socket.emit("new-group-created", { groupChat: data.groupChat });
 
-          // Step 10: update online
+          // Step 11: update online
 
         }
       ).fail(function (response) {
@@ -353,6 +365,15 @@ $(document).ready(function () {
     <div class="right tab-pane" data-chat="${response.groupChat._id}" id="to_${response.groupChat._id}">
       <div class="top">
         <span>To: <span class="name">${response.groupChat.name}</span></span>
+        <span class="chat-menu-right">
+          <a class="leave-group-chat" id="${response.groupChat._id}" href="javascript:void(0)">
+            Rời nhóm
+            <i class="fa fa-sign-out"></i>
+          </a>
+        </span>
+        <span class="chat-menu-right">
+            <a href="javascript:void(0)">&nbsp;</a>
+        </span>
         <span class="chat-menu-right">
           <a href="#attachmentsModal_${response.groupChat._id}" class="show-attachments" data-toggle="modal">
             Tệp đính kèm
@@ -500,7 +521,7 @@ $(document).ready(function () {
     $("body").append(membersModalData);
     response.groupChat.membersInfo.forEach(member => {
       let html = `
-        <div class="col-sm-2">
+        <div id="${member._id}" class="col-sm-2 member">
           <div class="thumbnail">
             <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
             <div class="caption">
@@ -517,9 +538,12 @@ $(document).ready(function () {
       $(`#membersModal_${response.groupChat._id}`).find(".all-members .row").append(html);
     });
 
-    // Step 08: Emit when member received a group chat
+    // step 08: call function leaveGroupChat 
+    leaveGroupChat();
+
+    // Step 09: Emit when member received a group chat
     socket.emit("member-received-group-chat", { groupChatId: response.groupChat._id });
 
-    // Step 09: update online
+    // Step 10: update online
   });
 });

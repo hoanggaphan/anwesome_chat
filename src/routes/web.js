@@ -49,6 +49,7 @@ const initRoutes = (app) => {
   router.post("/message/add-new-attachment", auth.checkLoggedIn, message.addNewAttachment);
 
   router.post("/group-chat/add-new", auth.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup);
+  router.put("/group-chat/leave-group-chat", auth.checkLoggedIn, groupChat.leaveGroupChat);
 
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);

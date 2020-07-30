@@ -485,6 +485,15 @@ $(document).ready(function () {
           <span class="name">${response.sender.name}</span>
         </span>
         <span class="chat-menu-right">
+          <a class="leave-group-chat" id="${divId}" href="javascript:void(0)">
+            Rời nhóm
+            <i class="fa fa-sign-out"></i>
+          </a>
+        </span>
+        <span class="chat-menu-right">
+            <a href="javascript:void(0)">&nbsp;</a>
+        </span>
+        <span class="chat-menu-right">
           <a href="#attachmentsModal_${divId}" class="show-attachments" data-toggle="modal">
             Tệp đính kèm
             <i class="fa fa-paperclip"></i>
@@ -717,7 +726,7 @@ $(document).ready(function () {
     $("body").append(membersModalData);
     response.getChatGroupReceiver.membersInfo.forEach(member => {
       let html = `
-        <div class="col-sm-2">
+        <div id="${member._id}" class="col-sm-2 member">
           <div class="thumbnail">
             <img class="member-avatar" src="/images/users/${member.avatar}" alt="">
             <div class="caption">
@@ -734,10 +743,13 @@ $(document).ready(function () {
       $(`#membersModal_${response.getChatGroupReceiver._id}`).find(".all-members .row").append(html);
     });
 
-    // Step 10: update online
+    // step 10: call function leaveGroupChat
+    leaveGroupChat();
+
+    // Step 11: update online
     socket.emit("check-status");
 
-    // Step 11: Read more messages
+    // Step 12: Read more messages
     readMoreMessages();
   });
 });

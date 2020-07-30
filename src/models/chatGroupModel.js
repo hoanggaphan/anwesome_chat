@@ -84,6 +84,21 @@ ChatGroupSchema.statics = {
       members: { $elemMatch: { userId: userId } },
     }).exec();
   },
+
+  findGroupChatById(groupId) {
+    return this.findById(groupId).exec();
+  },
+
+  updateMembersInGroupChat(groupId, members, usersAmount) {
+    return this.findByIdAndUpdate(
+      { _id: groupId }, 
+      { 
+        members: members,
+        usersAmount: usersAmount
+      },
+      { returnOriginal: false }
+    ).exec();
+  },
 };
 
 module.exports = mongoose.model("chat-group", ChatGroupSchema);
