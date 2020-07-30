@@ -54,6 +54,16 @@ let leaveGroupChat = (currentUserId, groupId) => {
       // remove member from groupChat
       members = members.filter(member => member.userId != currentUserId);
       let usersAmount = members.length;
+
+      // remove groupChat if not have member in groupChat
+      if (usersAmount === 0) {
+        let removeGroupChat = await ChatGroupModel.removeGroupChatById(groupId);
+        if(removeGroupChat.n === 0) {
+          reject(false);
+        }
+        resolve([]);
+      }
+
       let newGroupChat = await ChatGroupModel.updateMembersInGroupChat(groupId, members, usersAmount);
       
       resolve(newGroupChat);

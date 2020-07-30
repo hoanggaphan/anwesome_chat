@@ -99,6 +99,10 @@ ChatGroupSchema.statics = {
       { returnOriginal: false }
     ).exec();
   },
+
+  removeGroupChatById(groupId) {
+    return this.deleteOne({ _id: groupId });
+  }
 };
 
 module.exports = mongoose.model("chat-group", ChatGroupSchema);
