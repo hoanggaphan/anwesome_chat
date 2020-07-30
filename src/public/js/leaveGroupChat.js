@@ -37,7 +37,9 @@ function leaveGroupChat() {
           $(`.modal[id = "membersModal_${targetId}"]`).remove();
 
           // step 06: emit real-time
-          socket.emit("leave-group-chat", { groupChat: data.groupChat });
+          if (data.groupChat.length) {
+            socket.emit("leave-group-chat", { groupChat: data.groupChat });
+          }
         }
       });
 
