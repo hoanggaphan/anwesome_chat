@@ -99,7 +99,7 @@ $(document).ready(function () {
     let currentUserId = $("#dropdown-navbar-user").data("uid");
     
     // step 01: handle message data before show
-    let messageOfYou = $(`<div class="bubble you bubble-image-file" data-mess-id="${response.newMessage._id}"></div>`);
+    let messageOfYou = $(`<div class="bubble ${response.newMessage.senderId == currentUserId ? 'me': 'you'} bubble-image-file" data-mess-id="${response.newMessage._id}"></div>`);
     let attachmentChat = `<div class="bubble-content">
                             <a
                                 href="data:${response.newMessage.file.contentType}; base64, ${bufferToBase64(response.newMessage.file.data.data)}"
@@ -128,7 +128,9 @@ $(document).ready(function () {
       nineScrollRight(divId);
         
       // step 03: change data preview & time in leftSide
-      $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
+      if(!response.newMessage.senderId == currentUserId) {
+        $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
+      }
       $(`.person[data-chat = ${divId}]`).find("span.time").html(moment(response.newMessage.createdAt).locale("vi").startOf("seconds").fromNow());
       $(`.person[data-chat = ${divId}]`).find("span.preview").html("Tệp đính kèm...");
   
@@ -178,7 +180,7 @@ $(document).ready(function () {
                 <span class="name">
                   ${subUsername}
                 </span>
-                <span class="time message-time-realtime">
+                <span class="time ${response.newMessage.senderId != currentUserId && "message-time-realtime"}">
                   ${convertTimestampHumanTime(lastMess.createdAt)}
                 </span>
                 <span class="preview convert-emoji">
@@ -199,7 +201,7 @@ $(document).ready(function () {
                 <span class="name">
                   ${subUsername}
                 </span>
-                <span class="time message-time-realtime">
+                <span class="time ${response.newMessage.senderId != currentUserId && "message-time-realtime"}">
                   ${convertTimestampHumanTime(lastMess.createdAt)}
                 </span>
                 <span class="preview convert-emoji">
@@ -220,7 +222,7 @@ $(document).ready(function () {
                 <span class="name">
                   ${subUsername}
                 </span>
-                <span class="time message-time-realtime">
+                <span class="time ${response.newMessage.senderId != currentUserId && "message-time-realtime"}">
                   ${convertTimestampHumanTime(lastMess.createdAt)}
                 </span>
                 <span class="preview convert-emoji">
