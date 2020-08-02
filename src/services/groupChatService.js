@@ -1,6 +1,10 @@
-import ChatGroupModel from '../models/chatGroupModel'
-import UserModel from '../models/userModel'
+import ChatGroupModel from '../models/chatGroupModel';
+import UserModel from '../models/userModel';
+import MessageModel from "../models/messageModel";
+import ContactModel from '../models/contactModel';
 import _ from 'lodash';
+
+const LIMIT_MESSAGES_TAKEN = 30;
 
 let addNewGroup = (currentUserId, arrayMemberIds, groupChatName) => {
   return new Promise(async (resolse, reject) => {
@@ -53,10 +57,9 @@ let leaveGroupChat = (currentUserId, groupId) => {
       
       // remove member from groupChat
       members = members.filter(member => member.userId != currentUserId);
-      let usersAmount = members.length;
 
       // remove groupChat if not have member in groupChat
-      if (usersAmount === 0) {
+      if (members.length === 0) {
         let removeGroupChat = await ChatGroupModel.removeGroupChatById(groupId);
         if(removeGroupChat.n === 0) {
           reject(false);
@@ -64,7 +67,7 @@ let leaveGroupChat = (currentUserId, groupId) => {
         resolve([]);
       }
 
-      let newGroupChat = await ChatGroupModel.updateMembersInGroupChat(groupId, members, usersAmount);
+      let newGroupChat = await ChatGroupModel.updateMembersInGroupChat(groupId, members);
       
       resolve(newGroupChat);
     } catch (error) {
@@ -73,8 +76,59 @@ let leaveGroupChat = (currentUserId, groupId) => {
   });
 };
 
+let findUsersToAddGroupChat = (userId, groupId, keyword) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let groupChat = await ChatGroupModel.getChatGroupById(groupId);
+      let memberIds = groupChat.members.map(member => member.userId);
+      let friends = await ContactModel.findContactsToAddGroupChat(userId, memberIds);
+      
+      let userIds = []; 
+      friends.forEach(friend => {
+        userIds.push(friend.userId);
+        userIds.push(friend.contactId);
+      });
+
+      // remove duplicate item and not like id user
+      userIds = userIds.filter(id => id != userId); 
+
+      let usersInfo = await UserModel.findUsersToAddGroupChat(userIds, keyword);
+      resolve(usersInfo);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let addMemberToGroupChat = (groupId, memberId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let groupChat = await ChatGroupModel.getChatGroupById(groupId);
+      let members = [...groupChat.members, { userId: memberId }];
+      let newGroupChat = await ChatGroupModel.updateMembersInGroupChat(groupId, members);
+      // return group conversation with message
+      newGroupChat = newGroupChat.toObject();
+      let messages = await MessageModel.model.getMessagesInGroup(groupId, LIMIT_MESSAGES_TAKEN);
+      newGroupChat.messages = _.reverse(messages);
+
+      // get member info
+      newGroupChat.membersInfo = []; 
+      for (const member of newGroupChat.members) {
+        let userInfo = await UserModel.getNormalUserDataById(member.userId);
+        newGroupChat.membersInfo.push(userInfo); 
+      }
+
+      resolve(newGroupChat);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
   addNewGroup,
   countAllGroupChats,
-  leaveGroupChat
+  leaveGroupChat,
+  findUsersToAddGroupChat,
+  addMemberToGroupChat
 }

@@ -37,7 +37,7 @@ function leaveGroupChat() {
           $(`.modal[id = "membersModal_${targetId}"]`).remove();
 
           // step 06: emit real-time
-          if (data.groupChat.length) {
+          if (data.groupChat.members.length) {
             socket.emit("leave-group-chat", { groupChat: data.groupChat });
           }
         }

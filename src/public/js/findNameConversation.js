@@ -48,16 +48,19 @@ function talk() {
         // Step 11: handle membersModal
         $("body").append(data.membersModalData);
 
-        // step 12: call function leaveGroupChat 
+        // Step 12: handle membersModal
+        $("body").append(data.addMemberModalData);
+
+        // step 14: call function leaveGroupChat 
         leaveGroupChat();
 
-        // Step 13: update online
+        // Step 15: update online
         socket.emit("check-status");
   
-        // Step 14: Read more messages
+        // Step 16: Read more messages
         readMoreMessages();
   
-        // Step 15: Click chat with target group
+        // Step 17: Click chat with target group
         $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
       });
       return;
@@ -114,12 +117,13 @@ function findNameConversation(e) {
   if (e.which === 13) {
     let keyword = $("#input-search").val();
     let regKeyword = new RegExp(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
+    
     if (keyword.length < 1 || keyword.length > 16 || !regKeyword.test(keyword)) {
       alertify.error("Nội dung tìm kiếm không hợp lệ, giới hạn từ 1 - 16 kí tự và không chứa kí tự đặc biệt.", 5);
       return;
     }
 
-    $.get(`/contact/find-user-conversations?keyword=${keyword}`, function (data) {
+    $.get(`/contact/find-name-conversations?keyword=${keyword}`, function (data) {
       $("#search-results").find(".search_content ul").html(data);
       talk();
     });

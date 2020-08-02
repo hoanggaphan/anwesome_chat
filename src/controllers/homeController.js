@@ -58,7 +58,7 @@ const getHome = async (req, res) => {
 
   // all messages with conversation, max 30 item
   let allConversationWithMessages = await message.getAllConversationItems(req.user._id);
-
+  
   // get ICE list from xirsys turn server
   let iceServerList = await getICETurnServer();
 

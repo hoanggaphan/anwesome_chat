@@ -179,6 +179,7 @@ const readMoreAllChat = async (req, res) => {
     let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
     let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
     let membersModalData = await renderFile("src/views/main/readMoreConversations/_membersModal.ejs", dataToRender);
+    let addMemberModalData = await renderFile("src/views/main/readMoreConversations/_addMemberModal.ejs", dataToRender);
 
     return res.status(200).send({
       leftSideData,
@@ -186,7 +187,8 @@ const readMoreAllChat = async (req, res) => {
       imageModalData,
       attachmentModalData,
       countAllConversations,
-      membersModalData
+      membersModalData,
+      addMemberModalData
     });
     
   } catch (error) {

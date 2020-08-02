@@ -206,9 +206,8 @@ const talkContact = async (req, res) => {
 
 const talkGroup = async (req, res) => {
   try {
-    let currentUserId = req.user._id;
     let groupId = req.params.groupId;
-    let groupConversation = await contact.talkGroup(currentUserId, groupId);
+    let groupConversation = await contact.talkGroup(groupId);
 
     let dataToRender = {
       user: req.user,
@@ -223,13 +222,15 @@ const talkGroup = async (req, res) => {
     let imageModalData = await renderFile("src/views/main/talkGroup/_imageModal.ejs", dataToRender);
     let attachmentModalData = await renderFile("src/views/main/talkGroup/_attachmentModal.ejs", dataToRender);
     let membersModalData = await renderFile("src/views/main/talkGroup/_membersModal.ejs", dataToRender);
-
+    let addMemberModalData = await renderFile("src/views/main/talkGroup/_addMemberModal.ejs", dataToRender);
+    
     return res.status(200).send({
       leftSideData,
       rightSideData,
       imageModalData,
       attachmentModalData,
-      membersModalData
+      membersModalData,
+      addMemberModalData
     });
   } catch (error) {
     console.error(error)
@@ -237,7 +238,7 @@ const talkGroup = async (req, res) => {
   }
 };
 
-const findUserConversations = async (req, res) => {
+const findNameConversations = async (req, res) => {
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors = Object.values(validationErrors.mapped()).map(
@@ -249,8 +250,8 @@ const findUserConversations = async (req, res) => {
   try {
     let keyword = req.query.keyword;
     let currentUserId = req.user._id;
-    let conversations = await contact.findUserConversations(currentUserId, keyword);
-    res.render("main/findNameConversations/_findNameConvetsations.ejs", { conversations });
+    let conversations = await contact.findNameConversations(currentUserId, keyword);
+    res.render("main/findNameConversations/_findNameConversations.ejs", { conversations });
   } catch (error) {
     console.error(error)
     res.status(500).send(error);
@@ -269,7 +270,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  findUserConversations,
+  findNameConversations,
   talkContact,
   talkGroup,
 };

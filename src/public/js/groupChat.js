@@ -150,6 +150,15 @@ function callCreateGroupChat() {
                   <a href="javascript:void(0)">&nbsp;</a>
               </span>
               <span class="chat-menu-right">
+                <a href="#addMemberModal_${data.groupChat._id}" data-toggle="modal">
+                  <span>Thêm thành viên</span>
+                  <i class="fa fa-plus-square"></i>
+                </a>
+              </span>
+              <span class="chat-menu-right">
+                  <a href="javascript:void(0)">&nbsp;</a>
+              </span>
+              <span class="chat-menu-right">
                 <a href="#attachmentsModal_${data.groupChat._id}" class="show-attachments" data-toggle="modal">
                   Tệp đính kèm
                   <i class="fa fa-paperclip"></i>
@@ -317,10 +326,34 @@ function callCreateGroupChat() {
           // step 09: call function leaveGroupChat 
           leaveGroupChat();
 
-          // Step 10: Emit new group created
+          // Step 10: handle membersModal
+          let addMemberModalData = `
+            <div class="modal fade" id="addMemberModal_${data.groupChat._id}" role="dialog">
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Thêm thành viên.</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group">
+                              <input class="form-control input-find-member" data-uid="${data.groupChat._id}" placeholder="Nhập E-mail hoặc username..." aria-describedby="basic-addon2">
+                              <span class="input-group-addon btn-find-member" >
+                                  <i class="glyphicon glyphicon-search"></i>
+                              </span>
+                          </div>
+                          <ul class="member-list">
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+            </div>`
+          $("body").append(addMemberModalData);
+
+          // Step 12: Emit new group created
           socket.emit("new-group-created", { groupChat: data.groupChat });
 
-          // Step 11: update online
+          // Step 13: update online
 
         }
       ).fail(function (response) {
@@ -369,6 +402,15 @@ $(document).ready(function () {
           <a class="leave-group-chat" id="${response.groupChat._id}" href="javascript:void(0)">
             Rời nhóm
             <i class="fa fa-sign-out"></i>
+          </a>
+        </span>
+        <span class="chat-menu-right">
+            <a href="javascript:void(0)">&nbsp;</a>
+        </span>
+        <span class="chat-menu-right">
+          <a href="#addMemberModal_${response.groupChat._id}" data-toggle="modal">
+            <span>Thêm thành viên</span>
+            <i class="fa fa-plus-square"></i>
           </a>
         </span>
         <span class="chat-menu-right">
@@ -538,12 +580,12 @@ $(document).ready(function () {
       $(`#membersModal_${response.groupChat._id}`).find(".all-members .row").append(html);
     });
 
-    // step 08: call function leaveGroupChat 
+    // step 09: call function leaveGroupChat 
     leaveGroupChat();
 
-    // Step 09: Emit when member received a group chat
+    // Step 10: Emit when member received a group chat
     socket.emit("member-received-group-chat", { groupChatId: response.groupChat._id });
 
-    // Step 10: update online
+    // Step 11: update online
   });
 });

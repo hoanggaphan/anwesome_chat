@@ -23,7 +23,7 @@ const addNewGroup = async (req, res) => {
   }
 };
 
-const leaveGroupChat = async (req, res, next) => {
+const leaveGroupChat = async (req, res) => {
   try {
     let groupId = req.body.groupId;
     let currentUserId = req.user._id;
@@ -33,9 +33,34 @@ const leaveGroupChat = async (req, res, next) => {
     console.error(error);
     res.status(500).send(error);
   }
+};
+
+const findUsersToAddGroupChat = async (req, res) => {
+  try {
+    let keyword = req.query.keyword;
+    let groupId = req.query.groupId;
+    let usersInfo = await groupChat.findUsersToAddGroupChat(req.user._id, groupId, keyword);
+    res.render("main/members/sections/_findUsersToAddGroupChat.ejs", { usersInfo });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const addMemberToGroupChat = async (req, res) => {
+  try {
+    let memberId = req.body.memberId;
+    let groupId = req.body.groupId;
+    let newGroupChat = await groupChat.addMemberToGroupChat(groupId, memberId);
+    res.status(200).send(newGroupChat);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
 }
 
 module.exports = {
   addNewGroup,
-  leaveGroupChat
+  leaveGroupChat,
+  findUsersToAddGroupChat,
+  addMemberToGroupChat
 };

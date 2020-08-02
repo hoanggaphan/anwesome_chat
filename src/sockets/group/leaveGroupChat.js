@@ -25,10 +25,6 @@ const leaveGroupChat = (io) => {
         }
       });
     });
-
-    socket.on("member-received-group-chat", (data) => {
-      socket.join(data.groupChatId);
-    });
     
     socket.on("disconnect", () => {
       clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);

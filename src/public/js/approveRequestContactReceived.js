@@ -43,7 +43,7 @@ function approveRequestContactReceived() {
         let leftSideData = "";
         let lastMess = lastItemFromArr(data.messages);
         
-        if (lastMess.messageType === "text") {
+        if (lastMess.messageType === "text" || !lastMess.length) {
           leftSideData = `
               <a href="#uid_${targetId}" class="room-chat" data-target="#to_${targetId}">
                 <li class="person" data-chat="${targetId}">
@@ -55,10 +55,10 @@ function approveRequestContactReceived() {
                     ${subUsername}
                   </span>
                   <span class="time">
-                    ${convertTimestampHumanTime(lastMess.createdAt)}
+                    ${lastMess.length ? convertTimestampHumanTime(lastMess.createdAt) : ""}
                   </span>
                   <span class="preview convert-emoji">
-                    ${lastMess.text}
+                    ${lastMess.text || ""}
                   </span>
                 </li>
               </a>`;
@@ -301,9 +301,6 @@ function approveRequestContactReceived() {
         // Step 09: update online
         socket.emit("check-status");
 
-        // Step 10: contact conversation
-        contactConversation();
-
         // Step 11: Read more messages
         readMoreMessages();
       }
@@ -363,7 +360,7 @@ socket.on("response-approve-request-contact-received", function (user) {
   let leftSideData = "";
   let lastMess = lastItemFromArr(user.messages);
   
-  if (lastMess.messageType === "text") {
+  if (lastMess.messageType === "text" || !lastMess.length) {
     leftSideData = `
         <a href="#uid_${user.id}" class="room-chat" data-target="#to_${user.id}">
           <li class="person" data-chat="${user.id}">
@@ -375,10 +372,10 @@ socket.on("response-approve-request-contact-received", function (user) {
               ${subUsername}
             </span>
             <span class="time">
-              ${convertTimestampHumanTime(lastMess.createdAt)}
+              ${lastMess.length ? convertTimestampHumanTime(lastMess.createdAt) : ""}
             </span>
             <span class="preview convert-emoji">
-              ${lastMess.text}
+              ${lastMess.text || ""}
             </span>
           </li>
         </a>`;
@@ -617,9 +614,6 @@ socket.on("response-approve-request-contact-received", function (user) {
 
   // Step 09: update online
   socket.emit("check-status");
-
-  // Step 10: contact conversation
-  contactConversation();
 
   // Step 11: Read more messages
   readMoreMessages();
