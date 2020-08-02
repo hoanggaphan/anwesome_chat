@@ -12,6 +12,7 @@ import chatVideo from './chat/chatVideo';
 import userOnlineOffline from './status/userOnlineOffline';
 import newGroupChat from './group/newGroupChat';
 import leaveGroupChat from './group/leaveGroupChat';
+import addMemberToGroupChat from './group/addMemberToGroupChat';
 
 /**
  * @param io from socket.io library
@@ -31,6 +32,7 @@ const initSockets = (io) => {
   userOnlineOffline(io);
   newGroupChat(io);
   leaveGroupChat(io);
+  addMemberToGroupChat(io);
 };
 
 module.exports = initSockets;

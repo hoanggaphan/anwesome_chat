@@ -69,11 +69,11 @@ UserSchema.statics = {
     return this.find(
       {
         $and: [
-          { "_id": { $nin: deprecatedUserIds } }, // tìm data không nằm trong mảng deprecatedUserIds
+          { _id: { $nin: deprecatedUserIds } }, // tìm data không nằm trong mảng deprecatedUserIds
           { "local.isActived": true },
           {
             $or: [
-              { "username": { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
+              { username: { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
               { "local.email": { $regex: keyword, $options: "i" } },
               { "facebook.email": { $regex: keyword, $options: "i" } },
               { "google.email": { $regex: keyword, $options: "i" } },
@@ -94,11 +94,11 @@ UserSchema.statics = {
     return this.find(
       {
         $and: [
-          { "_id": { $in: friendIds } },
+          { _id: { $in: friendIds } },
           { "local.isActived": true },
           {
             $or: [
-              { "username": { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
+              { username: { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
               { "local.email": { $regex: keyword, $options: "i" } },
               { "facebook.email": { $regex: keyword, $options: "i" } },
               { "google.email": { $regex: keyword, $options: "i" } },
@@ -119,11 +119,11 @@ UserSchema.statics = {
     return this.find(
       {
         $and: [
-          { "_id": { $in: friendIds } },
+          { _id: { $in: friendIds } },
           { "local.isActived": true },
           {
             $or: [
-              { "username": { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
+              { username: { $regex: keyword, $options: "i" } }, // tìm ra user name gần giống keyword
               { "local.email": { $regex: keyword, $options: "i" } },
               { "facebook.email": { $regex: keyword, $options: "i" } },
               { "google.email": { $regex: keyword, $options: "i" } },
@@ -157,7 +157,27 @@ UserSchema.statics = {
   },
 
   getNormalUserDataById(id) {
-    return this.findById(id, { _id: 1, username: 1, address: 1, avatar: 1 }).exec();
+    return this.findById(id, {
+      _id: 1,
+      username: 1,
+      address: 1,
+      avatar: 1,
+    }).exec();
+  },
+
+  findUsersToAddGroupChat(userIds, keyword) {
+    return this.find(
+      {
+        _id: { $in: userIds },
+        "local.isActived": true,
+        $or: [
+          { "local.email": { $regex: keyword, $options: "i" } },
+          { "facebook.email": { $regex: keyword, $options: "i" } },
+          { "google.email": { $regex: keyword, $options: "i" } },
+        ],
+      },
+      { _id: 1, username: 1, address: 1, avatar: 1 }
+    ).exec();
   },
 };
 

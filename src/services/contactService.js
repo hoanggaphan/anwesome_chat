@@ -43,7 +43,7 @@ const searchFriends = (currentUserId, keyword) => {
   });
 };
 
-const findUserConversations = (currentUserId, keyword) => {
+const findNameConversations = (currentUserId, keyword) => {
   return new Promise(async (resolve, reject) => {
     try {
       let friendIds = [];
@@ -342,7 +342,7 @@ const talkContact = (currentUserId, contactId) => {
   });
 };
 
-const talkGroup = (currentUserId, groupId) => {
+const talkGroup = (groupId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let groupConversation = await ChatGroupModel.getChatGroupById(groupId);
@@ -382,7 +382,7 @@ module.exports = {
   approveRequestContactReceived,
   removeContact,
   searchFriends,
-  findUserConversations,
+  findNameConversations,
   talkContact,
   talkGroup,
 };

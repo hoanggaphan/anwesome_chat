@@ -159,7 +159,7 @@ function changeTypeChat() {
 function changeScreenChat() {
   $(".room-chat").off("click").on("click", function () {
     let divId = $(this).find("li").data("chat");
-
+    
     $(".person").removeClass("active");
     $(`.person[data-chat = ${divId}]`).addClass("active");
 
@@ -180,6 +180,12 @@ function changeScreenChat() {
 
     // Bật lắng nghe DOM chi việc gọi video
     videoChat(divId);
+
+    if ($(".person.active").hasClass("group-chat")) {
+      // gắn sự kiện tìm user để thêm vào group chat
+      bindEventfindUsersToAddGroupChat(divId);
+      talkWithMember();
+    }
   })
 }
 

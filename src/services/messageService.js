@@ -32,7 +32,7 @@ const getAllConversationItems = (currentUserId) => {
 
       let userConversations = await Promise.all(userConversationPromise);
       let groupConversations = await ChatGroupModel.getChatGroups(currentUserId, LIMIT_CONVERSATION_TAKEN);
-
+      
       let allConversations = [...userConversations, ...groupConversations];
       allConversations = _.sortBy(allConversations, (item) => -item.updatedAt);
 

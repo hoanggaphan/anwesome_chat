@@ -23,7 +23,7 @@ const initRoutes = (app) => {
 
   router.get("/contact/find-users/:keyword", auth.checkLoggedIn, contactValid.findUsersContact ,contact.findUsersContact);
   router.get("/contact/search-friends/:keyword", auth.checkLoggedIn, contactValid.searchFriends ,contact.searchFriends);
-  router.get("/contact/find-user-conversations", auth.checkLoggedIn, contactValid.findUserConversations, contact.findUserConversations);
+  router.get("/contact/find-name-conversations", auth.checkLoggedIn, contactValid.findNameConversations, contact.findNameConversations);
   router.get("/contact/read-more-contacts", auth.checkLoggedIn, contact.readMoreContacts);
   router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn, contact.readMoreContactsSent);
   router.get("/contact/read-more-contacts-received", auth.checkLoggedIn, contact.readMoreContactsReceived);
@@ -50,6 +50,8 @@ const initRoutes = (app) => {
 
   router.post("/group-chat/add-new", auth.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup);
   router.put("/group-chat/leave-group-chat", auth.checkLoggedIn, groupChat.leaveGroupChat);
+  router.get("/group-chat/find-user-to-add-group-chat", auth.checkLoggedIn, groupChatValid.findUsersToAddGroupChat, groupChat.findUsersToAddGroupChat);
+  router.put("/group-chat/add-member-to-group-chat", auth.checkLoggedIn, groupChat.addMemberToGroupChat);
 
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);

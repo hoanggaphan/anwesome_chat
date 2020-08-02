@@ -71,7 +71,7 @@ ChatGroupSchema.statics = {
   findAllGroupConversations(id, keyword) {
     return this.find({
       members: { $elemMatch: { userId: id } },
-      name: { $regex: keyword, $options: "i" }
+      name: { $regex: keyword, $options: "i" },
     }).exec();
   },
 
@@ -89,20 +89,20 @@ ChatGroupSchema.statics = {
     return this.findById(groupId).exec();
   },
 
-  updateMembersInGroupChat(groupId, members, usersAmount) {
+  updateMembersInGroupChat(groupId, members) {
     return this.findByIdAndUpdate(
-      { _id: groupId }, 
-      { 
+      { _id: groupId },
+      {
         members: members,
-        usersAmount: usersAmount
+        usersAmount: members.length,
       },
       { returnOriginal: false }
     ).exec();
   },
 
   removeGroupChatById(groupId) {
-    return this.deleteOne({ _id: groupId });
-  }
+    return this.deleteOne({ _id: groupId }).exec();
+  },
 };
 
 module.exports = mongoose.model("chat-group", ChatGroupSchema);

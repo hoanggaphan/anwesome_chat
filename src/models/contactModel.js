@@ -282,6 +282,25 @@ ContactSchema.statics = {
       .sort({ updatedAt: -1 })
       .exec();
   },
+
+  findContactsToAddGroupChat(userId, memberIds) {
+    return this.find(
+      {
+        $or: [
+          {
+            userId: userId,
+            contactId: { $nin: memberIds },
+            status: true,
+          },
+          {
+            contactId: userId,
+            userId: { $nin: memberIds },
+            status: true,
+          },
+        ],
+      },
+    ).exec();
+  },
 };
 
 module.exports = mongoose.model("contact", ContactSchema);

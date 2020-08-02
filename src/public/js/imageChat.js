@@ -152,7 +152,7 @@ $(document).ready(function () {
       let leftSideData = "";
       let lastMess = lastItemFromArr(response.messages);
       
-      if (lastMess.messageType === "text") {
+      if (lastMess.messageType === "text" || !lastMess.length) {
         leftSideData = `
             <a href="#uid_${divId}" class="room-chat" data-target="#to_${divId}">
               <li class="person" data-chat="${divId}">
@@ -164,10 +164,10 @@ $(document).ready(function () {
                   ${subUsername}
                 </span>
                 <span class="time message-time-realtime">
-                  ${convertTimestampHumanTime(lastMess.createdAt)}
+                  ${lastMess.length ? convertTimestampHumanTime(lastMess.createdAt) : ""}
                 </span>
                 <span class="preview convert-emoji">
-                  ${lastMess.text}
+                  ${lastMess.text || ""}
                 </span>
               </li>
             </a>`;
@@ -424,7 +424,7 @@ $(document).ready(function () {
     let leftSideData = "";
     let lastMess = lastItemFromArr(response.messages);
     
-    if (lastMess.messageType === "text") {
+    if (lastMess.messageType === "text" || !lastMess.length) {
       leftSideData = `
           <a href="#uid_${divId}" class="room-chat" data-target="#to_${divId}">
             <li class="person group-chat" data-chat="${divId}">
@@ -436,10 +436,10 @@ $(document).ready(function () {
                 </span> 
               </span>
               <span class="time ${response.newMessage.senderId != currentUserId && "message-time-realtime"}">
-                ${convertTimestampHumanTime(lastMess.createdAt)}
+                ${lastMess.length ? convertTimestampHumanTime(lastMess.createdAt) : ""}
               </span>
               <span class="preview convert-emoji">
-                ${lastMess.text}
+                ${lastMess.text || ""}
               </span>
             </li>
           </a>`;
@@ -500,6 +500,15 @@ $(document).ready(function () {
           <a class="leave-group-chat" id="${divId}" href="javascript:void(0)">
             Rời nhóm
             <i class="fa fa-sign-out"></i>
+          </a>
+        </span>
+        <span class="chat-menu-right">
+            <a href="javascript:void(0)">&nbsp;</a>
+        </span>
+        <span class="chat-menu-right">
+          <a href="#addMemberModal_${divId}" data-toggle="modal">
+            <span>Thêm thành viên</span>
+            <i class="fa fa-plus-square"></i>
           </a>
         </span>
         <span class="chat-menu-right">
@@ -759,10 +768,34 @@ $(document).ready(function () {
     // step 10: call function leaveGroupChat
     leaveGroupChat();
 
-    // Step 11: update online
+    // Step 11: handle membersModal
+    let addMemberModalData = `
+    <div class="modal fade" id="addMemberModal_${response.getChatGroupReceiver._id}" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Thêm thành viên.</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="input-group">
+                      <input class="form-control input-find-member" data-uid="${response.getChatGroupReceiver._id}" placeholder="Nhập E-mail hoặc username..." aria-describedby="basic-addon2">
+                      <span class="input-group-addon btn-find-member">
+                          <i class="glyphicon glyphicon-search"></i>
+                      </span>
+                  </div>
+                  <ul class="member-list">
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>`
+    $("body").append(addMemberModalData);
+
+    // Step 13: update online
     socket.emit("check-status");
 
-    // Step 12: Read more messages
+    // Step 14: Read more messages
     readMoreMessages();
   });
 });
