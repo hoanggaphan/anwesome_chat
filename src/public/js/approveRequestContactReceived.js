@@ -107,8 +107,6 @@ function approveRequestContactReceived() {
         }
         $("#all-chat").find("ul").prepend(leftSideData);
 
-        
-
         // Step 02: handle rightSide.ejs
         let rightSideData = `
         <div class="right tab-pane" data-chat="${targetId}" id="to_${targetId}">
@@ -303,6 +301,8 @@ function approveRequestContactReceived() {
 
         // Step 11: Read more messages
         readMoreMessages();
+
+        openModalImage();
       }
     });
   });
@@ -617,6 +617,8 @@ socket.on("response-approve-request-contact-received", function (user) {
 
   // Step 11: Read more messages
   readMoreMessages();
+
+  openModalImage();
 });
 
 

@@ -73,6 +73,9 @@ $(document).ready(function () {
       if($(`#all-chat`).find("ul a.room-chat").length === data.countAllConversations) {
         $("#link-read-more-all-chat").remove();
       }
+
+      openModalImage();
+
     });
   });
 });

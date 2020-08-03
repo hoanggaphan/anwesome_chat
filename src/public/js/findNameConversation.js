@@ -62,6 +62,9 @@ function talk() {
   
         // Step 17: Click chat with target group
         $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
+
+        openModalImage();
+
       });
       return;
     }
@@ -108,6 +111,9 @@ function talk() {
 
       // Step 12: Click chat with target user
       $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();
+
+      openModalImage();
+
     });
 
   });

@@ -41,6 +41,8 @@ function readMoreMessages() {
 
           // Step 06: remove message loading
           $(`.right .chat[data-chat = ${targetId}]`).find(`img.message-loading`).css("visibility", "hidden");
+          
+          openModalImage();
 
         }
       );
