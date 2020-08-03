@@ -47,6 +47,7 @@ function talkWithMember() {
 
       // Step 12: Read more messages
       readMoreMessages();
+      openModalImage();
 
       // Step 13: Click chat with target user
       $("#all-chat").find(`li[data-chat = "${targetId}"]`).click();

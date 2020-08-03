@@ -64,6 +64,7 @@ function imageChat(divId) {
         // step 02: append message data to screen
         $(`.right .chat[data-chat=${divId}]`).append(messageOfMe);
         nineScrollRight(divId);
+        openModalImage();
 
         // step 03: change data preview & time in leftSide
         $(`.person[data-chat = ${divId}]`).find("span.time").removeClass("message-time-realtime").html(moment(data.newMessage.createdAt).locale("vi").startOf("seconds").fromNow());
@@ -119,7 +120,8 @@ $(document).ready(function () {
       // step 02: append message data to screen
       $(`.right .chat[data-chat=${divId}]`).append(messageOfYou);
       nineScrollRight(divId);
-      
+      openModalImage();
+
       // step 03: change data preview & time in leftSide
       if(!response.newMessage.senderId == currentUserId) {
         $(`.person[data-chat = ${divId}]`).find("span.time").addClass("message-time-realtime");
@@ -332,7 +334,8 @@ $(document).ready(function () {
         }
         $(`.chat[data-chat = ${divId}]`).append(messageHtml);
       });
-  
+      openModalImage();
+      
       // Step 03: call function changeScreenChat
       changeScreenChat();
   
@@ -797,5 +800,7 @@ $(document).ready(function () {
 
     // Step 14: Read more messages
     readMoreMessages();
+
+    openModalImage();
   });
 });

@@ -814,5 +814,7 @@ $(document).ready(function () {
 
     // Step 14: Read more messages
     readMoreMessages();
+
+    openModalImage();
   });
 });
