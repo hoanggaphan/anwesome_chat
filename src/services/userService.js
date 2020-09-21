@@ -1,6 +1,6 @@
+import bcrypt from 'bcrypt';
 import UserModel from '../models/userModel';
 import { transError } from '../../lang/vi';
-import bcrypt from 'bcrypt';
 
 const saltRounds = 10;
 
@@ -35,7 +35,7 @@ const updatePassword = (id, dataUpdate) => {
   })
 }
 
-module.exports = {
+export {
   updateUser,
   updatePassword
 }

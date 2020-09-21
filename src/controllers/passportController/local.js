@@ -1,6 +1,6 @@
 import passport from "passport";
 import passportLocal from "passport-local";
-import UserModel from '../../models/userModel';
+import UserModel from '../../models/userModel.js';
 import ChatGroupModel from '../../models/chatGroupModel';
 import { transError, transSuccess } from '../../../lang/vi';
 
@@ -61,4 +61,4 @@ const initPassportLocal = () => {
   });
 };
 
-module.exports = initPassportLocal;
+export default initPassportLocal;

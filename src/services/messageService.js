@@ -4,7 +4,7 @@ import { transError } from '../../lang/vi';
 import { app } from '../config/app';
 import ChatGroupModel from "../models/chatGroupModel";
 import ContactModel from "../models/contactModel";
-import MessageModel from "../models/messageModel";
+import * as MessageModel from "../models/messageModel";
 import UserModel from "../models/userModel";
 
 const LIMIT_CONVERSATION_TAKEN = 1;
@@ -588,7 +588,7 @@ const readMore = (currentUserId, skipMessage, targetId, chatInGroup) => {
   });
 };
 
-module.exports = { 
+export { 
   getAllConversationItems, 
   getUserConversationItems,
   getGroupConversationItems,

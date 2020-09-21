@@ -1,4 +1,8 @@
-import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from '../../helpers/socketHelper';
+import {
+  pushSocketIdToArray,
+  emitNotifyToArray,
+  removeSocketIdFromArray,
+} from "../../helpers/socketHelper";
 
 /**
  * @param io from socket.io library
@@ -12,18 +16,28 @@ const userOnlineOffline = (io) => {
       let listUsersOnline = Object.keys(clients);
       // Step 01: Emit to user list online after login or F5
       socket.emit("server-send-list-users-online", listUsersOnline);
-  
+
       // Step 02: Emit to all another users when has new user online
-      socket.broadcast.emit("server-send-when-new-user-online", socket.request.user._id);
+      socket.broadcast.emit(
+        "server-send-when-new-user-online",
+        socket.request.user._id
+      );
     });
 
     socket.on("disconnect", () => {
-      clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
-      
+      clients = removeSocketIdFromArray(
+        clients,
+        socket.request.user._id,
+        socket
+      );
+
       // Step 03: Emit to all another users when has new user offline
-      socket.broadcast.emit("server-send-when-new-user-offline", socket.request.user._id);
+      socket.broadcast.emit(
+        "server-send-when-new-user-offline",
+        socket.request.user._id
+      );
     });
   });
 };
 
-module.exports = userOnlineOffline;
+export default userOnlineOffline;

@@ -105,4 +105,4 @@ ChatGroupSchema.statics = {
   },
 };
 
-module.exports = mongoose.model("chat-group", ChatGroupSchema);
+export default mongoose.model("chat-group", ChatGroupSchema);

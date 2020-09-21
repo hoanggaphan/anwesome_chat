@@ -1,9 +1,11 @@
-import { validationResult } from "express-validator";
+import expressValidator from "express-validator";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { transError, transSuccess } from "../../lang/vi";
 import { app } from "../config/app";
-import { user } from '../services/index';
+import { user } from '../services';
+
+const {validationResult} = expressValidator;
 
 const storageAvatar = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -107,7 +109,7 @@ const updatePassword = async (req, res) => {
   }
 }
 
-module.exports = {
+export {
   updateAvatar,
   updateInfo,
   updatePassword

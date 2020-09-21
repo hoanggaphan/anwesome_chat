@@ -1,5 +1,7 @@
-import { validationResult } from "express-validator";
+import expressValidator from "express-validator";
 import { groupChat } from '../services'
+
+const {validationResult} = expressValidator;
 
 const addNewGroup = async (req, res) => {
   const validationErrors = validationResult(req);
@@ -58,7 +60,7 @@ const addMemberToGroupChat = async (req, res) => {
   }
 }
 
-module.exports = {
+export {
   addNewGroup,
   leaveGroupChat,
   findUsersToAddGroupChat,

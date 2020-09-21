@@ -1,7 +1,7 @@
 import express from 'express';
+import passport from 'passport';
 import { auth, home, user, contact, notification, message, groupChat } from '../controllers';
 import { authValid, userValid, contactValid, messageValid, groupChatValid } from '../validation';
-import passport from 'passport';
 import initPassportLocal from '../controllers/passportController/local';
 import initPassportFacebook from '../controllers/passportController/facebook';
 import initPassportGoogle from '../controllers/passportController/google';
@@ -77,4 +77,4 @@ const initRoutes = (app) => {
   return app.use("/", router);
 }
 
-module.exports = initRoutes;
+export default initRoutes;

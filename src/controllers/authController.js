@@ -1,6 +1,8 @@
-import { validationResult } from "express-validator";
-import { auth } from "../services/index";
+import expressValidator from "express-validator";
+import { auth } from "../services";
 import { transSuccess } from '../../lang/vi';
+
+const {validationResult} = expressValidator;
 
 const getLoginRegister = (req, res) => {
   res.render("auth/master", {
@@ -66,7 +68,7 @@ const postRegister = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getLoginRegister,
   getVerifyAccount,
   postRegister,

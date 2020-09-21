@@ -1,5 +1,7 @@
-import { check } from "express-validator";
+import expressValidator from "express-validator";
 import { transValidation } from "../../lang/vi";
+
+const {check} = expressValidator;
 
 const updateInfo = [
   // key in req.body
@@ -31,7 +33,7 @@ const updatePassword = [
     .custom((value, { req }) => value === req.body.newPassword ),
 ];
 
-module.exports = {
+export {
   updateInfo,
   updatePassword
 };

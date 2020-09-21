@@ -1,4 +1,8 @@
-import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from '../../helpers/socketHelper';
+import {
+  pushSocketIdToArray,
+  emitNotifyToArray,
+  removeSocketIdFromArray,
+} from "../../helpers/socketHelper";
 
 /**
  * @param io from socket.io library
@@ -14,19 +18,29 @@ const approveRequestContactReceived = (io) => {
         username: socket.request.user.username,
         avatar: socket.request.user.avatar,
         address: socket.request.user.address || "",
-        messages: data.messages
+        messages: data.messages,
       };
 
       // emit notification
       if (clients[data.contactId]) {
-        emitNotifyToArray(clients, data.contactId, io, "response-approve-request-contact-received", currentUser);
+        emitNotifyToArray(
+          clients,
+          data.contactId,
+          io,
+          "response-approve-request-contact-received",
+          currentUser
+        );
       }
     });
 
     socket.on("disconnect", () => {
-      clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
+      clients = removeSocketIdFromArray(
+        clients,
+        socket.request.user._id,
+        socket
+      );
     });
   });
 };
 
-module.exports = approveRequestContactReceived;
+export default approveRequestContactReceived;

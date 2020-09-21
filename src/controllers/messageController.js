@@ -1,13 +1,14 @@
+import expressValidator from "express-validator";
 import ejs from 'ejs';
-import {validationResult} from "express-validator";
 import fsExtra from 'fs-extra';
 import multer from "multer";
+import {promisify} from 'util';
 import {transError} from "../../lang/vi";
 import {app} from "../config/app";
-import {message, contact, groupChat} from '../services/index';
+import {message, contact, groupChat} from '../services';
 import {convertTimestampHumanTime, lastItemFromArr, bufferToBase64} from '../helpers/clientHelper';
-import {promisify} from 'util'
 
+const {validationResult} = expressValidator;
 // Make ejs function renderFile avaiable with async await
 const renderFile = promisify(ejs.renderFile).bind(ejs);
 
@@ -228,7 +229,7 @@ const readMore = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   addNewTextEmoji,
   addNewImage,
   addNewAttachment,

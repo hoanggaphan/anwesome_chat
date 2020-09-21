@@ -31,7 +31,7 @@ const config = (app) => {
   );
 };
 
-module.exports = {
+export {
   config,
   sessionStore
 };

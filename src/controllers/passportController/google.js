@@ -77,4 +77,4 @@ const initPassportGoogle = () => {
   });
 };
 
-module.exports = initPassportGoogle;
+export default initPassportGoogle;

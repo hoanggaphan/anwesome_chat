@@ -1,4 +1,8 @@
-import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from '../../helpers/socketHelper';
+import {
+  pushSocketIdToArray,
+  emitNotifyToArray,
+  removeSocketIdFromArray,
+} from "../../helpers/socketHelper";
 
 /**
  * @param io from socket.io library
@@ -8,8 +12,8 @@ const chatTextEmoji = (io) => {
   io.on("connection", (socket) => {
     clients = pushSocketIdToArray(clients, socket.request.user._id, socket.id);
     // Join all room chat of user
-    socket.request.user.chatGroupIds.map(group => socket.join(group._id));
-    
+    socket.request.user.chatGroupIds.map((group) => socket.join(group._id));
+
     socket.on("chat-text-emoji", (data) => {
       if (data.groupId) {
         let response = {
@@ -19,8 +23,8 @@ const chatTextEmoji = (io) => {
           messages: data.messages,
           sender: data.sender,
           receiver: data.receiver,
-          getChatGroupReceiver: data.getChatGroupReceiver
-        }
+          getChatGroupReceiver: data.getChatGroupReceiver,
+        };
 
         // Emit all users in room chat except sender
         socket.to(data.groupId).emit("response-chat-text-emoji", response);
@@ -32,20 +36,30 @@ const chatTextEmoji = (io) => {
           newMessage: data.newMessage,
           messages: data.messages,
           sender: data.sender,
-          receiver: data.receiver
-        }
+          receiver: data.receiver,
+        };
 
         // emit notification
         if (clients[data.contactId]) {
-          emitNotifyToArray(clients, data.contactId, io, "response-chat-text-emoji", response);
+          emitNotifyToArray(
+            clients,
+            data.contactId,
+            io,
+            "response-chat-text-emoji",
+            response
+          );
         }
       }
     });
 
     socket.on("disconnect", () => {
-      clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
+      clients = removeSocketIdFromArray(
+        clients,
+        socket.request.user._id,
+        socket
+      );
     });
   });
 };
 
-module.exports = chatTextEmoji;
+export default chatTextEmoji;

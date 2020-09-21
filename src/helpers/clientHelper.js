@@ -1,15 +1,15 @@
 import moment from "moment";
 
-export let bufferToBase64 = (bufferFrom) => {
+export const bufferToBase64 = (bufferFrom) => {
   return Buffer.from(bufferFrom).toString("base64");  
 }
 
-export let lastItemFromArr = (arr) => {
+export const lastItemFromArr = (arr) => {
   if(!arr.length) return [];
   return arr[arr.length - 1];
 }
 
-export let convertTimestampHumanTime = (timestamp) => {
+export const convertTimestampHumanTime = (timestamp) => {
   if(!timestamp) {
     return "";
   }

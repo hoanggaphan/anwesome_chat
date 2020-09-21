@@ -1,6 +1,8 @@
-import { body, query } from "express-validator";
-import { transValidation } from "../../lang/vi";
 import _ from 'lodash';
+import expressValidator from "express-validator";
+import { transValidation } from "../../lang/vi";
+
+const {body, query} = expressValidator;
 
 const addNewGroup = [
   body("arrIds", transValidation.add_new_group_users_incorrect)
@@ -29,7 +31,7 @@ const findUsersToAddGroupChat = [
     .matches(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
 ];
 
-module.exports = {
+export {
   addNewGroup,
   findUsersToAddGroupChat
 };

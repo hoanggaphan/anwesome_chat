@@ -1,9 +1,9 @@
+import _ from "lodash";
 import ContactModel from "../models/contactModel";
 import UserModel from "../models/userModel";
-import NotificationModel from "../models/notificationModel";
-import MessageModel from "../models/messageModel";
+import * as NotificationModel from "../models/notificationModel";
+import * as MessageModel from "../models/messageModel";
 import ChatGroupModel from "../models/chatGroupModel";
-import _ from "lodash";
 
 const LIMIT_NUMBER_TAKEN = 10;
 const LIMIT_MESSAGES_TAKEN = 30;
@@ -365,7 +365,7 @@ const talkGroup = (groupId) => {
   });
 };
 
-module.exports = {
+export {
   findUsersContact,
   addNew,
   removeRequestContactSent,

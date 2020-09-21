@@ -1,6 +1,7 @@
-import { param, query } from "express-validator";
+import expressValidator from "express-validator";
 import { transValidation } from "../../lang/vi";
-import { isLength } from "lodash";
+
+const {param, query} = expressValidator;
 
 const findUsersContact = [
   param("keyword", transValidation.keyword_find_user)
@@ -20,7 +21,7 @@ const findNameConversations = [
     .matches(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
 ];
 
-module.exports = {
+export {
   findUsersContact,
   searchFriends,
   findNameConversations

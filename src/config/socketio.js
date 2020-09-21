@@ -23,4 +23,4 @@ const configSocketio = (io, cookieParse, sessionStore) => {
   );
 };
 
-module.exports = configSocketio;
+export default configSocketio;

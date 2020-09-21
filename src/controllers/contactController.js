@@ -1,9 +1,10 @@
+import expressValidator from "express-validator";
 import ejs from 'ejs';
-import { validationResult } from "express-validator";
 import { promisify } from 'util';
 import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from '../helpers/clientHelper';
-import { contact } from "../services/index";
+import { contact } from "../services";
 
+const {validationResult} = expressValidator;
 // Make ejs function renderFile avaiable with async await
 const renderFile = promisify(ejs.renderFile).bind(ejs);
 
@@ -259,7 +260,7 @@ const findNameConversations = async (req, res) => {
 
 };
 
-module.exports = {
+export {
   findUsersContact,
   addNew,
   removeRequestContactSent,

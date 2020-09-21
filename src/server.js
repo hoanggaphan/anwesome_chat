@@ -8,11 +8,11 @@ import passport from "passport";
 import socketio from "socket.io";
 import * as configApp from './config/app';
 import connectDB from "./config/connectDB";
-import session from "./config/session";
+import * as session from "./config/session";
 import configSocketio from "./config/socketio";
 import configViewEngine from "./config/viewEngine";
 import initRoutes from "./routes/web";
-import initSockets from "./sockets/index";
+import initSockets from "./sockets";
 
 // Init app
 const app = express();

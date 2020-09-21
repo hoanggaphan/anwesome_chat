@@ -1,4 +1,8 @@
-import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from '../../helpers/socketHelper';
+import {
+  pushSocketIdToArray,
+  emitNotifyToArray,
+  removeSocketIdFromArray,
+} from "../../helpers/socketHelper";
 
 /**
  * @param io from socket.io library
@@ -18,14 +22,24 @@ const addNewContact = (io) => {
 
       // emit notification
       if (clients[data.contactId]) {
-        emitNotifyToArray(clients, data.contactId, io, "response-add-new-contact", currentUser);
+        emitNotifyToArray(
+          clients,
+          data.contactId,
+          io,
+          "response-add-new-contact",
+          currentUser
+        );
       }
     });
 
     socket.on("disconnect", () => {
-      clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
+      clients = removeSocketIdFromArray(
+        clients,
+        socket.request.user._id,
+        socket
+      );
     });
   });
 };
 
-module.exports = addNewContact;
+export default addNewContact;

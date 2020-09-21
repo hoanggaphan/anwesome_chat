@@ -116,8 +116,10 @@ const NOTIFICATION_CONTENT = {
   },
 };
 
-module.exports = {
-  model: mongoose.model("notification", NotificationSchema),
-  types: NOTIFICATION_TYPE,
-  contents: NOTIFICATION_CONTENT,
+const model = mongoose.model("notification", NotificationSchema);
+
+export {
+  model,
+  NOTIFICATION_TYPE as types,
+  NOTIFICATION_CONTENT as content,
 };

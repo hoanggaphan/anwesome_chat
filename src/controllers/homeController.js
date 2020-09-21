@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from "../helpers/clientHelper";
-import { contact, message, notification, groupChat } from "../services/index";
+import { contact, message, notification, groupChat } from "../services";
 
 const getICETurnServer = () => {
   return new Promise(async (resolve, reject) => {
@@ -83,6 +83,6 @@ const getHome = async (req, res) => {
   });
 };
 
-module.exports = {
+export {
   getHome,
 };

@@ -1,8 +1,8 @@
+import _ from 'lodash';
 import ChatGroupModel from '../models/chatGroupModel';
 import UserModel from '../models/userModel';
-import MessageModel from "../models/messageModel";
+import * as MessageModel from "../models/messageModel";
 import ContactModel from '../models/contactModel';
-import _ from 'lodash';
 
 const LIMIT_MESSAGES_TAKEN = 30;
 
@@ -125,7 +125,7 @@ let addMemberToGroupChat = (groupId, memberId) => {
   });
 }
 
-module.exports = {
+export {
   addNewGroup,
   countAllGroupChats,
   leaveGroupChat,

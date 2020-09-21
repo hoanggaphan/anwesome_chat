@@ -25,4 +25,4 @@ const sendMail = (to, subject, html) => {
   return transporter.sendMail(options); // this default return a promise
 };
 
-module.exports = sendMail;
+export default sendMail;

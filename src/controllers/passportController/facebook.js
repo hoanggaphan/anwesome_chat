@@ -77,4 +77,4 @@ const initPassportFacebook = () => {
   });
 };
 
-module.exports = initPassportFacebook;
+export default initPassportFacebook;

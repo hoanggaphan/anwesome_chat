@@ -1,4 +1,8 @@
-import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from '../../helpers/socketHelper';
+import {
+  pushSocketIdToArray,
+  emitNotifyToArray,
+  removeSocketIdFromArray,
+} from "../../helpers/socketHelper";
 
 /**
  * @param io from socket io library
@@ -15,14 +19,24 @@ const removeRequestContactSent = (io) => {
 
       // emit notification
       if (clients[data.contactId]) {
-        emitNotifyToArray(clients, data.contactId, io, "response-remove-request-contact-sent", currentUser);
+        emitNotifyToArray(
+          clients,
+          data.contactId,
+          io,
+          "response-remove-request-contact-sent",
+          currentUser
+        );
       }
     });
 
     socket.on("disconnect", () => {
-      clients = removeSocketIdFromArray(clients, socket.request.user._id, socket);
+      clients = removeSocketIdFromArray(
+        clients,
+        socket.request.user._id,
+        socket
+      );
     });
   });
 };
 
-module.exports = removeRequestContactSent;
+export default removeRequestContactSent;

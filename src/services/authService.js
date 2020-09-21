@@ -1,6 +1,6 @@
-import UserModel from "../models/userModel";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+import UserModel from "../models/userModel";
 import { transError, transSuccess, transMail } from "../../lang/vi";
 import sendMail from "../config/mailer";
 
@@ -58,7 +58,7 @@ const verifyAccount = (token) => {
   });
 };
 
-module.exports = {
+export {
   register,
   verifyAccount,
 };

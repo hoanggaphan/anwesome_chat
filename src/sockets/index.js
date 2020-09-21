@@ -35,4 +35,4 @@ const initSockets = (io) => {
   addMemberToGroupChat(io);
 };
 
-module.exports = initSockets;
+export default initSockets;

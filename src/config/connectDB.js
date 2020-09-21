@@ -12,4 +12,4 @@ const connectDB = () => {
   return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 }
 
-module.exports = connectDB;
+export default connectDB;

@@ -1,4 +1,4 @@
-import NotificationModel from "../models/notificationModel";
+import * as NotificationModel from "../models/notificationModel";
 import UserModel from "../models/userModel";
 
 const LIMIT_NUMBER_TAKEN = 10;
@@ -15,7 +15,7 @@ const getNotification = (currentUserId) => {
 
       const getNotifContents = notifications.map(async (notification) => {
         const sender = await UserModel.getNormalUserDataById(notification.senderId);
-        return NotificationModel.contents.getContent(
+        return NotificationModel.content.getContent(
           notification.type,
           notification.isRead,
           sender._id,
@@ -58,7 +58,7 @@ const readMore = (currentUserId, skipNumberNotification) => {
 
       const getNotifContents = newNotifications.map(async (notification) => {
         const sender = await UserModel.getNormalUserDataById(notification.senderId);
-        return NotificationModel.contents.getContent(
+        return NotificationModel.content.getContent(
           notification.type,
           notification.isRead,
           sender._id,
@@ -91,7 +91,7 @@ const markAllAsRead = (currentUserId, targetUser) => {
   });
 };
 
-module.exports = { 
+export { 
   getNotification, 
   countNotifUnread, 
   readMore,

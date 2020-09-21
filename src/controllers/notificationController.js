@@ -1,4 +1,4 @@
-import { notification } from "../services/index";
+import { notification } from "../services";
 
 const readMore = async (req, res) => {
   try {
@@ -27,4 +27,7 @@ const markAllAsRead = async (req, res) => {
   }
 };
 
-module.exports = { readMore, markAllAsRead };
+export { 
+  readMore, 
+  markAllAsRead 
+};

@@ -1,5 +1,7 @@
-import { check } from "express-validator";
+import expressValidator from "express-validator";
 import { transValidation } from '../../lang/vi';
+
+const {check} = expressValidator;
 
 const register = [
   check("email", transValidation.email_incorrect)
@@ -16,6 +18,6 @@ const register = [
     })
 ];
 
-module.exports = {
+export {
   register,
 };

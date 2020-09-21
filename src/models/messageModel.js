@@ -104,8 +104,10 @@ const MESSAGE_TYPES = {
   FILE: "file",
 };
 
-module.exports = {
-  model: mongoose.model("message", MessageSchema),
-  conversationTypes: MESSAGE_CONVERSATION_TYPES,
-  messageTypes: MESSAGE_TYPES,
+const model = mongoose.model("message", MessageSchema);
+
+export {
+  model,
+  MESSAGE_CONVERSATION_TYPES as conversationTypes,
+  MESSAGE_TYPES as messageTypes,
 };
