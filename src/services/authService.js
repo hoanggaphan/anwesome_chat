@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import UserModel from "../models/userModel";
 import { transError, transSuccess, transMail } from "../../lang/vi";
 import sendMail from "../config/mailer";
+import * as twoFA from '../helpers/2fa';
 
 const saltRounds = 10;
 
@@ -58,7 +59,55 @@ const verifyAccount = (token) => {
   });
 };
 
+const postVerify2FA = (userId, otpToken) => {
+  return new Promise(async (resolve, reject) => {
+    const user = await UserModel.getSecretToVerify2FA(userId);
+    const isValid = twoFA.verifyOTPToken(otpToken, user.secret);
+    resolve({user, isValid});
+  });
+};
+
+const postEnable2FA = (user) => {
+  return new Promise(async (resolve, reject) => {
+    if(user.is2FAEnabled) {
+      return reject(transError.account_enabled_2fa);
+    } 
+
+    const username = user.username;
+    const serviceName = process.env.OTP_SERVICE_NAME;
+
+    // generate secter
+    const secret = twoFA.generateUniqueSecret();
+
+    // generate otp token
+    const otpToken = twoFA.generateOTPToken(username, serviceName, secret);
+
+    // generate qrcode image
+    const QRCodeImage = await twoFA.generateQRCode(otpToken);
+
+    // Update user secret
+    await UserModel.updateUser(user._id, {is2FAEnabled: true, secret});
+
+    resolve(QRCodeImage);
+  });
+};
+
+const postDisableFA = (user) => {
+  return new Promise(async (resolve, reject) => {
+    if(!user.is2FAEnabled) {
+      return reject(transError.account_disabled_2fa);
+    } 
+
+    // Update user secret
+    await UserModel.updateUser(user._id, {is2FAEnabled: false, secret: null});
+    resolve(true);
+  });
+};
+
 export {
   register,
   verifyAccount,
+  postVerify2FA,
+  postEnable2FA,
+  postDisableFA
 };

@@ -14,12 +14,10 @@ const renderFile = promisify(ejs.renderFile).bind(ejs);
 
 // Handle emoji chat
 const addNewTextEmoji = async (req, res) => {
-  let validationErrors = validationResult(req);
-  if (!validationErrors.isEmpty()) {
-    let errors = Object.values(validationErrors.mapped()).map(
-      (item) => item.msg
-    );
-    return res.status(500).send(errors);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((error) => error.msg);
+    return res.status(500).send(errorMessages);
   }
 
   try {

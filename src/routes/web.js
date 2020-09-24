@@ -56,23 +56,22 @@ const initRoutes = (app) => {
   router.get("/login-register", auth.checkLoggedOut, auth.getLoginRegister);
   router.get("/verify/:token", auth.checkLoggedOut, auth.getVerifyAccount);
 
-  router.get("/auth/facebook", auth.checkLoggedOut, passport.authenticate("facebook", { scope: ["email"] }));
-  router.get("/auth/facebook/callback", auth.checkLoggedOut, passport.authenticate("facebook", {
-    successRedirect: "/",
-    failureRedirect: "/login-register",
-  }))
+  router.get("/auth/facebook", auth.checkLoggedOut, passport.authenticate("facebook", {scope: ["email"] }));
+  router.get("/auth/facebook/callback", auth.checkLoggedOut, auth.postLoginFacebook);
 
   router.get("/auth/google", auth.checkLoggedOut, passport.authenticate("google", { scope: ["email", "profile"] }));
-  router.get("/auth/google/callback", auth.checkLoggedOut, passport.authenticate("google", {
-    successRedirect: "/",
-    failureRedirect: "/login-register",
-  }))
+  router.get("/auth/google/callback", auth.checkLoggedOut, auth.postLoginGoogle);
 
-  router.post("/register",auth.checkLoggedOut, authValid.register , auth.postRegister)
-  router.post("/login", auth.checkLoggedOut, passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login-register",
-  }));
+  router.post("/register", auth.checkLoggedOut, authValid.register , auth.postRegister);
+  router.post("/login", auth.checkLoggedOut, auth.postLoginLocal);
+
+  router.get('/verify-2fa/:userId', auth.checkLoggedOut, auth.getVerify2FAPage);
+  router.post('/verify-2fa/:userId', auth.checkLoggedOut, authValid.verify2FA, auth.postVerify2FA);
+
+  router.post('/enable-2fa', auth.checkLoggedIn, auth.postEnable2FA);
+  router.post('/disable-2fa', auth.checkLoggedIn, auth.postDisableFA);
+
+  router.get('/tutorial-setting-facebook', auth.checkLoggedOut, auth.tutorialSettingFacebook);
 
   return app.use("/", router);
 }
