@@ -1,7 +1,7 @@
 {
-  "name": "anwesome_chat",
+  "name": "awesome_chat",
   "version": "1.0.0",
-  "description": "anwesome chat build by nodejs and express",
+  "description": "awesome chat build by nodejs and express",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hoanggaphan/anwesome_chat.git"
+    "url": "git+https://github.com/hoanggaphan/awesome_chat.git"
   },
   "author": "si hoang",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hoanggaphan/anwesome_chat/issues"
+    "url": "https://github.com/hoanggaphan/awesome_chat/issues"
   },
-  "homepage": "https://github.com/hoanggaphan/anwesome_chat#readme",
+  "homepage": "https://github.com/hoanggaphan/awesome_chat#readme",
   "dependencies": {
     "axios": "^0.19.2",
     "bcrypt": "^5.0.0",
