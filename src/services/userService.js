@@ -10,7 +10,7 @@ const saltRounds = 10;
  * @param {data update} item 
  */
 const updateUser = (id, item) => {
-  return UserModel.updateUser(id, item)
+  return UserModel.updateUser(id, item);
 }
 /**
  * Update password for user
@@ -19,7 +19,7 @@ const updateUser = (id, item) => {
  */
 const updatePassword = (id, dataUpdate) => {
   return new Promise(async (resolve, reject) => {
-    const currentUser = await UserModel.findUserByIdToUpdatePassword(id);
+    const currentUser = await UserModel.findUserById(id);
     if (!currentUser) {
       reject(transError.account_undefined)
     }

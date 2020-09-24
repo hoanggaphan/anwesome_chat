@@ -27,13 +27,9 @@ const initPassportGoogle = () => {
           // Check user in database
           const user = await UserModel.findByGoogleId(profile.id);
           if (user) {
-            return done(
-              null,
-              user,
-              req.flash("success", transSuccess.loginSuccess(user.username))
-            );
+            return done(null, user);
           }
-
+          
           // Create a new user
           const newUserItem = {
             username: profile.displayName,
@@ -48,7 +44,11 @@ const initPassportGoogle = () => {
             },
           };
           const newUser = await UserModel.createNew(newUserItem);
-          done(null, newUser, req.flash("success", transSuccess.loginSuccess(newUser.username)));
+          done(
+            null,
+            newUser,
+            req.flash("success", transSuccess.loginSuccess(newUser.username))
+          );
         } catch (error) {
           console.error(error);
           done(null, false, req.flash("errors", transError.server_error));
@@ -65,7 +65,9 @@ const initPassportGoogle = () => {
   passport.deserializeUser(async (id, done) => {
     try {
       let user = await UserModel.findUserByIdForSessionToUse(id);
-      let getChatGroupIds = await ChatGroupModel.getChatGroupIdsByUser(user._id);
+      let getChatGroupIds = await ChatGroupModel.getChatGroupIdsByUser(
+        user._id
+      );
 
       user = user.toObject();
       user.chatGroupIds = getChatGroupIds;

@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import { bufferToBase64, convertTimestampHumanTime, lastItemFromArr } from "../helpers/clientHelper";
 import { contact, message, notification, groupChat } from "../services";
+import * as twoFA from '../helpers/2fa';
 
 const getICETurnServer = () => {
   return new Promise(async (resolve, reject) => {
@@ -62,10 +63,27 @@ const getHome = async (req, res) => {
   // get ICE list from xirsys turn server
   let iceServerList = await getICETurnServer();
 
+  // if user enable 2fa, generate qrcode image
+  let QRCodeImage = "";
+  if(req.user.is2FAEnabled) {
+    const username = req.user.username;
+    const serviceName = process.env.OTP_SERVICE_NAME;
+
+    // generate secter
+    const secret = twoFA.generateUniqueSecret();
+
+    // generate otp token
+    const otpToken = twoFA.generateOTPToken(username, serviceName, secret);
+
+    // generate qrcode image
+    QRCodeImage = await twoFA.generateQRCode(otpToken);
+  } 
+
   res.render("main/home/home", {
     success: req.flash("success"),
     errors: req.flash("error"),
     user: req.user,
+    QRCodeImage,
     notifications,
     countNotifUnread,
     contacts,

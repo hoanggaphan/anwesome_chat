@@ -10,6 +10,8 @@ const UserSchema = new Schema({
   address: { type: String, default: null },
   avatar: { type: String, default: "user-default.jpg" },
   role: { type: String, default: "user" },
+  is2FAEnabled: { type: Boolean, default: false },
+  secret: { type: String, default: null },
   local: {
     email: { type: String, trim: true },
     password: String,
@@ -44,7 +46,7 @@ UserSchema.statics = {
     return this.findOne({ "local.verifyToken": token }).exec();
   },
 
-  findUserByIdToUpdatePassword(id) {
+  findUserById(id) {
     return this.findById(id).exec();
   },
 
@@ -178,6 +180,10 @@ UserSchema.statics = {
       },
       { _id: 1, username: 1, address: 1, avatar: 1 }
     ).exec();
+  },
+
+  getSecretToVerify2FA(id) {
+    return this.findById(id, 'username secret').exec();
   },
 };
 

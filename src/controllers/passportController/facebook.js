@@ -20,18 +20,19 @@ const initPassportFacebook = () => {
         clientSecret: fbAppSecrect,
         callbackURL: fbAppCallbackUrl,
         passReqToCallback: true,
-        profileFields: ["emails", "gender", "displayName"],
+        profileFields: ["emails", "gender", "displayName"]
       },
       async (req, accessToken, refreshToken, profile, done) => {
         try {
           // Check user in database
           const user = await UserModel.findByFacebookId(profile.id);
           if (user) {
-            return done(
-              null,
-              user,
-              req.flash("success", transSuccess.loginSuccess(user.username))
-            );
+            return done(null, user);
+          }
+
+          // Check email in profile of user
+          if (!profile.hasOwnProperty("emails")) {
+            return done(null, false, req.flash("errors", transError.facebook_not_add_email));
           }
 
           // Create a new user
@@ -48,7 +49,11 @@ const initPassportFacebook = () => {
             },
           };
           const newUser = await UserModel.createNew(newUserItem);
-          done(null, newUser, req.flash("success", transSuccess.loginSuccess(newUser.username)));
+          done(
+            null,
+            newUser,
+            req.flash("success", transSuccess.loginSuccess(newUser.username))
+          );
         } catch (error) {
           console.error(error);
           done(null, false, req.flash("errors", transError.server_error));
@@ -65,7 +70,9 @@ const initPassportFacebook = () => {
   passport.deserializeUser(async (id, done) => {
     try {
       let user = await UserModel.findUserByIdForSessionToUse(id);
-      let getChatGroupIds = await ChatGroupModel.getChatGroupIdsByUser(user._id);
+      let getChatGroupIds = await ChatGroupModel.getChatGroupIdsByUser(
+        user._id
+      );
 
       user = user.toObject();
       user.chatGroupIds = getChatGroupIds;

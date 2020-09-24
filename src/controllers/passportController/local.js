@@ -1,8 +1,8 @@
 import passport from "passport";
 import passportLocal from "passport-local";
-import UserModel from '../../models/userModel.js';
+import { transError } from '../../../lang/vi';
 import ChatGroupModel from '../../models/chatGroupModel';
-import { transError, transSuccess } from '../../../lang/vi';
+import UserModel from '../../models/userModel.js';
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -32,7 +32,7 @@ const initPassportLocal = () => {
             return done(null, false, req.flash("errors", transError.login_failed));
           }
 
-          done(null, user, req.flash("success", transSuccess.loginSuccess(user.username)));
+          done(null, user);
         } catch (error) {
           console.error(error);
           done(null, false, req.flash("errors", transError.server_error));

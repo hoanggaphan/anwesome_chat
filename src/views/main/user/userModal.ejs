@@ -7,8 +7,15 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#seting-profile">Cài đặt chung</a></li>
-                    <li><a data-toggle="tab" id="link-to-password-profile" href="#password-profile">Quản lý mật khẩu</a></li>
+                    <li class="active">
+                        <a data-toggle="tab" href="#seting-profile">Cài đặt chung</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" id="link-to-password-profile" href="#password-profile">Quản lý mật khẩu</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" id="link-to-secure-profile" href="#secure-profile">Bảo mật</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="seting-profile" class="tab-pane fade in active">
@@ -113,6 +120,7 @@
                             </form>
                         </div>
                     </div>
+                    
                     <div id="password-profile" class="tab-pane fade">
                         <div class="col-md-9 personal-info">
                             <br>
@@ -158,6 +166,41 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+
+                    <div id="secure-profile" class="tab-pane fade">
+                        <div class="col-xs-6">
+                            <h3>Hướng dẫn bảo mật 2 lớp:</h3>
+                            <p><b>Bước 1:</b> Sử dụng điện thoại tải app bên dưới và đăng ký tài khoản.</p>
+                            <p><b>Bước 2:</b> Nhấn nút bật xác thực 2 lớp để lấy mã QR.</p>
+                            <p><b>Bước 3:</b> Sử dụng app vừa tải quét mã QR để lấy mã bảo mật.</p>
+                            <p class="note-text"><b>*Lưu ý:</b> Khi bật xác thực 2 lớp xong, phải quét mã QR để thêm mã bảo mật vào điện thoại trước khi đăng xuất</p>
+                            <a href="https://play.google.com/store/apps/details?id=com.authy.authy" target="_blank">
+                                <img class="icon-download-app" src="images/logo_favicon/google-play.png" alt="icon-google-play-download">
+                            </a>
+                            <a href="https://apps.apple.com/us/app/authy/id494168017" target="_blank">
+                                <img class="icon-download-app" src="images/logo_favicon/ios.png" alt="icon-ios-download">
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 enable-2fa-area">
+                            <% if(user.is2FAEnabled && QRCodeImage) { %> 
+                                <button id="btn-disable-2fa" class="btn btn-default custom-background-btn-reset">
+                                    Tắt xác thực 2 lớp
+                                </button>
+                            <% } else { %> 
+                                <button id="btn-enable-2fa" class="btn btn-primary custom-background-btn-primary">
+                                    Bật xác thực 2 lớp
+                                </button>
+                            <% } %>
+                            
+                            <div id="qr-code-img-area">
+                                <% if(user.is2FAEnabled && QRCodeImage) { %> 
+                                    <%- QRCodeImage %>
+                                <% } %>
+                            </div>
+                            <div id="2fa-error-area"></div>
                         </div>
                     </div>
                 </div>

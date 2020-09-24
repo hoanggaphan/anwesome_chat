@@ -4,12 +4,10 @@ import { groupChat } from '../services'
 const {validationResult} = expressValidator;
 
 const addNewGroup = async (req, res) => {
-  const validationErrors = validationResult(req);
-  if (!validationErrors.isEmpty()) {
-    const errors = Object.values(validationErrors.mapped()).map(
-      (item) => item.msg
-    );
-    return res.status(500).send(errors);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((error) => error.msg);
+    return res.status(500).send(errorMessages);
   }
 
   try {

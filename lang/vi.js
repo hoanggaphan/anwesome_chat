@@ -12,6 +12,9 @@ export const transValidation = {
   message_text_emoji_incorrect: "Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 ký tự, tối đa 400 kí tự",
   add_new_group_users_incorrect: "Vui lòng chọn bạn bè để thêm vào nhóm, tối thiểu 2 người",
   add_new_group_name_incorrect: "Vui lòng nhập tên cuộc trò chuyện, giới hạn từ 5 - 30 kí tự và không chứa kí tự đặc biệt.",
+  otpToken_number_incorrect: "Mã bảo mật phải là số.",
+  otpToken_length_incorrect: "Độ dài mã gồm 6 số.",
+  param_incorrect: "Tham số truy vấn không hợp lệ.",
 }
 
 export const transError = {
@@ -29,6 +32,10 @@ export const transError = {
   image_message_type: "Kiểu file Không hợp lệ, chỉ chấp nhận file png, jpg hoặc jpeg",
   image_message_size: "Ảnh có kích thước tối đa 1MB",
   attachment_message_size: "Tệp đính kèm có kích thước tối đa 1MB",
+  otp_incorrect: "Mã bảo mật không chính xác",
+  account_enabled_2fa: "Tài khoản đã bật xác thực 2 lớp!",
+  account_disabled_2fa: "Tài khoản đã tắt xác thực 2 lớp!",
+  facebook_not_add_email: "Vui lòng thêm email vào tài khoản facebook để sử dụng được chức năng này, click <a href='/tutorial-setting-facebook' target='_blank'>vào đây</a> để được hướng dẫn nếu bạn chưa biết cách thêm email.",
 }
 
 export const transSuccess = {

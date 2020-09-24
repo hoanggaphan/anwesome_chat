@@ -1897,3 +1897,52 @@ i.fa-users, i.fa-comment-o, i.fa-photo, i.fa-paperclip, i.fa-sign-out {
     width: 100%;
   }
 }
+
+#secure-profile {
+  padding-top: 15px;
+}
+
+.enable-2fa-area {
+  text-align: center;
+}
+
+#btn-enable-2fa, #btn-disable-2fa {
+  margin-top: 22px;
+}
+
+.icon-download-app {
+  width: 175px;
+  height: 70px;
+}
+
+.note-text {
+  color: var(--default-red-color) !important;
+}
+
+#qr-code-img-area img {
+  width: 200px;
+  height: 200px;
+}
+
+.box-tutorial img {
+  width: 80%;
+  height: 450px;
+  border-radius: 7px;
+  box-shadow: 2px 2px 7px 2px grey;
+
+  display: block;
+  margin: 25px auto 50px;
+}
+
+.box-tutorial p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.box-tutorial h1:last-child {
+  margin-top: 45px;
+}
+
+.box-tutorial hr {
+  border-color: rgba(0, 0, 0, .2);
+}
